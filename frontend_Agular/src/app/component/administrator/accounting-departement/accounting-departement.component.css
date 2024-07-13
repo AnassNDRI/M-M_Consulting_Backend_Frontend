@@ -1,0 +1,713 @@
+mat-toolbar {
+  background: #dedbdb;
+  color: white;
+}
+
+mat-sidenav {
+  margin: 16px;
+  width: 300px;
+  border-right: none;
+  background: #3e6854;
+  color: white;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content {
+  height: calc(100vh - 130px);
+  border-radius: 10px;
+  margin: 16px;
+  margin-left: 32px;
+
+  padding: 16px;
+
+  overflow: auto;
+}
+
+mat-sidenav-container {
+  height: calc(100vh - 65px);
+}
+
+.menu-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 1rem;
+
+  mat-icon {
+    margin-right: 8px;
+    color: rgb(225, 221, 212) !important;
+  }
+}
+
+.avatar {
+  margin-top: 16px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.name {
+  margin-top: 8px;
+  font-weight: normal;
+}
+
+.designation {
+  margin-top: 2px;
+  font-size: 0.7rem;
+  color: lightgrey;
+}
+
+mat-divider {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+body {
+  background-color: #c0bfc6;
+}
+
+.card {
+  border: none;
+  background-color: #d6d8e2;
+  color: #252121;
+  border-radius: 12px;
+  margin: auto;
+}
+
+.views-content {
+  color: #606271;
+}
+.views {
+  font-size: 12px;
+}
+
+.title {
+  white-space: nowrap; /* Empêche le texte de passer à la ligne suivante */
+  overflow: hidden; /* Cache le contenu qui dépasse du conteneur */
+  text-overflow: ellipsis; /* Ajoute des points de suspension si le texte déborde */
+  max-width: 600px; /* Fixe une largeur maximale pour le h4, ajustez selon votre mise en page */
+}
+
+.d-flex h4 {
+  white-space: nowrap; /* Empêche le texte de passer à la ligne suivante */
+  overflow: hidden; /* Cache le contenu qui dépasse du conteneur */
+  text-overflow: ellipsis; /* Ajoute des points de suspension si le texte déborde */
+  max-width: 800px; /* Fixe une largeur maximale pour le h4, ajustez selon votre mise en page */
+}
+
+.days-ago {
+  margin-top: -10px;
+  color: #606271;
+}
+
+.snipimage img {
+  height: 130px;
+  width: 100px;
+}
+
+.sidebar-filter {
+  background-color: #220707; /* Couleur de fond */
+  padding: 10px; /* Espacement à l'intérieur de la sidebar */
+  border-radius: 10px; /* Bordures arrondies */
+  margin-bottom: 10px; /* Espacement sous la sidebar */
+}
+
+.sidebar-filter h3 {
+  margin-bottom: 15px; /* Espacement sous le titre */
+}
+
+.sidebar-filter button {
+  display: block; /* Affiche les boutons en bloc */
+  width: 100%; /* Largeur complète */
+  margin-bottom: 10px; /* Espacement entre les boutons */
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-text {
+  color: #1d1b1b;
+}
+
+.black-icon-label {
+  color: black;
+  margin-right: 8px;
+  font-size: 16px; /* Ajustez cette valeur selon la taille souhaitée */
+}
+.badge {
+  color: rgb(61, 62, 61); /* Utilise la couleur verte prédéfinie */
+}
+
+.filter-text {
+  color: #1d1b1b;
+}
+
+.deadline {
+  color: rgb(114, 2, 2);
+  font-weight: 500;
+  margin-top: -10px;
+}
+
+.mat-icon {
+  color: rgb(225, 221, 212) !important;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.black-icon-label {
+  color: black;
+}
+
+.favorite-icon {
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  transition: transform 0.3s ease; /* Ajoute une transition pour l'effet de survol */
+  /* color: black; Ou votre couleur par défaut */
+}
+
+.favorite-icon:hover {
+  transform: scale(1.2); /* Agrandit légèrement l'icône au survol */
+}
+
+.saved {
+  color: rgb(205, 6, 6);
+}
+
+.profile-title {
+  text-align: center;
+}
+
+.option-selected {
+  font-weight: 500;
+  color: black;
+  background-color: #a7acb1;
+}
+
+.form-label-title {
+  margin-bottom: 0;
+  color: rgb(225, 221, 212);
+  font-weight: 500;
+}
+
+.form-label {
+  margin-bottom: 0;
+  color: rgb(209, 209, 88);
+  font-weight: 500;
+}
+.form-select {
+  margin-top: 0;
+}
+
+.div-btn {
+  background-color: #a7acb1;
+  border-radius: 30px;
+  box-shadow: #1d1b1b;
+}
+
+.menu-decalage {
+  margin-left: 50px; /* Ajustez cette valeur selon le décalage désiré */
+}
+
+.select-menu {
+  font-style: italic;
+  color: gainsboro;
+  font-size: 0.7rem;
+}
+
+.div-select {
+  margin-left: 50px;
+  margin-bottom: 0 !important;
+}
+
+.btn-all-job {
+  border: 0.5px solid;
+  border-radius: 10px;
+}
+
+.btn-all-job:hover {
+  transform: scale(
+    1.1
+  ); /* Augmentation légère de la taille du bouton pour renforcer l'effet */
+  border-color: white; /* Changement de la couleur de la bordure au survol */
+}
+
+.btn-label {
+  margin-right: 5px; /* Espacement entre les boutons */
+}
+.btn-label:last-child {
+  margin-right: 0; /* Annuler l'espacement pour le dernier bouton */
+}
+
+.btn-label:hover {
+  color: #fff;
+  transform: scale(1.1);
+  border-color: white;
+}
+
+.form-label-title:hover {
+  background-color: rgb(
+    45,
+    60,
+    45
+  ); /* Couleur de fond nettement plus foncée au survol */
+  color: #fff; /* Optionnel: Changement de couleur du texte au survol, ici maintenu à blanc */
+  transform: scale(
+    1.1
+  ); /* Augmentation légère de la taille du bouton pour renforcer l'effet */
+  border-color: white; /* Changement de la couleur de la bordure au survol */
+}
+
+.style-profile {
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+.viewer-profile {
+  color: #fff;
+}
+
+.viewer-profile:hover {
+  transform: scale(1.1);
+  border-color: white;
+}
+
+.style-function {
+  font-style: italic;
+  font-size: 13px;
+}
+
+.card-content {
+  display: flex;
+
+  justify-content: space-between;
+
+  background-color: #d6d8e2;
+  color: #252121;
+  border-radius: 30px;
+  padding: 5px;
+  font-weight: 500;
+
+  box-shadow: #1d1b1b;
+}
+.display-col-text {
+  text-align: center;
+}
+.visibility-icon {
+  color: #000 !important;
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  transition: transform 0.3s ease; /* Ajoute une transition pour l'effet de survol */
+}
+
+.visibility-icon:hover {
+  transform: scale(1.5); /* Agrandit légèrement l'icône au survol */
+}
+
+.disabled {
+  pointer-events: none; /* Désactive les clics */
+  color: gray !important; /* Change la couleur pour indiquer qu'elle est désactivée */
+  opacity: 0.5; /* Rend l'icône semi-transparente */
+}
+
+.inactive {
+  background-color: #e87d88;
+}
+
+.profile:hover {
+  background-color: #8d9a90;
+  color: #fff;
+}
+
+.profile {
+  background-color: rgb(200, 200, 80);
+  display: inline-block;
+  color: #000;
+  padding: 5px;
+  border-radius: 10px;
+  font-weight: 500;
+  transform: scale(1.1);
+
+  filter: brightness(110%);
+}
+
+.contenair-bloc {
+  padding-bottom: 30px;
+}
+
+.my-card {
+  position: absolute;
+  left: 40%;
+  top: -20px;
+  border-radius: 50%;
+}
+
+.new-users-job {
+  color: rgb(249, 99, 99);
+  font-weight: 900;
+}
+.users {
+  color: rgb(3, 95, 3);
+  font-weight: 900;
+}
+
+.job-validate {
+  color: rgb(3, 95, 3);
+  font-weight: 900;
+}
+
+.div-badge {
+  background: #dae0e6;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Ajout de transition pour l'ombre */
+}
+
+.div-badge:hover {
+  transform: translateY(-3px); /* Déplace légèrement l'élément vers le haut */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ajoute une ombre pour l'effet de soulèvement */
+}
+
+/* ******************************************************************
+/*********************** ANIMATION **********************************************
+/********************************************************************/
+
+/* Animation nommée 'redFade', durée de 3 secondes, boucle infinie en alternance */
+.div-new-data {
+  background: #dae0e6;
+  color: rgb(237, 117, 117);
+  font-weight: 900;
+  animation: redFade 1s infinite alternate;
+}
+
+@keyframes redFade {
+  from {
+    background: #dae0e6;
+    color: rgb(237, 117, 117);
+  }
+  to {
+    background: rgb(237, 117, 117);
+    color: black;
+  }
+}
+
+
+
+
+/* ******************************************************************
+/*********************************************************************
+/********************************************************************/
+
+.text-shadow {
+  font-size: 1.5rem;
+  text-shadow: 3px 3px 5px rgba(255, 255, 255, 0.9),
+    /* Ombre blanche dense proche du texte */ 5px 5px 10px
+      rgba(255, 255, 255, 0.7),
+    /* Ombre blanche un peu moins dense et plus large */ 8px 8px 15px
+      rgba(255, 255, 255, 0.5); /* Ombre blanche plus douce et dispersée */
+}
+
+.empty-jobs-message {
+  text-align: center;
+  font-size: 20px; /* Taille de la police pour une meilleure visibilité */
+  color: #626262; /* Couleur du texte */
+  background-color: #f0f0f0; /* Couleur de fond du message */
+  padding: 20px;
+  border-radius: 10px; /* Coins arrondis du message */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre subtile pour un peu de profondeur */
+}
+
+.text-jobAppli {
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5), 5px 5px 10px rgba(0, 0, 0, 0.2),
+    8px 8px 15px rgba(0, 0, 0, 0.1); /* Plusieurs ombres pour un effet plus intense */
+}
+.total-apply {
+  margin-right: 8px; /* Marge à droite */
+  width: 250px; /* Largeur spécifiée */
+  font-weight: 500;
+  color: white; /* Couleur du texte */
+  background-color: rgb(149, 151, 149);
+  transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Transition douce pour plusieurs propriétés */
+  border: 2px solid transparent; /* Bordure initiale transparente pour maintenir la taille lors du survol */
+}
+
+.total-sub {
+  color: white; /* Couleur du texte */
+  background-color: rgb(149, 151, 149);
+  transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Transition douce pour plusieurs propriétés */
+  border: 2px solid transparent;
+}
+
+.text-appointment {
+  color: #1f1f1f;
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5), 5px 5px 10px rgba(0, 0, 0, 0.2),
+    8px 8px 15px rgba(0, 0, 0, 0.1); /* Plusieurs ombres pour un effet plus intense */
+}
+
+.edit-icon {
+  color: rgb(241, 159, 8) !important;
+}
+
+.delet-icon {
+  color: rgb(235, 19, 19) !important;
+}
+
+/*****************************************************************/
+
+.add-btn {
+  margin-right: 8px; /* Marge à droite */
+  width: 250px; /* Largeur spécifiée */
+  color: white; /* Couleur du texte */
+  background-color: rgb(84, 105, 84); /* Couleur de fond */
+  transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Transition douce pour plusieurs propriétés */
+  border: 2px solid transparent; /* Bordure initiale transparente pour maintenir la taille lors du survol */
+}
+
+.apply-btn {
+  display: block;
+  width: 100%;
+  text-align: left; /* Modification pour aligner le texte à gauche */
+  padding: 10px;
+  border: none;
+  background-color: #f8f9fa; /* Couleur de fond légère, modifiable selon votre palette */
+  color: #333; /* Couleur du texte */
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Légère ombre pour un effet de profondeur */
+  margin-bottom: 10px; /* Espacement entre les boutons */
+  cursor: pointer; /* Indique que l'élément est cliquable */
+  transition: all 0.3s ease; /* Animation douce lors du survol */
+}
+
+.apply-btn:hover {
+  background-color: #e2e6ea; /* Couleur de fond au survol */
+}
+
+.apply-btn h2,
+.apply-btn p {
+  margin: 5px 0; /* Réduit l'espacement vertical entre les éléments */
+  line-height: 1.2; /* Rapproche les lignes de texte */
+}
+
+.apply-btn h2 {
+  font-size: 1.2rem; /* Taille de la police pour le titre */
+  font-weight: bold; /* Met le titre en gras */
+}
+
+.apply-btn p {
+  font-size: 1rem; /* Taille normale de la police pour les paragraphes */
+  color: #666; /* Couleur plus douce pour les paragraphes */
+}
+
+.table-close {
+  margin-bottom: 10px; /* Réduit l'espace en dessous de chaque tableau */
+}
+
+/* Si vous voulez également réduire l'espace au-dessus du premier tableau */
+.table-close:first-of-type {
+  margin-top: 10px;
+}
+
+.card-appli {
+  border: 1px solid #f8f4f4; /* Noir comme couleur de bordure, modifiable */
+  margin: 10px 0; /* Ajoute un peu d'espace autour de chaque carte */
+  padding: 10px; /* Espace à l'intérieur de la carte */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optionnel: ajoute une ombre légère pour un effet 3D */
+  background-color: #aeb7c5;
+  border-radius: 30px;
+}
+
+.add-btn:hover {
+  background-color: rgb(
+    45,
+    60,
+    45
+  ); /* Couleur de fond nettement plus foncée au survol */
+  color: #fff; /* Optionnel: Changement de couleur du texte au survol, ici maintenu à blanc */
+  transform: scale(
+    1.05
+  ); /* Augmentation légère de la taille du bouton pour renforcer l'effet */
+  border-color: white; /* Changement de la couleur de la bordure au survol */
+}
+.countAplly.status-en-cours {
+  color: rgb(11, 128, 9);
+  background-color: #fff;
+}
+
+.table-title {
+  background-color: #d6d8e2;
+  text-align: center;
+}
+
+.joblist {
+  background-color: #b6b7c1;
+}
+
+.table-style th,
+.table-style td {
+  border: 3px solid #ccc; /* Épaisseur et couleur de bordure pour les cellules */
+  padding: 8px; /* Espacement à l'intérieur des cellules */
+}
+.table-style {
+  width: 100%;
+  border: 3px solid #ccc; /* Bordure fine autour du tableau */
+  border-radius: 8px; /* Arrondi des coins du tableau */
+  overflow: hidden; /* Garantit que les coins arrondis sont visibles */
+  box-shadow: 0px 0px 10px 0px #1d1b1b; /* Ombre autour du tableau */
+}
+
+.status-non-traite {
+  color: black; /* Ou toute autre couleur désirée pour le texte "non traité" */
+}
+
+.status-en-cours {
+  color: #000;
+  background-color: rgb(243, 243, 186);
+}
+
+.status-accepted {
+  color: #575454;
+  font-weight: 500;
+  background-color: rgb(168, 206, 167);
+}
+
+.status-no-check {
+  color: #575454;
+  font-style: italic;
+  background-color: rgb(216, 174, 174);
+}
+
+.interview {
+  color: #575454;
+  font-weight: bold;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.accepted {
+  color: rgb(76, 144, 76);
+  font-weight: bold;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.refus {
+  color: rgb(248, 105, 105);
+  font-weight: bold;
+  font-style: italic;
+  cursor: pointer;
+}
+
+.accepted:hover {
+  color: #575454;
+  background-color: rgb(188, 239, 188);
+}
+
+.refus:hover {
+  color: #575454;
+  background-color: #f7dada;
+}
+
+.interview:hover {
+  color: white;
+  background-color: rgb(245, 195, 101);
+}
+
+.display-row {
+  padding-top: 5px;
+}
+
+.btn-small {
+  --bs-btn-padding-y: 0.25rem;
+  --bs-btn-padding-x: 0.5rem;
+  --bs-btn-font-size: 0.75rem;
+  color: #2e2727;
+  font-weight: bold;
+  margin-right: 5px; /* Ajoutez cette marge pour séparer les boutons */
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  transition: transform 0.3s ease; /* Ajoute une transition pour l'effet de survol */
+}
+.btn-ok {
+  background: rgb(181, 183, 181);
+}
+.btn-no {
+  background-color: #d9cccc;
+}
+
+.btn-no:hover {
+  background-color: #ef9090;
+  transform: scale(1.3); /* Agrandit légèrement le buton au survol */
+}
+
+.btn-ok:hover {
+  background-color: rgb(180, 244, 180);
+  transform: scale(1.3);
+}
+
+.btn-small:last-child {
+  margin-right: 0; /* Supprime la marge du dernier bouton */
+}
+
+/* Ajoutez cette classe dans votre fichier CSS */
+.small-text {
+  color: #2e2727;
+  font-weight: bold;
+  font-size: 12px; /* Ajustez la taille selon vos besoins */
+  line-height: 1.2; /* Optionnel : Ajustez la hauteur de ligne pour un meilleur alignement */
+}
+
+
+.job-closed-message {
+  animation: jobclose 1s infinite alternate;
+  font-weight: 500;
+}
+
+@keyframes jobclose {
+  from {
+    color: #2a2929;
+  }
+  to {
+    background: red;
+    color: rgb(244, 242, 240);
+  }
+}
+
+
+.total-appli {
+  text-align: center; 
+  color: rgb(91, 90, 90);
+  background-color:  rgb(169, 172, 169);   /* Couleur de fond *//* Couleur de fond */
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  transition: transform 0.3s ease; /* Ajoute une transition pour l'effet de survol */
+}
+
+.total-appli:hover {
+  color: #000;
+  transform: scale(1.2); /* Agrandit légèrement l'icône au survol */
+  background-color: rgb(232, 70, 70);
+  
+}
+
+
+
+.empty-jobs-message {
+  text-align: center;
+  font-size: 20px; /* Taille de la police pour une meilleure visibilité */
+  color: #626262; /* Couleur du texte */
+  background-color: #f0f0f0; /* Couleur de fond du message */
+  padding: 20px;
+  border-radius: 10px; /* Coins arrondis du message */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre subtile pour un peu de profondeur */
+}

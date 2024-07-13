@@ -1,0 +1,75 @@
+/* Styles pour centrer le titre */
+.mat-dialog-title {
+  text-align: center;
+  margin: 0;
+}
+
+/* Styles pour centrer le message */
+.mat-dialog-content {
+  text-align: center; /* Cette ligne centre le texte du contenu */
+  overflow: hidden; /* Cela évite le débordement du contenu */
+}
+
+/* Styles pour centrer les boutons et ajuster leur apparence */
+.mat-dialog-actions {
+  display: flex; /* Utiliser flexbox pour les conteneurs des boutons */
+  justify-content: center; /* Centrer les éléments à l'horizontale dans le conteneur */
+  margin-top: 20px; /* Espace au-dessus du conteneur des boutons */
+}
+
+/* Styles spécifiques pour chaque bouton */
+.cancel-button {
+  color: #fff;
+  background-color: #757575;
+  margin-right: 8px; /* Espacement entre les boutons */
+}
+
+.confirm-button {
+  color: #fff;
+  background-color: #d32f2f;
+}
+
+.message-success {
+  color: green;
+}
+
+.message-error {
+  color: #d32f2f;
+}
+
+.sucess-button {
+  color: #fff;
+  background-color: #7a856f;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Prend toute la hauteur de la fenêtre */
+  width: 100%; /* Prend toute la largeur pour assurer le centrage horizontal */
+}
+
+.empty-jobs-message {
+  text-align: center;
+  font-size: 20px; /* Taille de la police pour une meilleure visibilité */
+  color: #626262; /* Couleur du texte */
+  background-color: #f0f0f0; /* Couleur de fond du message */
+  padding: 20px;
+  border-radius: 10px; /* Coins arrondis du message */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre subtile pour un peu de profondeur */
+}
+
+.dialog-message ul {
+  padding-left: 0; /* Supprimer le retrait par défaut de la liste */
+  list-style: none; /* Supprimer les puces de la liste */
+}
+
+.dialog-message ul li {
+  color: #d32f2f; /* Couleur rouge pour les points importants */
+  margin: 10px 0; /* Espacement entre les éléments de la liste */
+}
+
+.dialog-message p {
+  margin: 10px 0; /* Espacement entre les paragraphes */
+}

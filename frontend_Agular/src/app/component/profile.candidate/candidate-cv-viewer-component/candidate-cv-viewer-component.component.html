@@ -1,0 +1,17 @@
+<ng-container *ngIf="cvUrl">
+  <!-- PDF Viewer with dynamic source and full-screen style -->
+  <ngx-extended-pdf-viewer
+    [src]="cvUrl"
+    [textLayer]="true"
+    style="display: block; width: 100vw; height: 100vh"
+  >
+  </ngx-extended-pdf-viewer>
+</ng-container>
+
+<!-- Button Container -->
+<div class="button-container">
+  <button class="btn btn-primary btn-back" type="button" (click)="askBack()">
+    <i class="fa-solid fa-arrow-left-long"></i> {{'gobackToProfile' | translate}}
+  </button>
+</div>
+

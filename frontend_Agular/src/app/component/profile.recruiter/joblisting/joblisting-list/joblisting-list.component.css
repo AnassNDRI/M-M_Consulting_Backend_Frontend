@@ -1,0 +1,186 @@
+mat-toolbar {
+  background: #dedbdb;
+  color: white;
+}
+
+mat-sidenav {
+  margin: 16px;
+  width: 300px;
+  border-right: none;
+  background: #f3f2f6;
+  color: white;
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.content {
+  height: calc(100vh - 130px);
+  border-radius: 10px;
+  margin: 16px;
+  margin-left: 32px;
+  padding: 16px;
+  overflow: auto;
+}
+
+mat-sidenav-container {
+  height: calc(100vh - 65px);
+}
+
+.menu-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 24px;
+
+  mat-icon {
+    margin-right: 8px;
+    font-size: 24px;
+  }
+}
+
+.avatar {
+  margin-top: 16px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.name {
+  margin-top: 8px;
+  font-weight: normal;
+}
+
+.designation {
+  margin-top: 2px;
+  font-size: 0.7rem;
+  color: lightgrey;
+}
+
+mat-divider {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+body {
+  background-color: #c0bfc6;
+}
+
+.card {
+  border: none;
+  background-color: #f3f2f6;
+  color: #252121;
+  border-radius: 12px;
+  margin: auto;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.5);
+}
+
+.views-content {
+  color: #f3f2f6;
+}
+.views {
+  font-size: 12px;
+}
+
+.d-flex h4 {
+  white-space: nowrap; /* Empêche le texte de passer à la ligne suivante */
+  overflow: hidden; /* Cache le contenu qui dépasse du conteneur */
+  text-overflow: ellipsis; /* Ajoute des points de suspension si le texte déborde */
+  max-width: 800px; /* Fixe une largeur maximale pour le h4, ajustez selon votre mise en page */
+}
+
+.days-ago {
+  margin-top: -10px;
+  color: #606271;
+}
+
+.snipimage img {
+  height: 130px;
+  width: 100px;
+}
+
+.sidebar-filter {
+  background-color: #f0f0f0; /* Couleur de fond */
+  padding: 20px; /* Espacement à l'intérieur de la sidebar */
+  border-radius: 10px; /* Bordures arrondies */
+  margin-bottom: 20px; /* Espacement sous la sidebar */
+}
+
+.sidebar-filter h3 {
+  margin-bottom: 15px; /* Espacement sous le titre */
+}
+
+.sidebar-filter button {
+  display: block; /* Affiche les boutons en bloc */
+  width: 100%; /* Largeur complète */
+  margin-bottom: 10px; /* Espacement entre les boutons */
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-text {
+  color: #1d1b1b;
+}
+
+.deadline {
+  color: rgb(114, 2, 2);
+  font-weight: 500;
+  margin-top: -10px;
+}
+
+.mat-icon {
+  margin-right: 8px;
+  font-size: 24px; /* Ajustez cette valeur selon la taille souhaitée */
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+
+.black-icon-label {
+ color: black;  
+
+
+}
+
+.favorite-icon {
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  transition: transform 0.3s ease; /* Ajoute une transition pour l'effet de survol */
+  /* color: black; Ou votre couleur par défaut */
+}
+
+
+.favorite-icon:hover {
+  transform: scale(1.2); /* Agrandit légèrement l'icône au survol */
+}
+
+.saved {
+  color: rgb(205, 6, 6);
+}
+
+
+.empty-jobs-message {
+  text-align: center;
+  font-size: 20px; /* Taille de la police pour une meilleure visibilité */
+  color: #626262; /* Couleur du texte */
+  background-color: #f0f0f0; /* Couleur de fond du message */
+  padding: 20px;
+  border-radius: 10px; /* Coins arrondis du message */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre subtile pour un peu de profondeur */
+}

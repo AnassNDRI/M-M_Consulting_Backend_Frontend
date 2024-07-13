@@ -1,0 +1,576 @@
+/* This pen */
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 16px;
+  color: #ffffff;
+  text-rendering: optimizeLegibility;
+  font-weight: 500;
+}
+
+.dark {
+  background: #413e49;
+}
+
+.light {
+  background: #f3f5f7;
+}
+
+.inactive {
+  background-color: #dc3545 !important;
+  background-image: linear-gradient(
+    -70deg,
+    #dc3545,
+    transparent 50%
+  ) !important;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+#pageHeaderTitle {
+  margin: 2rem 0;
+  font-size: 2.5rem;
+}
+
+/* Cards */
+.postcard {
+  flex-wrap: wrap;
+  display: flex;
+
+  box-shadow: 0 4px 21px -12px rgba(26, 25, 25, 0.66);
+  border-radius: 10px;
+  margin: 0 0 2rem 0;
+  overflow: hidden;
+  position: relative;
+  color: #ffffff;
+
+  &.dark {
+    background-color: #7d7889;
+  }
+  &.light {
+    background-color: #e1e5ea;
+  }
+
+  .t-dark {
+    color: #18151f;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  h1,
+  .h1 {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .small {
+    font-size: 80%;
+  }
+
+  .postcard__title {
+    font-size: 1.75rem;
+  }
+
+  .postcard__img_link {
+    display: contents;
+  }
+
+  .postcard__bar {
+    width: 50px;
+    height: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #424242;
+    transition: width 0.2s ease;
+  }
+
+  .postcard__text {
+    padding: 1.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .postcard__preview-txt {
+    /* ou le nom spécifique de la police si vous le connaissez */
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+    height: 100%;
+  }
+
+  .postcard__tagbox {
+    display: flex;
+    flex-flow: row wrap;
+    font-size: 14px;
+    margin: 20px 0 0 0;
+    padding: 0;
+    justify-content: center;
+
+    .tag__item {
+      display: inline-block;
+      background: rgba(83, 83, 83, 0.4);
+      border-radius: 3px;
+      padding: 2.5px 10px;
+      margin: 0 5px 5px 0;
+      cursor: default;
+      user-select: none;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background: rgba(83, 83, 83, 0.8);
+        color: white;
+        font-weight: 500px;
+      }
+    }
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(-70deg, #d2cfcf, transparent 50%);
+    opacity: 1;
+    border-radius: 10px;
+  }
+
+  &:hover .postcard__bar {
+    width: 100px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .postcard {
+    flex-wrap: inherit;
+
+    .postcard__title {
+      font-size: 2rem;
+    }
+
+    .postcard__tagbox {
+      justify-content: start;
+    }
+
+    .postcard__text {
+      padding: 3rem;
+      width: 100%;
+    }
+
+    &:hover .postcard__img {
+      transform: scale(1.1);
+    }
+
+    &:nth-child(2n + 1) {
+      flex-direction: row;
+    }
+
+    &:nth-child(2n + 0) {
+      flex-direction: row-reverse;
+    }
+
+    &:nth-child(2n + 1) .postcard__text::before {
+      left: -12px !important;
+      transform: rotate(4deg);
+    }
+
+    &:nth-child(2n + 0) .postcard__text::before {
+      right: -12px !important;
+      transform: rotate(-4deg);
+    }
+  }
+}
+@media screen and (min-width: 1024px) {
+  .postcard__text {
+    padding: 2rem 3.5rem;
+  }
+}
+
+.btn-div {
+  display: flex;
+  justify-content: center; /* Centrer les boutons horizontalement */
+  align-items: center; /* Centrer les boutons verticalement */
+  flex-wrap: wrap; /* Permet aux boutons de passer à la ligne sur les petits écrans */
+  gap: 10px; /* Espacement entre les boutons */
+
+  padding: 10px; /* Espacement interne pour éviter que les boutons touchent les bords */
+  margin: auto; /* Centrer la div sur la page */
+  margin-bottom: 100px; /* Augmenter l'espace entre la div et le footer */
+  max-width: 100%; /* Limiter la largeur maximale de la div */
+  border-radius: 30px; /* Bordures arrondies */
+  box-shadow: 0 4px 8px rgba(7, 2, 2, 0.9); /* Ombre sous la div */
+}
+
+.note-div {
+  display: flex;
+
+  padding: 10px; /* Espacement interne pour éviter que les boutons touchent les bords */
+  margin: auto; /* Centrer la div sur la page */
+  margin-bottom: 100px; /* Augmenter l'espace entre la div et le footer */
+  max-width: 100%; /* Limiter la largeur maximale de la div */
+  border-radius: 30px; /* Bordures arrondies */
+  box-shadow: 0 4px 8px rgba(7, 2, 2, 0.9); /* Ombre sous la div */
+}
+
+/* Ajouter une règle pour les petits écrans */
+@media (max-width: 600px) {
+  .btn-div {
+    max-width: 100%; /* Permet à la div de s'étendre sur toute la largeur sur les petits écrans */
+    flex-direction: column; /* Empiler les boutons verticalement */
+  }
+}
+
+/* Styles supplémentaires pour les boutons pour améliorer l'accessibilité */
+.btn {
+  border: none; /* Supprimer la bordure par défaut des boutons */
+  cursor: pointer; /* Indiquer visuellement que l'élément est cliquable */
+  font-weight: 500px;
+  color: rgb(
+    31,
+    31,
+    31
+  ); /* Texte blanc pour une meilleure lisibilité sur fond foncé */
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s; /* Transition douce pour le survol */
+}
+
+/* Styles spécifiques pour chaque type de bouton */
+.btn-secondary {
+  background-color: #7a7f83 !important;
+}
+.btn-secondary:hover {
+  background-color: #656d71 !important; /* Assombrir le fond au survol */
+  color: #fff; /* Changer la couleur du texte pour une meilleure visibilité */
+}
+
+.btn-success {
+  background-color: #8d9a90;
+}
+.btn-success:hover {
+  background-color: #7a856f; /* Assombrir le fond au survol */
+  color: #fff; /* Changer la couleur du texte pour une meilleure visibilité */
+}
+
+.btn-danger {
+  background-color: #a85f68;
+}
+.btn-danger:hover {
+  background-color: #924a50; /* Assombrir le fond au survol */
+  color: #fff; /* Changer la couleur du texte pour une meilleure visibilité */
+}
+
+.btn-warning {
+  background-color: #b6a678;
+}
+.btn-warning:hover {
+  background-color: #9f8d5e; /* Assombrir le fond au survol */
+  color: #fff; /* Changer la couleur du texte pour une meilleure visibilité */
+}
+
+.btn-to-update {
+  background-color: rgb(247, 169, 24) !important;
+}
+.btn-to-update:hover {
+  background-color: rgb(
+    247,
+    169,
+    24
+  ) !important; /* Assombrir le fond au survol */
+  color: #fff; /* Changer la couleur du texte pour une meilleure visibilité */
+}
+
+.list {
+  font-weight: bold;
+  font-size: large;
+}
+
+/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Note Div @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+
+.mat-card {
+  margin: 1%;
+  text-align: left;
+  background-color: #f8faf8; /* Vert clair pour la carte */
+}
+
+.mat-mdc-form-field,
+.mat-60,
+.div-30,
+.mat-form-field {
+  width: 100%; /* Sur petit écran, les champs prennent toute la largeur */
+  margin-bottom: 16px; /* Espacement entre les champs de formulaire */
+}
+
+button {
+  margin: 2px;
+}
+
+.action {
+  margin-bottom: 150px;
+  padding-top: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action button {
+  margin: 0 10px;
+  padding: 5px 20px;
+}
+
+.error-message {
+  color: #fb0808; /* Couleur rouge pour les messages d'erreur */
+  font-weight: bold;
+  margin-top: 5px;
+  width: 100%;
+}
+
+.is-invalid {
+  border-color: #dc3545; /* Bordure rouge pour les champs non valides */
+}
+
+.description {
+  margin: auto;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.errors-message-display,
+.description-display,
+.item-display,
+.add-display {
+  margin-top: -25px;
+}
+
+/* Réglages de style pour les grands écrans */
+@media (min-width: 768px) {
+  .mat-mdc-form-field,
+  .mat-60,
+  .div-30 {
+    width: calc(33.3333% - 8px); /* Trois champs par ligne */
+    margin: 4px; /* Espacement uniforme autour des champs */
+  }
+
+  .description {
+    width: calc(100% - 8px); /* La description prend toute la largeur */
+  }
+}
+
+/* Style spécifique pour l'alignement des champs de formulaire */
+.example-container mat-form-field + mat-form-field {
+  margin-left: 8px;
+}
+
+.example-right-align {
+  text-align: right;
+}
+
+/* Suppression des boutons de nombre */
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+  display: none;
+}
+
+/* Description et autres messages d'erreur affichés correctement */
+.description-display,
+.item-display,
+.add-display {
+  margin-top: -10px;
+}
+
+.btn-save {
+  background-color: #7a7f83 !important;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background-color: #656d71 !important;
+}
+
+.add-button {
+  background-color: #dedbdb !important;
+  color: #000;
+}
+
+.grid-item {
+  padding: 0.5rem; /* Espace intérieur pour chaque élément pour éviter que le contenu touche les bords */
+}
+
+.mat-form-field {
+  width: 100%; /* Les champs prennent toute la largeur disponible */
+  /* Réduisez la taille de la police et les marges si nécessaire */
+}
+
+/* Ajustement spécifique pour les petits écrans */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* Une seule colonne sur les petits écrans */
+    gap: 0.5rem; /* Maintenez l'espacement réduit entre les éléments */
+  }
+}
+
+/* Vous pouvez également ajuster les marges et le padding des boutons si nécessaire */
+button.mat-icon-button {
+  padding: 4px; /* Réduire le padding autour des icônes de bouton */
+  margin: 0; /* Supprimer les marges pour rendre les boutons plus compacts */
+}
+
+button.mat-raised-button {
+  padding: 4px 10px; /* Réduire le padding pour les boutons */
+}
+
+.display-title {
+  margin-top: 10px;
+}
+
+.profile-title {
+  text-align: center;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 0 solid transparent;
+  border-radius: 0.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%),
+    0 2px 6px 0 rgb(206 206 238 / 54%);
+}
+.me-2 {
+  margin-right: 0.5rem !important;
+}
+
+/* Styles de base pour .profile */
+.profile {
+  background-color: #7a856f; /* Couleur de fond initiale, différente pour voir le changement au survol */
+  display: inline-block; /* Limite la largeur du conteneur au contenu */
+  border-radius: 5px;
+  filter: brightness(110%); /* Augmente la luminosité de 10% */
+  cursor: pointer;
+}
+
+.status-account {
+  border-radius: 5px;
+  filter: brightness(130%);
+  padding: 6px;
+  background: linear-gradient(
+    270deg,
+    #fb0808,
+    rgb(237, 117, 117),
+    #705151,
+    #ed6d11,
+    #fb0808
+  );
+  background-size: 600% 600%;
+
+  /* Animation plus rapide */
+  animation: GradientBackground 1.9s ease infinite;
+
+  /* Transition plus rapide */
+  transition: all 0.1s ease; /* Ajusté pour une réponse encore plus rapide */
+}
+
+/* Définition de l'animation pour changer le gradient de fond */
+@keyframes GradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.btn-profile {
+  padding: 5px;
+}
+/* Styles pour .profile au survol */
+.profile:hover {
+  background-color: #8d9a90; /* Couleur de fond au survol */
+  color: #fff; /* Couleur de texte au survol */
+}
+
+/* Lorsque le switch est activé (checked), change le fond en vert */
+.form-check-input.enable-notif:checked {
+  background-color: rgb(9, 172, 9); /* Vert lorsqu'il est activé */
+}
+
+.cv-consult {
+  font-weight: 500;
+  background-color: #8d9a90; /* Couleur de fond au survol */
+}
+
+.cv-consult:hover {
+  background-color: #7a856f; /* Couleur de fond au survol */
+  color: #fff;
+}
+
+.function-role {
+  font-weight: bold;
+}
+
+.btn {
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: rgb(31, 31, 31);
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+.btn-small {
+  font-size: 14px;
+}
+
+.errors-message-display {
+  margin-top: -30px;
+}
+
+/* Styles pour l'icône avec effets de survol et d'animation */
+.visibility-icon {
+  font-size: 1.6em;
+  color: #000 !important;
+  cursor: pointer; /* Change le curseur pour indiquer un élément cliquable */
+  transition: transform 0.3s ease, color 1s ease; /* Ajoute une transition pour l'effet de survol et la couleur */
+}
+
+.visibility-icon:hover {
+  transform: scale(1.5); /* Agrandit légèrement l'icône au survol */
+}
+
+.icone-eye {
+  animation: greenFade 1s infinite alternate; /* Utilise l'animation 'greenFade' pour la couleur */
+}
+
+@keyframes greenFade {
+  from {
+    color: #000; /* Couleur de départ */
+  }
+  to {
+    background-color: rgb(156, 214, 156); /* Couleur de fin (vert) */
+  }
+}
+
+/* Styles pour le texte en gras et rouge */
+.text-bold {
+  font-weight: bold;
+}
+
+.text-red {
+  color: rgb(189, 35, 35);
+}

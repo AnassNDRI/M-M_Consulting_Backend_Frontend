@@ -1,0 +1,106 @@
+<div class="container table-responsive py-5">
+  <h1 class="text-center pt-4">
+    Tous les Candidats ayant postulé à vos offres
+  </h1>
+  <br />
+  <table class="table table-bordered table-hover table-style">
+    <thead class="thead-dark">
+      <tr class="table-title">
+        <th class="table-title" scope="col">#</th>
+        <th class="table-title" scope="col">Name</th>
+        <th class="table-title" scope="col">Firstname</th>
+        <th class="table-title" scope="col">Title</th>
+        <th class="table-title" scope="col">Phone</th>
+        <th class="table-title" scope="col">Offre</th>
+        <th class="table-title" scope="col">Publiée</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let jobApply of jobApplications; let i = index">
+        <th scope="row">{{ i + 1 }}</th>
+        <td>{{ jobApply.user.name }}</td>
+        <td>{{ jobApply.user.firstname }}</td>
+        <td>{{ jobApply.user.jobTitle?.title }}</td>
+        <!-- Supposant que jobTitle est un objet avec une propriété 'title' -->
+        <td>{{ jobApply.user.phoneNumber }}</td>
+        <!-- Supposons que 'offre' et 'publiée' doivent être remplacées par des propriétés appropriées de l'objet user -->
+        <td>{{ jobApply.jobListing.jobTitle.title }}</td>
+        <!-- Remplacer 'offre' par la propriété correcte -->
+        <td>
+          {{ jobApply.jobListing.publicationDate | date : "dd-MM-yyyy" }}
+        </td>
+        <!-- Remplacer 'publiée' par la propriété correcte -->
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="display: grid; justify-items: end">
+    <select class="form-select" style="width: auto">
+      <option [ngValue]="2">Page 2</option>
+      <option [ngValue]="4">Page 3</option>
+      <option [ngValue]="6">Page 4</option>
+    </select>
+  </div>
+  <h1 class="text-center pt-4">Candidats regoupés par offre d'emploi</h1>
+  <br />
+  <div *ngFor="let jobApply of jobApplications">
+    <button
+      class="btn apply-btn text-jobAppli"
+      type="button"
+      (click)="askJobListingDetail(jobApply.jobListing.jobListingId)"
+    >
+      ENTREPRISE: {{ jobApply.jobListing.user.nameCompany }} OFFRE:
+      {{ jobApply.jobListing.jobTitle.title }}, PUBLIEE:
+      {{ jobApply.jobListing.publicationDate | date : "dd-MM-yyyy" }}
+    </button>
+    <table class="table table-bordered table-hover table-style">
+      <thead class="thead-dark">
+        <tr class="table-title">
+          <th class="table-title" scope="col">N°</th>
+          <th class="table-title" scope="col">Name</th>
+          <th class="table-title" scope="col">Firstname</th>
+          <th class="table-title" scope="col">Date Naissance</th>
+          <th class="table-title" scope="col">Sexe</th>
+          <th class="table-title" scope="col">Title</th>
+          <th class="table-title" scope="col">Phone</th>
+          <th class="table-title" scope="col">Statut</th>
+          <th class="table-title" scope="col">Profile</th>
+          <th class="table-title" scope="col">Accepter</th>
+          <!-- Nouvelle colonne pour Accepter -->
+          <th class="table-title" scope="col">Refuser</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">1</th>
+          <td>{{ jobApply.user.name }}</td>
+          <td>{{ jobApply.user.firstname }}</td>
+          <td>{{ jobApply.user.dateBirth | date : "dd-MM-yyyy" }}</td>
+          <td>{{ jobApply.user.sex }}</td>
+          <td>{{ jobApply.user.jobTitle?.title }}</td>
+          <td>{{ jobApply.user.phoneNumber }}</td>
+          <td
+            [ngClass]="{
+              'status-no-check': jobApply.status === null,
+              'status-en-cours': jobApply.status && !jobApply.jobInterviewOK,
+              'status-accepted': jobApply.jobInterviewOK
+            }"
+          >
+            {{
+              jobApply.jobInterviewOK
+                ? "Retenue"
+                : jobApply.status
+                ? "En cours"
+                : "Pas traité"
+            }}
+          </td>
+          <td (click)="UserProfile(jobApply.user.userId)">
+            <i class="fa-solid btn fa-eye"></i>
+          </td>
+          <td (click)="UserProfile(jobApply.user.userId)">Accepter</td>
+          <td (click)="UserProfile(jobApply.user.userId)">Refuser</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

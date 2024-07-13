@@ -1,0 +1,140 @@
+<mat-toolbar *ngIf="isHandset$ | async" class="mat-elevation-z8">
+  <button class="filter-text" mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">{{"menuManagement" | translate}}</button>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav class="mat-elevation-z8">
+    <img *ngIf="isExternal" class="avatar mat-elevation-z8" src="../../../../assets/pictures/user/user.png"/>
+    <br />
+    <div *ngIf="isExternal" class="name profile-name">
+      <h3 class="style-profile">{{ user?.firstname }} {{ user?.name }}</h3>
+      <div class="style-function">
+        {{ user?.role?.title }} <br />
+        <span>
+          <button class="viewer-profile" mat-button (click)="UserProfile(user?.userId!)">
+            <mat-icon>person</mat-icon>
+            <span class="form-label">{{ 'viewProfile' | translate }}</span>
+          </button>
+        </span>
+      </div>
+    </div>
+    <br />
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="fetchHistoriques()">
+        <mat-icon>home</mat-icon>
+        <h3 class="form-label-title">{{'historyManagement' | translate }}</h3>
+      </button>
+    </div>
+    <div class="justify-content-center">
+      <mat-divider></mat-divider>
+      <div class="toolbar">
+        <h3 class="form-label-title">{{'searchByPeriod' | translate }}</h3>
+      </div>
+      <br />
+      <form [formGroup]="registrationForm" (ngSubmit)="searchByDateRange()">
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="startDate" class="form-label me-2">{{'from' | translate }} : </label>
+          <input type="date" class="form-control" formControlName="startDate" id="startDate" placeholder="{{'chooseDate' | translate }}" />
+        </div>
+        <br />
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="endDate" class="form-label me-2">{{'to' | translate }} :</label>
+          <input type="date" class="form-control" formControlName="endDate" id="endDate" placeholder="{{'chooseDate' | translate }}"/>
+        </div>
+        <p></p>
+        <div *ngIf="registrationForm && registrationForm.errors && registrationForm.errors['dateRange']" class="alert alert-danger">
+          {{ registrationForm.errors["dateRange"] }}
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary" [disabled]="registrationForm.invalid">{{'search' | translate }}</button>
+        <mat-divider></mat-divider>
+        <br> <br> <br>
+        <button type="button" class="btn btn-secondary" (click)="goBack()">
+          <i class="fa-solid fa-circle-xmark"></i>
+          {{'quit' | translate }}
+        </button>
+      </form>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="container mt-4">
+      <div *ngIf="isExternal" class="jumbotron">
+        <div class="row w-100 justify-content-center align-items-center">
+          <div class="col-md-3 d-flex justify-content-center align-items-center">
+            <div class="card border-info mx-sm-1 p-3 btn div-badge text-shadow" [ngClass]="{ 'div-new-data': searchHistoriqueControl }">
+              <div class="card border-info shadow text-info p-3 my-card div-badge" [ngClass]="{ 'div-new-data': searchHistoriqueControl }">
+                <span class="fa-solid fa-briefcase new-users-job" [ngClass]="{ 'div-new-data': searchHistoriqueControl }"></span>
+              </div>
+              <div class="text-info text-center mt-2"></div>
+              <div class="text-info text-center mt-3">
+                <h4 class="new-users-job" [ngClass]="{ 'div-new-data': searchHistoriqueControl }">
+                 {{'newAccountingFiles' | translate }} <br />
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container contenair-bloc">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="text-center pt-4">{{'processedOffersHistory' | translate }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mx-auto">
+            <div class="input-group">
+              <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchHistoriqueControl" placeholder="{{'searchHistoriqueControl' | translate }}" id="example-search-input"/>
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div *ngIf="!isHistoriqueEmpty && isExternal" class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button type="button" class="btn add-btn" data-bs-toggle="button" (click)="generateExcel()">
+            <i class="fa-solid fa-file-excel"></i> {{'downloadExcel' | translate }}
+          </button>
+        </div>
+        <br>
+        <div class="container div-style">
+          <div class="container" *ngIf="!isHistoriqueEmpty; else noHistorique">
+            <div class="card">
+              <div *ngFor="let historique of historiques" class="card-content grid-table" [class.inactive]="!historique.savedInAccounting">
+                <div class="display-row-users"><strong>N° :</strong> {{ historique.histNumber }}</div>
+                <div class="display-row-users"><strong>{{'published' | translate }} :</strong> {{ historique.publicationDate | date : "dd.MM.yyyy" }}</div>
+                <div class="display-row-users"><strong>{{'closed' | translate }} :</strong> {{ historique.jobCloseDate | date : "dd.MM.yyyy" }}</div>
+                <div class="display-row-users"><strong>{{'company' | translate }} :</strong> {{ historique.nameCompany }}</div>
+                <div class="display-row-users"><strong>{{'referent' | translate }} :</strong> {{ historique.firstnameRecruiter }} {{ historique.nameRecruiter }}</div>
+                <div class="display-row-users"><strong>{{'offer' | translate }} :</strong> {{ historique.jobtitle }}</div>
+                <div class="display-row-users"><strong>{{'contract' | translate }} :</strong> {{ historique.contractTypetitle }}</div>
+                <div class="display-row-users"><strong>{{'location' | translate }} :</strong> {{ historique.JobLocation }}</div>
+                <div class="display-row-users"><strong>{{'recruited' | translate }} :</strong> {{ historique.numberOfCandidates }}</div>
+                <div class="display-row-users"><strong>{{'consultant' | translate }} :</strong> {{ historique.checkUserConsultant }}</div>
+                <div class="display-row-users"><strong>{{'tvaNumber' | translate }} :</strong> {{ historique.tvaNumber }}</div>
+                <div class="display-row-users"><strong>{{'address' | translate }} :</strong> {{ historique.addressCompany }}</div>
+                <div class="display-row-users"><strong>{{'email' | translate }} :</strong> {{ historique.email }}</div>
+                <div class="display-row-users"><strong>{{'phone' | translate }} :</strong> {{ historique.phoneNumber }}</div>
+                
+              </div>
+            </div>
+          </div>
+          <ng-template #noHistorique>
+            <div class="center-container">
+              <div class="d-flex align-items-center justify-content-center content">
+                <div class="empty-jobs-message">
+                  <h1>{{"noResults" | translate}}</h1>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

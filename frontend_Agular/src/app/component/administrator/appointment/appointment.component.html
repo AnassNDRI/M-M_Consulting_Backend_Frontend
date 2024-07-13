@@ -1,0 +1,165 @@
+<br />
+<br />
+
+<div class="container">
+  <div class="card-appli" [ngSwitch]="view">
+    <div class="row text-center">
+      <div class="col-md-4">
+        <div class="btn-group">
+          <div class="btn btn-color" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" [excludeDays]="[0, 6]" (viewDateChange)="closeOpenMonthViewDay()">
+            Précedent
+          </div>
+          <div class="btn btn-outline-secondary btn-color" mwlCalendarToday [(viewDate)]="viewDate">
+            Aujourd'hui
+          </div>
+          <div class="btn btn-color" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" [excludeDays]="[0, 6]" (viewDateChange)="closeOpenMonthViewDay()">
+            Prochain
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h3 class="style-date">{{ viewDate | calendarDate : view + "ViewTitle" : "fr" }}</h3>
+      </div>
+      <div class="col-md-4">
+        <div class="btn-group">
+          <div class="btn btn-color" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+            Mois
+          </div>
+          <div class="btn btn-color" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+            Semaine
+          </div>
+          <div class="btn btn-color" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+            Jour
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events" [refresh]="refresh" locale="fr" [excludeDays]="[0, 6]" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)">
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events" [refresh]="refresh" locale="fr" [excludeDays]="[0, 6]" [dayStartHour]="8" [dayEndHour]="18" (eventClicked)="handleEvent('Clicked', $event.event)">
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [dayStartHour]="8" [dayEndHour]="18" locale="fr" [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)">
+    </mwl-calendar-day-view>
+  </div>
+</div>
+
+<div class="container" *ngIf="isCreate || isUpdate" #formSection>
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <form [formGroup]="registrationForm" (ngSubmit)="handleCandidateRegistration()">
+        <div class="card">
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-sm-2">
+                <h3 class="mb-0 text-secondary function-role">
+                  <strong>CANDIDAT :</strong>
+                </h3>
+              </div>
+              <div class="col-sm-4 text-secondary">
+                <div *ngIf="isCreate" class="form-control" style="height: auto; display: inline-block">
+                  {{ theJobApplication?.user?.name }} {{ theJobApplication?.user?.firstname }}
+                </div>
+                <div *ngIf="isUpdate" class="form-control" style="height: auto; display: inline-block">
+                  {{ myAppointment?.jobApplication?.user?.firstname }} {{ myAppointment?.jobApplication?.user?.name }}
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-sm-2">
+                <h3 class="mb-0 text-secondary function-role">
+                  <strong>OFFRE :</strong>
+                </h3>
+              </div>
+              <div class="col-sm-6 text-secondary">
+                <div *ngIf="isCreate" class="form-control" style="height: auto; display: inline-block">
+                  {{ theJobApplication?.jobListing?.jobTitle?.title }}
+                </div>
+                <div *ngIf="isUpdate" class="form-control" style="height: auto; display: inline-block">
+                  {{ myAppointment?.jobApplication?.jobListing?.jobTitle?.title }}
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-sm-2">
+                <h3 class="mb-0 text-secondary function-role">
+                  <strong>ENTREPRISE :</strong>
+                </h3>
+              </div>
+              <div class="col-sm-3 text-secondary">
+                <div *ngIf="isCreate" class="form-control" style="height: auto; display: inline-block">
+                  {{ theJobApplication?.jobListing?.user?.nameCompany }}
+                </div>
+                <div *ngIf="isUpdate" class="form-control" style="height: auto; display: inline-block">
+                  {{ myAppointment?.jobApplication?.jobListing?.user?.nameCompany }}
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-sm-2">
+                <h3 class="mb-0 text-secondary function-role">
+                  <strong>DATE :</strong>
+                </h3>
+              </div>
+              <div class="col-sm-3 text-secondary">
+                <input type="date" class="form-control" formControlName="appointmentDate" [class.is-invalid]="registrationForm.get('appointmentDate')?.invalid && (registrationForm.get('appointmentDate')?.dirty || registrationForm.get('appointmentDate')?.touched)"/>
+                <div *ngIf="registrationForm.get('appointmentDate')?.invalid && (registrationForm.get('appointmentDate')?.dirty || registrationForm.get('appointmentDate')?.touched)" class="invalid-feedback">
+                  {{ "this-field-is-required" | translate }}
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <h3 class="mb-0 text-secondary function-role">
+                  <strong>Créneau :</strong>
+                </h3>
+              </div>
+              <div class="col-sm-3 text-secondary">
+                <select class="form-control" id="timeSlotId" formControlName="timeSlotId" [class.is-invalid]="registrationForm.get('timeSlotId')?.invalid && (registrationForm.get('timeSlotId')?.dirty || registrationForm.get('timeSlotId')?.touched)">
+                  <option value="" disabled>{{ "select-job-title" | translate }}</option>
+                  <option *ngFor="let slot of timeslots" [value]="slot.timeSlotId">{{ slot.title | translate }}</option>
+                </select>
+                <div *ngIf="registrationForm.get('timeSlotId')?.invalid && (registrationForm.get('timeSlotId')?.dirty || registrationForm.get('timeSlotId')?.touched)" class="invalid-feedback">
+                  {{ "this-field-is-required" | translate }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <!-- Start control buttons -->
+        <div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="card">
+                <div class="d-grid gap-2 col-12 mx-auto">
+                  <div class="me-md-2"></div>
+                  <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                    <!-- Start Edit Password Button -->
+                    <button *ngIf="isCreate" class="btn save-button me-md-2" type="submit">
+                      <i class="fa-solid fa-floppy-disk"></i>
+                      Enregistrer
+                    </button>
+                    <!-- End Edit Password Button -->
+                    <!-- Start Modification -->
+                    <button *ngIf="isUpdate" class="btn btn-to-update me-md-2" type="submit">
+                      <i class="fa-solid fa-file-pen"></i>
+                      Modifier
+                    </button>
+                    <!-- End Modification -->
+                    <!-- Start Back Button -->
+                    <button class="btn btn-back me-md-2 btn-small" type="button" (click)="goBack()">
+                      <i class="fa-solid fa-rectangle-xmark"></i>
+                      Quitter
+                    </button>
+                    <!-- End Back Button -->
+                  </div>
+                  <div class="me-md-2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<br />

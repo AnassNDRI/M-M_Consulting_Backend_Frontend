@@ -1,0 +1,75 @@
+/* Applying a black background to the whole page or a specific container */
+
+.btn-back {
+  background-color: #8d9a90;
+  color: #000;
+  font-size: 20px;
+}
+
+.btn-back:active {
+  transform: scale(0.95);
+}
+
+.btn-back:hover {
+  background-color: #7a856f;
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  background-color: #333333;  
+}
+
+@media (max-width: 500px) {
+  .btn-back {
+    font-size: 14px;
+  }
+}
+
+.pdfViewer.singlePageView .page {
+  margin: 0 auto; /* Centrer la page horizontalement */
+  width: 100%; /* La page doit prendre toute la largeur */
+}
+
+@media (max-width: 768px) {
+  .ngx-extended-pdf-viewer {
+    height: auto; /* Hauteur auto pour éviter les débordements */
+    max-height: 100vh; /* Limiter la hauteur à celle de la fenêtre */
+  }
+}
+
+
+.btn-back {
+  color: #000;
+  font-size: 20px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: linear-gradient(270deg, #9e5b5b, #717573, #705151, #b1cfc0, #ba7373);
+
+  background-size: 600% 600%;
+  animation: GradientBackground 8s ease infinite;
+
+  transition: all 0.3s ease;
+}
+
+@keyframes GradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

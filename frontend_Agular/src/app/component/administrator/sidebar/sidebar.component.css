@@ -1,0 +1,30 @@
+/* Sub-Menu CSS */
+.sub-menu {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: 0;
+  min-width: 200px;
+  background: var(--light);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 0;
+  z-index: 1001; /* Ensure sub-menu is above other content */
+}
+
+.side-menu li:hover .sub-menu {
+  display: block; /* Show sub-menu on hover */
+}
+
+.sub-menu li {
+  padding: 10px;
+}
+
+.sub-menu li a {
+  color: var(--dark); /* Adjust as needed */
+  padding: 5px 15px;
+  display: block;
+}
+
+.sub-menu li a:hover {
+  background-color: var(--grey); /* Highlight on hover */
+}

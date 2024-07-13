@@ -1,0 +1,206 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Historiques {
+  historiqueId          Int      @id @default(autoincrement())
+  histNumber            String   @db.VarChar(255)
+  publicationDate       DateTime?
+  jobCloseDate          DateTime // Nouvelle propriété pour la date de fermeture du poste
+  nameCompany           String?  @db.VarChar(255)
+  nameRecruiter         String?  @db.VarChar(255)
+  firstnameRecruiter    String?  @db.VarChar(255) 
+  jobtitle              String   @db.VarChar(255)
+  contractTypetitle     String   @db.VarChar(255)
+  JobLocation           String   @db.VarChar(255)
+  numberOfCandidates    Int
+  savedInAccounting     Boolean  @default(false) // pour la vérification de son emregistrement par le service compta
+  checkUserConsultant   String?  @db.VarChar(100)
+  tvaNumber             String?  @db.VarChar(50) 
+  addressCompany        String?  @db.VarChar(255) 
+  email                 String?  @db.VarChar(100) 
+  phoneNumber           String?  @db.VarChar(20) 
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+
+
+model Roles {
+  roleId Int     @id @default(autoincrement())
+  title  String  @unique @db.VarChar(50)
+  users  Users[] @relation("users_roles")
+}
+
+model Experiences {
+  experienceId Int     @id @default(autoincrement())
+  title  String?  @unique @db.VarChar(50)
+  users  Users[] @relation("users_experiences")
+  jobListings JobListings[] @relation("jobListings_experience")
+}
+
+model ContractTypes {
+  contractTypeId Int           @id @default(autoincrement())
+  title          String        @unique @db.VarChar(255)
+  jobListings    JobListings[] @relation("jobListings_contractTypes")
+}
+
+model JobLocation {
+  jobLocationId Int           @id @default(autoincrement())
+  location      String        @unique @db.VarChar(255)
+  jobListings   JobListings[] @relation("jobListings_jobLocation")
+}
+
+model JobTitle {
+  jobTitleId  Int           @id @default(autoincrement())
+  title       String        @unique @db.VarChar(255)
+  users       Users[]       @relation("users_jobTitle")
+  jobListings JobListings[] @relation("jobListings_jobTitle")
+}
+
+model TimeSlot {
+  timeSlotId    Int           @id @default(autoincrement())
+  title         String        @unique @db.VarChar(255)
+  appHoursStart String // Format HH:MM, par exemple "09:00"
+  appHoursEnd   String // Format HH:MM, par exemple "10:00"
+  appointments  Appointment[] @relation("appointment_timeSlot")
+}
+
+model SaveJobs {
+  saveJobId    Int         @id @default(autoincrement())
+  userId       Int // Clé étrangère référençant Users
+  jobListingId Int // Clé étrangère référençant JobListings
+  user         Users       @relation("candidat_saveJobs", fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  jobListing   JobListings @relation("joblisting_saveJobs", fields: [jobListingId], references: [jobListingId], onUpdate: Cascade, onDelete: Cascade)
+}
+
+
+model Users {
+  userId                       Int               @id @default(autoincrement())
+  name                         String            @db.VarChar(70)
+  firstname                    String            @db.VarChar(70)
+  dateBirth                    DateTime          @db.Date
+  sex                          String?           @db.Char(1)
+  phoneNumber                  String?           @db.VarChar(20)
+  email                        String            @unique @db.VarChar(100)
+  password                     String            @db.VarChar(250)
+  jobTitleId                   Int?
+  cv                           String?           @db.VarChar(255) // sera un fichier .pdf venant upload depuis le frontend
+  address                      String?           @db.VarChar(255)
+  nameCompany                  String?           @db.VarChar(255)             
+  descriptionCompany           String?           @db.VarChar(1500)
+   interviewNote               String?           @db.VarChar(2500)
+  addressCompany               String?           @db.VarChar(255)
+  actif                        Boolean?
+  addNote                      Boolean?          // pour controler la visibilité des note s'il ya entretien
+  refjobNoteAdded              Int?
+  refreshToken                 String?           @db.VarChar(500) // Refresh token pour l'utilisateur
+  tokenVersion                 Int               @default(1)
+  notification                 Boolean?          @default(true)
+  checkUserConsultant          String?           @db.VarChar(100) // le nom du consultant traitant l'inscription
+  confirmationMailToken        String?           @db.VarChar(500)
+  tvaNumber                    String?           @db.VarChar(50)
+  confirmationMailTokenExpires DateTime?
+  roleId                       Int
+  experienceId                 Int?
+  verifiedMail                 Boolean?          @default(false) // Ajout de la propriété pour la vérification de l'e-mail
+  noteInscription              String?           @db.VarChar(500) // Note explicative pour motif de compte invalidé
+  createdAt                    DateTime          @default(now())
+  updatedAt                    DateTime?         @updatedAt
+  jobApplications              JobApplications[] @relation("user_jobapplications")
+  jobListings                  JobListings[]     @relation("recruiter_joblistings")
+  savedJobs                    SaveJobs[]        @relation("candidat_saveJobs") // Relation un-à-plusieurs avec SaveJobs
+  consultantAppointments       Appointment[]     @relation("consultant_Appointments") // le consultant peut avoir plusieurs RDV
+  role                         Roles             @relation("users_roles", fields: [roleId], references: [roleId], onUpdate: Cascade, onDelete: Cascade)
+  experience                   Experiences?      @relation("users_experiences", fields: [experienceId], references: [experienceId], onUpdate: Cascade, onDelete: Cascade)
+  jobTitle                     JobTitle?         @relation("users_jobTitle", fields: [jobTitleId], references: [jobTitleId], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model JobListings {
+  jobListingId                Int               @id @default(autoincrement())
+  jobLocationId               Int
+  jobTitleId                  Int
+  experienceId                Int
+  description                 String?           @db.VarChar(2000)
+  responsibilities            Json?
+  requiredQualifications      Json?
+  benefits                    Json?
+  workingHours                Int // Exemple: "40"h/semaines
+  numberOfCandidates          Int // Exemple: Nombre de Candidats recherché
+  workingHoursStart           String            @db.VarChar(5) // Heure de debut, Exemple: "09:00"
+  workingHoursEnd             String            @db.VarChar(5) // Heure de fin, Exemple: "17:00"
+  startDate                   DateTime?         @db.Date // Uniquement la date sans heure
+  salary                       Float?
+  noteJoblisting              String?           @db.VarChar(1000) // Note explicative pour motif de publication d'emploi invalidée
+  deadline                    DateTime          @db.Date // Uniquement la date sans heure
+  deadlineExpires             DateTime // date de suppression de l'ofrre dans la BD
+  validate                    Boolean? // Valider ou non la publication
+  invalidatyToDelete          Boolean? // 
+  askUpdatingToRecruiter      Boolean? //  // Pour  demander modification au recruiter
+  jobClose                    Boolean? //       le rendre invisible au candidats avant sa suppression
+  checkJobListingByConsultant String?           @db.VarChar(70) // le nom du consultant traitant la publication d'emploi
+  deadlineToDeleteNotConfirm  DateTime? //  date de suppression de l'ofrre si l'utilisateur ne le modifie pas a temps
+  userId                      Int
+  dayAgo                      Int?             // Exemple: "10" jours
+  contractTypeId              Int // Clé étrangère pour ContractType
+  publicationDate             DateTime?
+  createdAt                   DateTime          @default(now())
+  updatedAt                   DateTime?         @updatedAt
+  jobApplications             JobApplications[] @relation("canditat_jobapplications")
+  savedJob                    SaveJobs[]        @relation("joblisting_saveJobs") // Relation inverse pour accéder aux SaveJobs depuis JobListings
+  user                        Users             @relation("recruiter_joblistings", fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+  contractType                ContractTypes     @relation("jobListings_contractTypes", fields: [contractTypeId], references: [contractTypeId], onUpdate: Cascade, onDelete: Cascade)
+  jobLocation                 JobLocation       @relation("jobListings_jobLocation", fields: [jobLocationId], references: [jobLocationId], onUpdate: Cascade, onDelete: Cascade)
+  jobTitle                    JobTitle          @relation("jobListings_jobTitle", fields: [jobTitleId], references: [jobTitleId], onUpdate: Cascade, onDelete: Cascade)
+  experience                  Experiences       @relation("jobListings_experience", fields: [experienceId], references: [experienceId], onUpdate: Cascade, onDelete: Cascade)
+
+}
+
+model JobApplications {
+  jobApplicationId          Int          @id @default(autoincrement())
+  jobListingId              Int
+  appointmentId             Int?         @unique // s'il y'a RDV pour une postulation ce RDV doit etre unique
+  applicationHours          DateTime     @default(now())
+  status                    Boolean? // accepte ou non pour entretien
+  jobInterviewOK            Boolean? // si entretien OK ou No
+  hasReceivedRejectionEmail Boolean  @default(false) // verifier s'il a deja recu le mail de refus
+  interviewNote             String?      @db.VarChar(2000)
+  userId                    Int // user avec le role candidat
+  checkJobAppliByConsultant String?      @db.VarChar(70) // le nom du consultant traitant la candidature
+  deadlineToDelete          DateTime?    @db.Date // suppression de la Candidature apres 1 mois 
+  createdAt                 DateTime     @default(now())
+  actif                     Boolean?     // Pour controler la visibilité de candidature 
+  updatedAt                 DateTime     @updatedAt
+  appointment               Appointment? @relation
+  jobListing                JobListings  @relation("canditat_jobapplications", fields: [jobListingId], references: [jobListingId], onUpdate: Cascade, onDelete: Cascade)
+  user                      Users        @relation("user_jobapplications", fields: [userId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+}
+
+model Appointment {
+  appointmentId    Int             @id @default(autoincrement())
+  note             String          @db.VarChar(500)
+  consultantId     Int
+  jobApplicationId Int             @unique // si on doit creer un RDV pour postulation ce RDV doit etre unique !!!
+  timeSlotId       Int
+  appointmentDate  DateTime         
+  appHoursStart    DateTime?      // Reprise... pour contourner le problème 
+  appHoursEnd      DateTime?      // et facilité la manipulation des Heure
+  appointmentMade  Boolean?       // RDV effectué
+
+  fullyBooked  Boolean?       //  « complètement réservé »
+  blockedTimeSlot  Boolean?       // Créneau occupé
+
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  jobApplication   JobApplications @relation(fields: [jobApplicationId], references: [jobApplicationId])
+  timeSlots        TimeSlot        @relation("appointment_timeSlot", fields: [timeSlotId], references: [timeSlotId], onUpdate: Cascade, onDelete: Cascade)
+  consultant       Users           @relation("consultant_Appointments", fields: [consultantId], references: [userId], onUpdate: Cascade, onDelete: Cascade)
+}

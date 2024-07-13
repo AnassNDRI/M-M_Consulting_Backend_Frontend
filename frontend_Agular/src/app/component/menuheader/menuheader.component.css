@@ -1,0 +1,285 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+
+
+.parent {
+  font-size: 62.5%;
+}
+
+.navbar input[type="checkbox"],
+.navbar .hamburger-lines {
+  display: none;
+}
+
+.container {
+  max-width: 1200px;
+  width: 90%;
+  margin: auto;
+}
+
+.navbar {
+  box-shadow: 0px 5px 10px 0px #aaa;
+  width: 100%;
+  background: #dedbdb;
+  color: #000;
+  opacity: 0.85;
+  z-index: 100;
+  padding: 5px 30px;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  height: 64px;
+  align-items: center;
+}
+
+.menu-items {
+  order: 2;
+  display: flex;
+}
+
+/* Styles spécifiques pour les grands écrans */
+@media screen and (min-width: 768px) {
+  /* 768px est un point de rupture commun pour les tablettes, ajustez-le selon vos besoins */
+  .menu-items {
+    justify-content: flex-end; /* Alignez les éléments de menu à droite */
+    width: 100%; /* la liste prend toute la largeur */
+    list-style: none; /* Supprime les puces de la liste */
+    padding: 0; /* Supprime le padding par défaut de la liste */
+    margin: 0; /* Supprime la marge par défaut */
+  }
+}
+
+.menu-items li {
+  list-style: none;
+  margin-left: 1.5rem;
+  font-size: 1.3rem;
+  transition: transform 0.3s ease, border-bottom 0.3s ease; /* Ajoute transition pour la bordure */
+  border-bottom: 2px solid transparent; /* Initialise une bordure transparente */}
+
+  .menu-items li:hover {
+    transform: translateY(-3px); /* Déplace légèrement l'élément vers le haut */
+    border-bottom: 2px solid #117964; /* Change la couleur de la bordure au survol */
+  }
+
+.navbar a {
+  color: #444;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease-in-out;
+}
+
+.role {
+  background-color:  rgb(186, 254, 186) !important;
+  border-radius: 10px;
+  padding: 2px;
+}
+
+.text-shadow {
+  text-shadow: 
+    3px 3px 5px rgba(0, 0, 0, 0.5),
+    5px 5px 10px rgba(0, 0, 0, 0.2),
+    8px 8px 15px rgba(0, 0, 0, 0.1); /* Plusieurs ombres pour un effet plus intense */
+}
+
+.jobs {
+  background-color: #eef1ee;  /* Couleur de fond */
+  border-radius: 10px;        /* Arrondir les coins */
+}
+
+
+
+
+
+.navbar a:hover {
+  color: #117964;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    opacity: 0.95;
+  }
+
+  .navbar-container input[type="checkbox"],
+  .navbar-container .hamburger-lines {
+    display: block;
+  }
+
+  .navbar-container {
+    display: block;
+    position: relative;
+    height: 64px;
+  }
+
+  .navbar-container input[type="checkbox"] {
+    position: absolute;
+    display: block;
+    height: 32px;
+    width: 30px;
+    top: 20px;
+    left: 20px;
+    z-index: 5;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .navbar-container .hamburger-lines {
+    display: block;
+    height: 28px;
+    width: 35px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .navbar-container .hamburger-lines .line {
+    display: block;
+    height: 4px;
+    width: 100%;
+    border-radius: 10px;
+    background: #333;
+  }
+
+  .navbar-container .hamburger-lines .line1 {
+    transform-origin: 0% 0%;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .navbar-container .hamburger-lines .line2 {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .navbar-container .hamburger-lines .line3 {
+    transform-origin: 0% 100%;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .navbar .menu-items {
+    padding-top: 100px;
+    background: #fff;
+    height: 100vh;
+    max-width: 300px;
+    transform: translate(-150%);
+    display: flex;
+    flex-direction: column;
+    margin-left: -40px;
+    padding-left: 40px;
+    transition: transform 0.5s ease-in-out;
+    box-shadow: 5px 0px 10px 0px #aaa;
+    overflow: scroll;
+  }
+
+  .navbar .menu-items li {
+    margin-bottom: 1.8rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  .logo {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 2.2rem;
+  }
+
+  .navbar-container input[type="checkbox"]:checked ~ .menu-items {
+    transform: translateX(0);
+  }
+
+  .navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line1 {
+    transform: rotate(45deg);
+  }
+
+  .navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line2 {
+    transform: scaleY(0);
+  }
+
+  .navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line3 {
+    transform: rotate(-45deg);
+  }
+}
+
+@media (max-width: 500px) {
+  .navbar-container input[type="checkbox"]:checked ~ .logo {
+    display: none;
+  }
+}
+
+.navbar-logo {
+  width: auto; /* cela préservera les proportions de l'image */
+  height: 100px;
+  width: auto;
+  display: block;
+}
+
+/* Style pour aligner le logo avec les éléments de navigation */
+.navbar-brand {
+  display: flex;
+  align-items: center; /* cela aligne verticalement le logo avec les éléments de la barre de navigation */
+}
+
+.material-icons {
+  border-radius: 50%; /* rend l'icône ronde */
+  background-color: #e0e0e0; /* couleur de fond gris clair */
+  color: black; /* couleur de l'icône */
+  padding: 8px; /* espace autour de l'icône */
+  display: inline-flex; /* utilise flex pour centrer l'icône */
+  align-items: center;
+  justify-content: center;
+  height: 24px; /* hauteur fixe */
+  width: 24px; /* largeur fixe */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* optionnel: ajoute une ombre pour un effet 3D */
+}
+
+.icon-login,
+.icon-logout {
+  font-size: 32px;
+  padding-left: 8px;
+}
+
+.right-aligned {
+  margin-left: auto;
+}
+
+.material-icons:hover {
+  background-color: #9e9e9e; /* couleur de fond plus foncée lors du survol */
+  color: white; /* couleur de l'icône en blanc lors du survol */
+  cursor: pointer; /* change le curseur en pointeur pour indiquer qu'il est interactif */
+}
+
+.icon-login:hover,
+.icon-logout:hover {
+  transform: scale(
+    1.1
+  ); /* augmente légèrement la taille de l'icône lors du survol */
+}
+
+.language-select {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: white;
+  margin-left: 1.5rem;
+  font-size: 1rem;
+}
+
+.logo-display {
+  border-radius: 50%;
+}
+/* Style pour cacher le logo sur les petits écrans */
+@media (max-width: 500px) {
+  .navbar-logo {
+    display: none; /* Cache le logo */
+  }
+}

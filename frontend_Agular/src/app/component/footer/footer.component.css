@@ -1,0 +1,52 @@
+.footer {
+  background-color: #a8a6a6;
+  color: white;
+  
+  text-align: center;
+  
+}
+
+.footer a:hover {
+  background-color: #555; /* Couleur au survol */
+}
+.disign {
+  box-shadow: 10px;
+  border-radius: 25px;
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0);
+}
+
+.image-display {
+  padding-left: 30px;
+}
+
+.line {
+  margin-bottom: 0;
+}
+.text {
+  padding: 10px;
+}
+
+.social-icons {
+  font-size: 24px;
+  padding-left: 8px;
+}
+
+.contact-icons {
+  font-size: 20px;
+  padding-left: 6px;
+}
+
+
+.text-shadow {
+  text-shadow: 
+    3px 3px 5px rgba(0, 0, 0, 0.5),
+    5px 5px 10px rgba(0, 0, 0, 0.2),
+    8px 8px 15px rgba(0, 0, 0, 0.1); /* Plusieurs ombres pour un effet plus intense */
+}
+
+
+
+.paragraph {
+  text-align: center;       /* Centrage du texte */
+}
+

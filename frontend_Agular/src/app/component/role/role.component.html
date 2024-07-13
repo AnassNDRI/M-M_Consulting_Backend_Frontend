@@ -1,0 +1,32 @@
+<div class="wrapper font-picture transparent-background">
+  <div class="logo">
+    <img src="../../../assets/logo folder/logo.png" alt="" />
+  </div>
+  <div class="text-center mt-4 name">
+    {{ "change-role.choice" | translate }}
+  </div>
+  <form class="p-3 mt-3">
+    <div class="d-flex align-items-center">
+      <button class="btn mt-3" (click)="navigateToRecruiterProfile()">
+        <i class="fa-solid fa-building"></i>
+        {{ "change-role.recruiter" | translate }}
+      </button>
+    </div>
+    <div class="d-flex align-items-center">
+      <button class="btn mt-3" (click)="navigateToCandidateProfile()">
+        <i class="fa-solid fa-user-tie"></i>
+        {{ "change-role.candidate" | translate }}
+      </button>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-12">
+      <hr class="mt-5 mb-4 border-secondary-subtle" />
+      <div class="d-flex gap-4 justify-content-center">
+        <a href="/home" class="link-secondary text-decoration-none">
+          {{ "change-role.exit" | translate }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

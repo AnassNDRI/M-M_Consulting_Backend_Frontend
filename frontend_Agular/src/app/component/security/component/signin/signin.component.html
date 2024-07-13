@@ -1,0 +1,103 @@
+<body class="main-bg">
+  <div class="login-container text-c animated flipInX">
+    <div class="container-content">
+      <div>
+        <h1 class="logo-badge text-whitesmoke">
+          <img
+            src="../../../assets/logo-folder/logo.png"
+            width="120"
+            height="150"
+            class="img-fluid disign profil logo-display"
+          />
+        </h1>
+      </div>
+      <h3 class="text-whitesmoke">M&M Consulting</h3>
+      <p class="text-whitesmoke">{{ "change-language.Sign-In" | translate }}</p>
+      <p class="error-message" *ngIf="errorMessage">
+        {{ errorMessage | translate }}
+      </p>
+
+      <!-- Formulaire réactif avec gestion des validations -->
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="margin-t">
+        <div class="form-group">
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Email"
+            formControlName="email"
+            [class.is-invalid]="
+              email?.invalid && (email?.dirty || email?.touched)
+            "
+            id="email"
+          />
+          <div
+            *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+            class="error-message"
+          >
+            <div *ngIf="email?.errors?.['required']">
+              {{ "this-field-is-required" | translate }}
+            </div>
+            <div *ngIf="email?.errors?.['maxlength']">
+              {{ "email-can-be-maximum-70-characters-long" | translate }}
+            </div>
+            <div *ngIf="email?.errors?.['pattern']">
+              {{ "errors.emailInvalid" | translate }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Pour le champ 'password' -->
+        <div class="form-group">
+          <input
+            type="password"
+            class="form-control"
+            placeholder="{{ 'change-login.password' | translate }}"
+            formControlName="password"
+            [class.is-invalid]="
+              password?.invalid && (password?.dirty || password?.touched)
+            "
+            id="password"
+          />
+          <!-- Affichage des messages d'erreur -->
+          <div
+            *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+            class="error-message"
+          >
+            <div *ngIf="password?.errors?.['required']">
+              {{ "this-field-is-required" | translate }}
+            </div>
+            <div *ngIf="password?.errors?.['maxlength']">
+              {{
+                "password-cannot-be-more-than-250-characters-long" | translate
+              }}
+            </div>
+            <div *ngIf="password?.errors?.['pattern']">
+              {{ "errors.passwordRequirements" | translate }}
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="form-button button-l margin-b">
+          {{ "change-language.Sign-In" | translate }}
+        </button>
+
+        <a class="text-darkyellow" href="/forgot-pwd"
+          ><small>{{
+            "change-language.Forgot-your-password?" | translate
+          }}</small></a
+        >
+        <p class="text-whitesmoke text-center">
+          <small>{{
+            "change-language.Do-not-have-an-account?" | translate
+          }}</small>
+        </p>
+        <a class="text-darkyellow" href="/role"
+          ><small>{{ "change-language.Sign-Up" | translate }}</small></a
+        >
+      </form>
+
+      <p class="margin-t text-whitesmoke">
+        <small> Anass N'DRI &copy; 2024</small>
+      </p>
+    </div>
+  </div>
+</body>

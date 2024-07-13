@@ -1,0 +1,226 @@
+
+
+
+
+
+.mat-card {
+  margin: 1%;
+  text-align: left;
+  background-color: #f8faf8;
+}
+
+.mat-mdc-form-field,
+.mat-60,
+.div-30,
+.mat-form-field {
+  width: 100%; /* Sur petit écran, les champs prennent toute la largeur */
+  margin-bottom: 16px; /* Espacement entre les champs de formulaire */
+  margin-bottom: 20px;
+}
+
+button {
+  margin: 2px;
+}
+
+.action {
+  padding-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.action button {
+  margin: 0 10px;
+  padding: 5px 20px;
+  min-width: 120px;
+}
+
+.error-message {
+  color: #fb0808; /* Couleur rouge pour les messages d'erreur */
+  font-weight: bold;
+  margin-top: 5px; /* 5px */
+  width: 100%;
+}
+
+.is-invalid {
+  border-color: #dc3545; /* Bordure rouge pour les champs non valides */
+}
+
+.description {
+  margin: auto;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.errors-message-display,
+.description-display,
+.item-display,
+.add-display {
+  margin-top: -25px;
+}
+
+/*
+.mat-dialog-content {
+  overflow-y: auto;
+  max-height: calc(
+    100vh - 210px
+  ); 
+}  */
+
+.defilement {
+  overflow-y: auto;
+  max-height: 100vh;  /* Définit la hauteur maximale à 80% de la hauteur de la fenêtre de visualisation */
+
+}
+.mat-dialog-content {
+ 
+  padding: 20px;
+  background: #fff; /* Fond blanc pour le contenu du formulaire */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Ombre subtile pour le conteneur */
+  border-radius: 8px; /* Bordures arrondies */
+ 
+
+}
+
+.mat-dialog-content::-webkit-scrollbar {
+  width: 8px; /* Largeur de la barre de défilement */
+}
+
+.mat-dialog-content::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Couleur de la piste de défilement */
+}
+
+.mat-dialog-content::-webkit-scrollbar-thumb {
+  background: #888; /* Couleur de la partie défilante (thumb) */
+}
+
+.mat-dialog-content::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Couleur du thumb au survol */
+}
+
+
+.display {
+  padding-bottom: 20px;
+}
+
+/* Réglages de style pour les grands écrans */
+@media (min-width: 768px) {
+  .mat-mdc-form-field,
+  .mat-60,
+  .div-30 {
+    width: calc(33.3333% - 8px); /* Trois champs par ligne */
+    margin: 4px; /* Espacement uniforme autour des champs */
+  }
+
+  .description {
+    width: calc(100% - 8px); /* La description prend toute la largeur */
+  }
+}
+
+/* Style spécifique pour l'alignement des champs de formulaire */
+.example-container mat-form-field + mat-form-field {
+  margin-left: 8px;
+}
+
+.example-right-align {
+  text-align: right;
+}
+
+/* Suppression des boutons de nombre */
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+  display: none;
+}
+
+/* Description et autres messages d'erreur affichés correctement */
+.description-display,
+.item-display,
+.add-display {
+  margin-top: -30px;
+}
+
+.save-button {
+  background-color: #4caf50 !important;
+  color: #fff;
+}
+
+.btn-save {
+  background-color: rgb(111, 108, 108) !important;
+  color: #fff;
+}
+
+.add-button {
+  background: #dedbdb !important;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Trois colonnes de taille égale */
+  gap: 0.5rem; /* Réduisez l'espace entre les colonnes */
+}
+
+.grid-item {
+  padding: 0.5rem; /* Espace intérieur pour chaque élément pour éviter que le contenu touche les bords */
+}
+
+.mat-form-field {
+  width: 100%; /* Les champs prennent toute la largeur disponible */
+  /* Réduisez la taille de la police et les marges si nécessaire */
+}
+
+/* Ajustement spécifique pour les petits écrans */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* Une seule colonne sur les petits écrans */
+    gap: 0.5rem; /* Maintenez l'espacement réduit entre les éléments */
+  }
+}
+
+/* Vous pouvez également ajuster les marges et le padding des boutons si nécessaire */
+button.mat-icon-button {
+  padding: 4px; /* Réduire le padding autour des icônes de bouton */
+  margin: 0; /* Supprimer les marges pour rendre les boutons plus compacts */
+}
+
+button.mat-raised-button {
+  padding: 4px 10px; /* Réduire le padding pour les boutons */
+}
+
+.delete-icone {
+  color: #b50b0b !important; /* Couleur rouge pour les messages d'erreur */
+}
+
+.add-icone {
+  color: #4caf50 !important; /* Couleur rouge pour les messages d'erreur */
+  font-size: 20px;
+}
+
+.data-display {
+  font-weight: bold !important;
+  color: rgb(1, 35, 35) !important;
+}
+.description-input {
+  background: #dedbdb !important;
+  font-weight: 500 !important;
+  color: rgb(1, 35, 35) !important;
+}
+
+.card {
+  font-weight: 500 !important;
+  color: rgb(1, 35, 35) !important;
+}
+
+.deadline-display {
+  color: rgb(1, 35, 35) !important;
+  background: rgb(173, 238, 173) !important;
+}
+
+
+.disabled {
+  pointer-events: none; /* Désactive les clics */
+  color: gray !important; /* Change la couleur pour indiquer qu'elle est désactivée */
+  opacity: 0.5; /* Rend l'icône semi-transparente */
+}
+

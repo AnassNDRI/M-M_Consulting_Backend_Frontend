@@ -1,0 +1,74 @@
+<!-- Background image -->
+
+<h1 class="text-size text-shadow">M&M Consulting</h1>
+<p class="lead text-size  show-test">
+  {{ 'recruitmentAgencyDescriptionPart1' | translate }} <br>
+  {{ 'recruitmentAgencyDescriptionPart2' | translate }}
+</p>
+
+<div class="mask">
+  <section class="light">
+    <br />
+    <div class="container py-2">
+      <article class="postcard light red">
+        <img
+          class="postcard__img picture"
+          src="../../../assets/pictures/developeur-web.png"
+          alt="Image Title"
+        />
+        <div class="postcard__text t-dark">
+          <h1 class="postcard__title red">
+            <a href="#"
+              >{{ 'itProfessionalsFuture' | translate }}</a
+            >
+          </h1>
+
+          <h2>{{ 'uniqueCareerOpportunities' | translate }}</h2>
+
+          <div class="postcard__preview-txt">
+            {{ 'propelYourCareer' | translate }}
+            <br />
+            <p></p>
+            <button
+              type="button"
+              class="btn btn-back  btn-sm found-job"
+              (click)="goToJobListing()"
+            >
+            {{ 'findJob' | translate }}
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="postcard light blue">
+        <img
+          class="postcard__img picture"
+          src="../../../assets/pictures/recruiter.png.webp"
+          alt="Image Title"
+        />
+
+        <div class="postcard__text t-dark">
+          <h1 class="postcard__title blue">
+            {{ 'lookingForITExperts' | translate }}
+          </h1>
+
+          <h2>
+            {{ 'postOnPlatform' | translate }}
+          </h2>
+
+          <div class="postcard__preview-txt">
+            {{ 'simplifyRecruitment' | translate }} <br />
+            <p></p>
+            <button
+              type="button"
+              class="btn btn-back  btn-sm"
+              (click)="goToProfileRecruiter()"
+            >
+            {{ 'publishJobOffer' | translate }}
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</div>

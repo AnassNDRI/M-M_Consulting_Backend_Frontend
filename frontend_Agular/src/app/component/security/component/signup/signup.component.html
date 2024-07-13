@@ -1,0 +1,15 @@
+<div id="container">
+  <form >
+    <h1>LOGIN</h1>
+  
+    <label><b>Nom d'utilisateur</b></label>
+    <input type="text" placeholder="Entrer le nom d'utilisateur" name="email" [(ngModel)]="email" required>
+  
+    <label><b>Mot de passe</b></label>
+    <input type="password" placeholder="Entrer le mot de passe" name="password" [(ngModel)]="password" required>
+  
+    <input type="submit" id='submit' value='LOGIN' (click)="signin()" >
+  
+  </form>
+  </div>
+  

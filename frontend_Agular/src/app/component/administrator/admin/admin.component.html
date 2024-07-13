@@ -1,0 +1,164 @@
+<mat-toolbar class="mat-elevation-z8">
+  <button
+    class="filter-text"
+    mat-icon-button
+    *ngIf="sidenav.mode === 'over'"
+    (click)="sidenav.toggle()"
+  >
+    Filtrer vos Recherches
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button [matMenuTriggerFor]="menuContrats">
+        <mat-icon>home</mat-icon>
+        <span>Emplois</span>
+      </button>
+      <mat-menu #menuContrats="matMenu">
+        <div class="mat-menu-content">
+          <mat-form-field appearance="fill">
+            <mat-label>Choisir un contrat</mat-label>
+            <mat-select [(value)]="contratSelectionne">
+              <mat-option
+                *ngFor="let contrat of optionsContrats"
+                [value]="contrat.valeur"
+              >
+                {{ contrat.affichage }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-menu>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button [matMenuTriggerFor]="menuContrats">
+        <mat-icon>calendar_today</mat-icon>
+        <span>Date</span>
+      </button>
+      <mat-menu #menuContrats="matMenu">
+        <div class="mat-menu-content">
+          <mat-form-field appearance="fill">
+            <mat-label>Choisir un contrat</mat-label>
+            <mat-select [(value)]="contratSelectionne">
+              <mat-option
+                *ngFor="let contrat of optionsContrats"
+                [value]="contrat.valeur"
+              >
+                {{ contrat.affichage }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-menu>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button [matMenuTriggerFor]="menuContrats">
+        <mat-icon>map</mat-icon>
+        <span>Localisation</span>
+      </button>
+      <mat-menu #menuContrats="matMenu">
+        <div class="mat-menu-content">
+          <mat-form-field appearance="fill">
+            <mat-label>Choisir un contrat</mat-label>
+            <mat-select [(value)]="contratSelectionne">
+              <mat-option
+                *ngFor="let contrat of optionsContrats"
+                [value]="contrat.valeur"
+              >
+                {{ contrat.affichage }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-menu>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button [matMenuTriggerFor]="menuContrats">
+        <mat-icon>work</mat-icon>
+        <span>Postes</span>
+      </button>
+      <mat-menu #menuContrats="matMenu">
+        <div class="mat-menu-content">
+          <mat-form-field appearance="fill">
+            <mat-label>Choisir un contrat</mat-label>
+            <mat-select [(value)]="contratSelectionne">
+              <mat-option
+                *ngFor="let contrat of optionsContrats"
+                [value]="contrat.valeur"
+              >
+                {{ contrat.affichage }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-menu>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button [matMenuTriggerFor]="menuContrats">
+        <mat-icon>location_city</mat-icon>
+        <span>Company</span>
+      </button>
+      <mat-menu #menuContrats="matMenu">
+        <div class="mat-menu-content">
+          <mat-form-field appearance="fill">
+            <mat-label>Choisir un contrat</mat-label>
+            <mat-select [(value)]="contratSelectionne">
+              <mat-option
+                *ngFor="let contrat of optionsContrats"
+                [value]="contrat.valeur"
+              >
+                {{ contrat.affichage }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-menu>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button [matMenuTriggerFor]="menuContrats">
+        <mat-icon>group_add</mat-icon>
+        <span>Contrat</span>
+      </button>
+      <mat-menu #menuContrats="matMenu">
+        <div class="mat-menu-content">
+          <mat-form-field appearance="fill">
+            <mat-label>Choisir un contrat</mat-label>
+            <mat-select [(value)]="contratSelectionne">
+              <mat-option
+                *ngFor="let contrat of optionsContrats"
+                [value]="contrat.valeur"
+              >
+                {{ contrat.affichage }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </mat-menu>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <button mat-button class="menu-button help-button" routerLink="/help">
+      <mat-icon>help</mat-icon>
+      <span>Help</span>
+    </button>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z8">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

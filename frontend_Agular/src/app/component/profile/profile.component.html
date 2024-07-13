@@ -1,0 +1,639 @@
+<section class="light">
+  <div class="container py-2">
+    <div class="h1 text-center text-dark" id="pageHeaderTitle"></div>
+    <article
+      class="postcard light yellow inactive"
+      [class.inactive]="!isValided"
+    >
+      <div class="postcard__text t-dark">
+        <div class="container">
+          <div class="main-body">
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="card">
+                  <div class="card-body">
+                    <div
+                      class="d-flex flex-column align-items-center text-center"
+                    >
+                      <h2 *ngIf="!isValided" class="status-account">
+                        {{ 'accountStatusInactive' | translate }}
+                      </h2>
+
+                      <img
+                        *ngIf="!isRecruiter"
+                        src="../../../../assets/pictures/user/user.png"
+                        alt="Admin"
+                        class="rounded-circle p-1 bg-primary"
+                        width="110"
+                      />
+                      <img
+                        *ngIf="isRecruiter"
+                        src="../../../../assets/pictures/user/recruiter.jpg"
+                        alt="Admin"
+                        class="rounded-circle p-1 bg-primary"
+                        width="110"
+                      />
+                      <div class="mt-3">
+                        <h2>{{ user?.firstname }} {{ user?.name }}</h2>
+                        <p class="text-secondary mb-1 function-role">
+                          {{ user?.role?.title }} <br />
+                          {{ user?.jobTitle?.title }}
+                        </p>
+                        <p
+                          class="text-muted font-size-sm function-role"
+                          *ngIf="isRecruiter && !isAddedNoteInterview"
+                        >
+                        {{ 'company' | translate }}: {{ user?.nameCompany }}
+                        </p>
+                        <p
+                          class="text-muted font-size-sm function-role"
+                          *ngIf="isRecruiter &&  !isAddedNoteInterview"
+                        >
+                        {{ 'vatNumber' | translate }} : {{ user?.tvaNumber }}
+                        </p>
+                        <p
+                          *ngIf="isCandidate"
+                          class="text-muted font-size-sm function-role"
+                        >
+                        {{ 'experience' | translate }}: {{ user?.experience?.title }}
+                        </p>
+                      </div>
+                    </div>
+                    <hr class="my-4" />
+                    <ul class="list-group list-group-flush">
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center flex-wrap"
+                      >
+                        <h6 class="mb-0">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-globe me-2 icon-inline"
+                          >
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path
+                              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                            ></path></svg>
+                            {{ 'website' | translate }}
+                        </h6>
+                        <span class="text-secondary">www.mm-consulting.be</span>
+                      </li>
+                      <li
+                        class="list-group-item d-flex justify-content-between align-items-center flex-wrap"
+                      >
+                        <h6 class="mb-0">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="feather feather-github me-2 icon-inline"
+                          >
+                            <path
+                              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"
+                            ></path></svg>Github
+                        </h6>
+                        <span class="text-secondary">bootdey</span>
+                      </li>
+
+                      <li
+                        *ngIf="isOwnerProfile"
+                        class="list-group-item d-flex justify-content-between align-items-center flex-wrap"
+                      >
+                        <h1 class="mb-0" *ngIf="isOwnerProfile">
+                          <i class="fa-solid fa-user-shield"></i>
+                        </h1>
+                        <span
+                          *ngIf="isOwnerProfile"
+                          class="text-secondary"
+                          (click)="deleteMyProfile()">
+                        {{ 'deleteProfile' | translate }}
+                        </span>
+                      </li>
+                      <br />
+                      <li class="list-group-item">
+                        <div
+                          class="text-center btn-profile"
+                          *ngIf="isOwnerProfile"
+                        >
+                          <div
+                            *ngIf="isCandidate"
+                            class="profile"
+                            (click)="updateProfileCandidate()"
+                          >
+                          {{ 'editProfile' | translate }}
+                          </div>
+                          <div
+                            *ngIf="isRecruiter"
+                            class="profile"
+                            (click)="updateProfileRecruiter()"
+                          >
+                          {{ 'editProfile' | translate }}
+                          </div>
+                          <div
+                            *ngIf="isAdmin || isConsultant"
+                            class="profile"
+                            (click)="updateProfileCollaborator()"
+                          >
+                          {{ 'editProfile' | translate }}
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-8">
+                <div class="card">
+                  <div class="card-body">
+                    <!-- Company Description  Start-->
+                    <div *ngIf="descriptionDisplay" class="row mb-3">
+                      <div class="col-sm-3">
+                        <h3 class="mb-0 text-secondary function-role">
+                          {{ "description-company" | translate }}:
+                        </h3>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <div class="form-control" style="height: auto">
+                          {{ user?.descriptionCompany }}
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Company end -->
+
+                    
+
+         <!-- Candidate interview Start -->
+         <div *ngIf="!isCurrentCandidate">
+          <div *ngIf="isAddedNoteInterview">
+            <div *ngIf="interviewNoteDisplay">
+              <div class="row mb-3">
+                <div class="col-sm-3">
+                  <h3 class="mb-0 text-secondary function-role">
+                    <button [class.icone-eye]="!showInterviewNote" class="btn p-0" (click)="toggleInterviewNoteVisibility()" title="Voir Note d'entretien">
+                      <span [ngClass]="{'text-bold text-red': showInterviewNote}">{{ showInterviewNote ? 'Fermer' : 'Voir la note de l\'entretien' }}</span> : <i class="fa fa-eye visibility-icon"></i>
+                    </button>
+                  </h3>
+                </div>
+                <div *ngIf="showInterviewNote" class="col-sm-9 text-secondary">
+                  <div class="form-control" style="height: auto" [innerHTML]="getFormattedInterviewNote()"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Candidate interview end -->
+
+
+      
+                    
+
+
+                    <!-- Name Start-->
+                    <div class="row mb-3">
+                      <div class="col-sm-3">
+                        <h3 class="mb-0 text-secondary function-role">
+                          {{ "change-name" | translate }} :
+                        </h3>
+                      </div>
+                      <div class="col-sm-9 text-secondary function-role">
+                        <div class="form-control" style="height: auto">
+                          {{ user?.name }}
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Name end -->
+
+                    <!-- Firstname Start-->
+                    <div class="row mb-3">
+                      <div class="col-sm-3">
+                        <h3 class="mb-0 text-secondary function-role">
+                          {{ "change-firstname" | translate }} :
+                        </h3>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <div class="form-control" style="height: auto">
+                          {{ user?.firstname }}
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Firstname end -->
+
+                    <!-- 'dateBirth' Start-->
+                    <div class="row mb-3">
+                      <div class="col-sm-3">
+                        <h3 class="mb-0 text-secondary function-role">
+                          {{ "change-birthday" | translate }} :
+                        </h3>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <div class="form-control" style="height: auto">
+                          {{ user?.dateBirth | date : "dd-mm-yyyy" }}
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 'dateBirth' end -->
+
+                    <!-- 'sex' Start-->
+                    <div class="row mb-3">
+                      <div class="col-sm-3">
+                        <h3 class="mb-0 text-secondary function-role">
+                          {{ "change-gender" | translate }} :
+                        </h3>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <div class="form-control" style="height: auto">
+                          <!-- Affiche 'Femme' si le sexe de l'utilisateur est 'F' -->
+                          <ng-container *ngIf="user?.sex === 'F'; else male">
+                            {{ "change-female" | translate }}
+                          </ng-container>
+                          <!-- Template alternatif affiché si le sexe de l'utilisateur n'est pas 'F' -->
+                          <ng-template #male>
+                            {{ "change-male" | translate }}
+                          </ng-template>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 'sex' end -->
+
+                    <!-- 'phoneNumber' Start-->
+                    <div class="row mb-3">
+                      <div class="col-sm-3">
+                        <h3 class="mb-0 text-secondary function-role">
+                          {{ "change-phone-number" | translate }} :
+                        </h3>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <div class="form-control" style="height: auto">
+                          {{ user?.phoneNumber }}
+                        </div>
+                      </div>
+                    </div>
+                    <!-- 'phoneNumber' end -->
+
+                    <!-- 'email' Start-->
+                    <div class="row mb-3">
+                      <div class="col-sm-3">
+                        <h3 class="mb-0 text-secondary function-role">
+                          Email :
+                        </h3>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <div class="form-control" style="height: auto">
+                          {{ user?.email }}
+                        </div>
+                      </div>
+                    </div>
+                    <!-- email' end -->
+
+                    <!-- 'fonction' Start-->
+                    <div
+                      class="row mb-3"
+                      *ngIf="isAuthenticated && isCandidate"
+                    >
+                      <div class="col-sm-3">
+                        <h3 class="mb-0 text-secondary function-role">
+                          {{ "change-function" | translate }} :
+                        </h3>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <div
+                          class="form-control"
+                          style="height: auto"
+                          *ngIf="isCandidate"
+                        >
+                          {{ user?.jobTitle?.title }}
+                        </div>
+                      </div>
+                    </div>
+                    <!-- fonction' end -->
+
+                    <!-- 'adresse' Start-->
+                    <div class="row mb-3">
+                      <div class="col-sm-3">
+                        <h3 class="mb-0 text-secondary function-role">
+                          {{ "change-address" | translate }} :
+                        </h3>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                        <div
+                          *ngIf="!descriptionDisplay"
+                          class="form-control"
+                          style="height: auto"
+                        >
+                          {{ user?.address }}
+                        </div>
+                        <div
+                          *ngIf="descriptionDisplay"
+                          class="form-control"
+                          style="height: auto"
+                        >
+                          {{ user?.addressCompany }}
+                        </div>
+                      </div>
+                    </div>
+                    <!-- adress' end -->
+
+                    <!-- 'cv' Start-->
+                    <div class="row mb-3" *ngIf="cvDisplay">
+                      <div class="col-sm-3">
+                        <h3
+                          *ngIf="isCurrentCandidate"
+                          class="mb-0 text-secondary function-role"
+                        >
+                          {{ "change-cv" | translate }} :
+                        </h3>
+                        <h3
+                          *ngIf="!isCurrentCandidate"
+                          class="mb-0 text-secondary function-role"
+                        >
+                          {{ "change-cv-to-admin" | translate }} :
+                        </h3>
+                      </div>
+                      <div class="col-sm-3 text-secondary">
+                        <div
+                          class="form-control btn cv-consult"
+                          (click)="viewCandidateCv()"
+                        >
+                          Consulter le CV
+                          <i class="fa-solid fa-file"></i>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- cv' end -->
+                  </div>
+                </div>
+
+                <div class="row" *ngIf="isCvFormVisible">
+                  <form
+                    [formGroup]="registrationForm"
+                    (ngSubmit)="UpdatingUserCV()"
+                  >
+                    <div class="col-sm-12">
+                      <div class="card">
+                        <div class="card-body">
+                          <!-- Pour le champ 'cv', incluant le message d'erreur pour la validation du fichier -->
+                          <div class="form-group">
+                            <label class="name">{{
+                              "change-cv" | translate
+                            }}</label>
+                            <input
+                              type="file"
+                              id="cv"
+                              class="form-control"
+                              placeholder="{{ 'change-address' | translate }}"
+                              (change)="onFileSelected($event)"
+                              accept=".pdf"
+                              [class.is-invalid]="
+                                cv?.invalid && (cv?.dirty || cv?.touched)
+                              "
+                            />
+
+                            <div
+                              *ngIf="cv?.invalid && (cv?.dirty || cv?.touched)"
+                              class="error-message"
+                            >
+                              <!-- Affichage des messages d'erreur pour le champ 'cv' -->
+                              <div
+                                *ngIf="registrationForm.controls['cv'].errors"
+                              >
+                                <div
+                                  *ngIf="
+                                    registrationForm.controls['cv'].errors[
+                                      'requiredFile'
+                                    ]
+                                  "
+                                >
+                                  {{ "this-field-is-required" | translate }}
+                                </div>
+                                <div
+                                  *ngIf="
+                                    registrationForm.controls['cv'].errors[
+                                      'invalidFileType'
+                                    ]
+                                  "
+                                >
+                                  {{
+                                    "errors.file-must-be-in-pdf-format"
+                                      | translate
+                                  }}
+                                </div>
+                                <div
+                                  *ngIf="
+                                    registrationForm.controls['cv'].errors[
+                                      'fileSizeExceeded'
+                                    ]
+                                  "
+                                >
+                                  {{
+                                    "errors.file-must-be-less-than-5mb"
+                                      | translate
+                                  }}
+                                </div>
+                              </div>
+                            </div>
+                            <br />
+                            <div
+                              class="d-grid gap-2 d-md-flex justify-content-md-center"
+                            >
+                              <!-- *ngIf="!isAuthenticated || (isAuthenticated && isCandidate)" -->
+
+                              <button
+                                class="btn btn-success me-md-2"
+                                type="submit"
+                                [disabled]="
+                                  !registrationForm.get('cv')?.valid ||
+                                  !registrationForm.valid
+                                "
+                              >
+                                <i class="fa-solid fa-pen"></i>{{ "editCv" | translate }}</button>
+
+                              <!-- -->
+                              <!-- Btn Bac start-->
+                              <button
+                                class="btn btn btn-secondary me-md-2"
+                                type="button"
+                                (click)="hideCvFormAndShowButton()"
+                              >
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                Quitter
+                              </button>
+                              <!-- Btn Back End-->
+                            </div>
+                          </div>
+                          <!-- End 'cv' -->
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+
+                
+                <!-- start buttons de controle -->
+                <div *ngIf="isOwnerProfile">
+                  <div class="row" *ngIf="isBarVisible">
+                    <div class="col-sm-12">
+                      <div class="card">
+                        <div class="d-grid gap-2 col-12 mx-auto">
+                          <div class="me-md-2"></div>
+                          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <!-- start Button Edit Password -->
+                            <button class="btn btn-success me-md-2" type="button" routerLink="/forgot-pwd">
+                              {{ "modifyPassword" | translate }}
+                            </button>
+                            <!-- End Button Edit Password -->
+                            <!-- start Button Edit CV -->
+                            <button *ngIf="!isCandidateCvBtn && isAuthenticated && isCandidate" class="btn btn-success btn-small me-md-2" type="button" (click)="toggleCvFormVisibility()">
+                              {{ "editCvButton" | translate }}
+                            </button>
+                            <!-- End Button Edit CV -->
+                            <!-- Notification start-->
+                            <div class="btn btn-success btn-small me-md-2">
+                              <div class="form-check form-switch">
+                                <input
+                                  class="form-check-input"
+                                  [class.enable-notif]="notificationCheckbox.checked"
+                                  [class.desenable-notif]="!notificationCheckbox.checked"
+                                  type="checkbox"
+                                  id="notificationSwitch"
+                                  #notificationCheckbox
+                                  (change)="onNotificationChange(notificationCheckbox.checked)"
+                                />
+                                {{ "notification" | translate }}
+                              </div>
+                            </div>
+                            <!-- Notification End-->
+                            <!-- Btn Back start-->
+                            <button class="btn btn btn-secondary me-md-2 btn-small" type="button" (click)="goBack()">
+                              <i class="fa-solid fa-circle-xmark"></i> {{ "quit" | translate }}
+                            </button>
+                            <!-- Btn Back End-->
+                          </div>
+                          <div class="me-md-2"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- end buttons de controle -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <div
+      class="btn-div"
+      *ngIf="
+        isDivVisible &&
+        isAuthenticated &&
+        (isConsultant || isAdmin) &&
+        !isOwnerAdmin &&
+        !isOwnerConsultant ||
+        (isCurrentRecruiter && isAddedNoteInterview)
+      "
+    >
+      <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <button
+          *ngIf="!isImmutableCollaborator && !isValided"
+          class="btn btn-success me-md-2"
+          type="button"
+          (click)="validateCreatedAccount()"
+        >
+          <i class="fa-solid fa-check"></i>
+          {{ "validateAccount" | translate }}
+        </button>
+        <button
+          *ngIf="!isImmutableCollaborator && isValided && (!isCurrentRecruiter && interviewNoteDisplay)"
+          class="btn btn-danger me-md-2"
+          type="button"
+          (click)="deleteThisAccount()"
+        >
+          <i class="fa-solid fa-trash-can"></i>
+          {{ "deleteAccount" | translate }}
+        </button>
+        <button
+          *ngIf="!isImmutableCollaborator && !isValided"
+          type="button"
+          class="btn btn-warning me-md-2"
+          (click)="isFormVisible = true"
+          (click)="isDivVisible = false"
+        >
+          <i class="fa-solid fa-trash-can"></i>
+          {{ "invalidateAccount" | translate }}
+        </button>
+        <button class="btn btn btn-secondary me-md-2" type="button" (click)="goBack()">
+          <i class="fa-solid fa-circle-xmark"></i>
+          {{ "quit" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- START  DIV INVALIDATION D'UNE OFFRE-->
+<div class="mat-dialog-content" *ngIf="isFormVisible">
+  <form [formGroup]="noteInscriptionForm" (ngSubmit)="updateRequestToRecruiter()">
+    <div class="form-container">
+      <div>
+        <mat-card>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <h1 class="display-title">
+              {{ "addExplanatoryNote" | translate }}
+            </h1>
+          </div>
+
+          <mat-card-content>
+            <div class="description">
+              <mat-form-field appearance="outline" class="example-full-width noteJoblisting" [ngClass]="{'is-invalid': noteInscription?.invalid && (noteInscription?.dirty || noteInscription?.touched)}">
+                <mat-label for="noteInscription">{{ "noteInscription" | translate }}</mat-label>
+                <textarea
+                  matInput
+                  placeholder="{{ 'noteInscription' | translate }}"
+                  formControlName="noteInscription"
+                  id="noteInscription"
+                ></textarea>
+                <mat-icon matSuffix>description</mat-icon>
+                <mat-error *ngIf="noteInscription?.invalid && (noteInscription?.dirty || noteInscription?.touched)" class="error-message">
+                  <strong *ngIf="noteInscription?.errors?.['required']">{{ "thisFieldIsRequired" | translate }}</strong>
+                </mat-error>
+                <mat-error class="error-message errors-message-display" *ngIf="noteInscriptionForm.get('noteInscription')?.errors?.['minlength']">
+                  {{ "mustBeAtLeast20CharactersLong" | translate }}
+                </mat-error>
+                <mat-error class="error-message errors-message-display" *ngIf="noteInscriptionForm.get('noteInscription')?.errors?.['maxlength']">
+                  {{ "mustBeLessThan500CharactersLong" | translate }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+          <div mat-dialog-actions class="action">
+            <button mat-raised-button type="submit" class="btn-to-update">
+              <span class="material-icons">send</span>
+              {{ "send" | translate }}
+            </button>
+            <button mat-raised-button (click)="isFormVisible = false" (click)="isDivVisible = true" class="btn-save">
+              <span class="material-icons">cancel</span>
+              {{ "close" | translate }}
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- END  DIV INVALIDATION D'UNE OFFRE-->

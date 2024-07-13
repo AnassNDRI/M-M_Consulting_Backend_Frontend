@@ -1,0 +1,146 @@
+<!-- Sign Up form -->
+<div class="signup-page">
+  <form [formGroup]="registrationForm" (ngSubmit)="handleCollaboratorRegistration()">
+    <h3 *ngIf="!isEdit">{{ "change-role.collaborator" | translate }}</h3>
+    <h3 *ngIf="isEdit">{{ "change-update.collaborator" | translate }}</h3>
+
+    <div *ngIf="!isEdit" class="form-group">
+      <label for="name" class="name">
+        {{ "change-name" | translate }}<span class="required-field">*</span>
+      </label>
+      <input type="text" class="form-control" placeholder="Name" formControlName="name" [class.is-invalid]="name?.invalid && (name?.dirty || name?.touched)" />
+      <div *ngIf="name?.invalid && (name?.dirty || name?.touched)" class="error-message">
+        <div *ngIf="name?.errors?.['required']">{{ "this-field-is-required" | translate }}</div>
+        <div *ngIf="name?.errors?.['minlength']">{{ "name-must-be-at-least-2-characters-long" | translate }}</div>
+        <div *ngIf="name?.errors?.['maxlength']">{{ "name-must-be-at-least-2-characters-long" | translate }}</div>
+      </div>
+    </div>
+
+    <div *ngIf="!isEdit"class="form-group">
+      <label for="firstname" class="name">
+        {{ "change-firstname" | translate }}<span class="required-field">*</span>
+      </label>
+      <input type="text" class="form-control" placeholder="Firstname" formControlName="firstname" [class.is-invalid]="firstname?.invalid && (firstname?.dirty || firstname?.touched)" />
+      <div *ngIf="firstname?.invalid && (firstname?.dirty || firstname?.touched)" class="error-message">
+        <div *ngIf="firstname?.errors?.['required']">{{ "this-field-is-required" | translate }}</div>
+        <div *ngIf="firstname?.errors?.['minlength']">{{ "firstname-must-be-at-least-2-characters-long" | translate }}</div>
+        <div *ngIf="firstname?.errors?.['maxlength']">{{ "firstname-must-be-less-than-50-characters-long" | translate }}</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dateBirth" class="name">
+        {{ "change-birthday" | translate }}<span class="required-field">*</span>
+      </label>
+      <input type="date" class="form-control" id="dateBirth" placeholder="Date" formControlName="dateBirth" [class.is-invalid]="dateBirth?.invalid && (dateBirth?.dirty || dateBirth?.touched)" />
+      <div *ngIf="dateBirth?.invalid && (dateBirth?.dirty || dateBirth?.touched)" class="error-message">
+        <div *ngIf="dateBirth?.errors?.['required']">{{ "this-field-is-required" | translate }}</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="sex" class="name">
+        {{ "change-gender" | translate }}<span class="required-field">*</span>
+      </label>
+      <div class="col-md-6 mb-4">
+        <select class="select" formControlName="sex" id="sex" [class.is-invalid]="sex?.invalid && (sex?.dirty || sex?.touched)">
+          <option value="" disabled selected>{{ "change-choice" | translate }}</option>
+          <option value="F">{{ "change-female" | translate }}</option>
+          <option value="M">{{ "change-male" | translate }}</option>
+        </select>
+      </div>
+      <div *ngIf="sex?.invalid && (sex?.dirty || sex?.touched)" class="error-message">
+        <div *ngIf="sex?.errors?.['required']">{{ "this-field-is-required" | translate }}</div>
+        <div *ngIf="sex?.errors?.['maxlength']">{{ "Invalid-selection" | translate }}</div>
+      </div>
+    </div>
+
+    <p class="error-message" *ngIf="errorMessage">{{ errorMessage | translate }}</p>
+
+    <div class="form-group">
+      <label for="phoneNumber" class="name">
+        {{ "change-phone-number" | translate }}<span class="required-field">*</span></label>
+      <input type="text" class="form-control" placeholder="ex: +32 123456789" formControlName="phoneNumber" id="phoneNumber" [class.is-invalid]="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)" />
+      <div *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)" class="error-message">
+        <div *ngIf="phoneNumber?.errors?.['required']">{{ "this-field-is-required" | translate }}</div>
+        <div *ngIf="phoneNumber?.errors?.['pattern']">{{ "invalid-phone-number-format" | translate }}</div>
+      </div>
+    </div>
+
+    <div *ngIf="!isEdit" class="form-group">
+      <label for="email" class="name">Email<span class="required-field">*</span></label>
+      <input type="email" class="form-control" placeholder="Email" formControlName="email" [class.is-invalid]="email?.invalid && (email?.dirty || email?.touched)" id="email" />
+      <div *ngIf="email?.invalid && (email?.dirty || email?.touched)" class="error-message">
+        <div *ngIf="email?.errors?.['required']">{{ "this-field-is-required" | translate }}</div>
+        <div *ngIf="email?.errors?.['email']">{{ "please-enter-a-valid-email-address" | translate }}</div>
+        <div *ngIf="email?.errors?.['maxlength']">{{ "email-can-be-maximum-70-characters-long" | translate }}</div>
+        <div *ngIf="email?.errors?.['pattern']">{{ "errors.emailInvalid" | translate }}</div>
+      </div>
+    </div>
+
+    <div *ngIf="!isEdit" class="col-12">
+      <label for="password" class="name">
+        {{ "change-login.password" | translate }}<span class="required-field">*</span>
+      </label>
+      <div class="input-group">
+        <input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="{{ 'change-login.password' | translate }}" formControlName="password" [class.is-invalid]="password?.invalid && (password?.dirty || password?.touched)" id="password" />
+        <span class="input-group-text icone" (click)="toggleShowPassword()">
+          <i class="fas" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+        </span>
+      </div>
+      <div *ngIf="password?.invalid && (password?.dirty || password?.touched)" class="error-message">
+        <div *ngIf="password?.errors?.['required']">{{ "this-field-is-required" | translate }}</div>
+        <div *ngIf="password?.errors?.['maxlength']">{{ "password-cannot-be-more-than-250-characters-long" | translate }}</div>
+        <div *ngIf="password?.errors?.['pattern']">{{ "errors.passwordRequirements" | translate }}</div>
+      </div>
+    </div>
+
+    <div *ngIf="!isEdit" class="form-group margin">
+      <label for="roleId" class="name">{{ "change-function" | translate }}<span class="required-field">*</span></label>
+      <div class="col-md-12 mb-4">
+        <select class="form-control" class="select form-control" id="roleId" formControlName="roleId" [class.is-invalid]="roleId?.invalid && (roleId?.dirty || roleId?.touched)">
+          <option value="" disabled selected>{{ "select-job-title" | translate }}</option>
+          <option *ngFor="let role of roles" [value]="role.roleId">{{ role.title | translate }}</option>
+        </select>
+      </div>
+      <div *ngIf="roleId?.invalid && (roleId?.dirty || roleId?.touched)" class="error-message">
+        <div *ngIf="roleId?.errors?.['required']">{{ "this-field-is-required" | translate }}</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="address" class="name">{{ "change-address" | translate }}<span class="required-field">*</span></label>
+      <input type="text" class="form-control" placeholder="{{ 'change-address' | translate }}" formControlName="address" [class.is-invalid]="address?.invalid && (address?.dirty || address?.touched)" id="address" />
+      <div *ngIf="address?.invalid && (address?.dirty || address?.touched)" class="error-message">
+        <div *ngIf="address?.errors?.['required']">{{ "this-field-is-required" | translate }}</div>
+        <div *ngIf="address?.errors?.['minlength']">{{ "address-must-be-at-least-2-characters-long" | translate }}</div>
+        <div *ngIf="address?.errors?.['maxlength']">{{ "address-must-be-at-least-70-characters-long" | translate }}</div>
+      </div>
+    </div>
+
+    <br />
+    <div *ngIf="!isEdit" style="display: flex; width: 100%; max-width: 600px; margin: auto">
+      <button class="save-button" mat-raised-button type="submit" style="flex-grow: 1; margin-right: 4px">
+        <span class="material-icons">save</span>
+        {{ "save" | translate }}
+      </button>
+      <button [mat-dialog-close]="false" class="btn-save" mat-raised-button style="flex-grow: 1; margin-left: 4px">
+        <span class="material-icons">cancel</span>
+        {{ "change-close" | translate }}
+      </button>
+    </div>
+
+    <hr />
+
+    <div *ngIf="isEdit" class="update-div">
+      <button class="save-button" mat-raised-button type="submit" style="flex-grow: 1; margin-right: 4px">
+        <span class="material-icons">edit</span>
+        {{ "edit" | translate }}
+      </button>
+      <button class="btn-save" mat-raised-button [mat-dialog-close]="false" style="flex-grow: 1; margin-left: 4px">
+        <span class="material-icons">cancel</span>
+        {{ "change-close" | translate }}
+      </button>
+    </div>
+  </form>
+</div>

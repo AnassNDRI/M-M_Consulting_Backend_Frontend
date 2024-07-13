@@ -1,0 +1,85 @@
+h3 {
+  margin: 0 0 10px;
+}
+
+pre {
+  background-color: #f5f5f5;
+  padding: 15px;
+}
+
+.container {
+  font-family: "Cambria", Times, serif;
+}
+
+.btn-color {
+  background-color: rgb(237, 220, 190);
+  color: rgb(56, 53, 53);
+  font-weight: 600;
+
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5), 5px 5px 10px rgba(0, 0, 0, 0.2),
+    8px 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-appli {
+  border: 1px solid #f8f4f4; /* Noir comme couleur de bordure, modifiable */
+  margin: 10px 0; /* Ajoute un peu d'espace autour de chaque carte */
+  padding: 10px; /* Espace à l'intérieur de la carte */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optionnel: ajoute une ombre légère pour un effet 3D */
+  background-color: #aeb7c5;
+  border-radius: 30px;
+}
+
+.style-date {
+  color: rgb(246, 242, 235);
+  text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5), 5px 5px 10px rgba(0, 0, 0, 0.2),
+    8px 8px 15px rgba(0, 0, 0, 0.1);
+  font-weight: 600;
+  font-family: "Cambria", Times, serif;
+}
+
+.save-button {
+  background-color: #8d9a90 !important;
+}
+
+.save-button:hover {
+  background-color: #7a856f; /* Assombrir le fond au survol */
+  color: #fff; /* Changer la couleur du texte pour une meilleure visibilité */
+}
+
+.btn-save {
+  background-color: rgb(152, 151, 151) !important;
+}
+
+.btn-save:hover {
+  background-color: rgb(151, 150, 150) !important;
+  color: #fff; /* Changer la couleur du texte pour une meilleure visibilité */
+}
+
+.btn-to-update {
+  background-color: rgb(247, 169, 24) !important;
+}
+.btn-to-update:hover {
+  background-color: rgb(
+    247,
+    169,
+    24
+  ) !important; /* Assombrir le fond au survol */
+  color: #fff; /* Changer la couleur du texte pour une meilleure visibilité */
+}
+
+/* Styles spécifiques pour chaque type de bouton */
+.btn-back {
+  background-color: #7a7f83 !important;
+}
+.btn-back:hover {
+  background-color: #656d71 !important; /* Assombrir le fond au survol */
+  color: #fff; /* Changer la couleur du texte pour une meilleure visibilité */
+}
+
+
+.display-date-select {
+  margin-bottom: 10px;
+ 
+}
+
+

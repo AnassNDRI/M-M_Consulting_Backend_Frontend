@@ -1,0 +1,181 @@
+<mat-toolbar *ngIf="isHandset$ | async" class="mat-elevation-z8">
+  <button class="filter-text" mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+    {{ 'menuManagement' | translate }}
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <img class="avatar mat-elevation-z8" src="../../../../assets/pictures/user/user.png" />
+    <br /><br />
+    <h4 class="name profile-name">{{ recruiterName }} {{ recruiterFirstname }}</h4>
+    <h5 class="name profile-name">{{ recruiterRole }}</h5>
+    <br /><br />
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="fetchMyJobListing(); istableVisible = false; islistVisible = true">
+        <mat-icon>home</mat-icon>
+        <span>{{ 'myPublications' | translate }} ({{ jobListingsCount }})</span>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="findAllJobApplications(); islistVisible = false; istableVisible = true">
+        <mat-icon class="black-icon-label">people</mat-icon>
+        <span>{{ 'jobApplications' | translate }} ({{ jobListingsWithApplicationCount }})</span>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="profile()">
+        <mat-icon>person</mat-icon>
+        <span>{{ 'myProfile' | translate }}</span>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <button mat-button class="menu-button help-button" routerLink="/dashboard/register-recruiter">
+      <mat-icon>help</mat-icon>
+      <span>{{ 'help' | translate }}</span>
+    </button>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div *ngIf="islistVisible">
+      <div class="container mt-4">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4 profile-title">{{ 'recruitmentSpace' | translate }}</h1>
+          </div>
+        </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button type="button" class="btn add-btn" data-bs-toggle="button" (click)="AddJoblisting()">
+            <i class="fa-solid fa-square-plus"></i> {{ 'newJobOffer' | translate }}
+          </button>
+        </div>
+
+        <div class="container mt-4" *ngFor="let job of jobListings" (click)="askJobListingDetail(job.jobListingId)">
+          <div class="card p-3 mt-2 mb-3" [class.inactive]="job.jobClose">
+            <div class="row">
+              <div *ngIf="!job.validate" class="d-flex justify-content-between align-items-center flex-column validate">
+                <span>{{ 'unvalidatedOffer' | translate }}</span>
+              </div>
+              <div *ngIf="job.jobClose" class="d-flex justify-content-between align-items-center flex-column disable">
+                <span>{{ 'closedAndDisabledOffer' | translate }}</span>
+              </div>
+              <div class="col-md-4">
+                <div class="d-flex flex-row mt-3">
+                  <img src="../../../../assets/pictures/user/recruiter.jpg" width="100" />
+                  <div class="ms-2 d-flex flex-column">
+                    <div class="d-flex flex-row align-items-center">
+                      <h3>{{ job.user.nameCompany }}</h3>
+                    </div>
+                    <h3>{{ job.contractType.title }}</h3>
+                    <h5>{{ job.jobLocation.location }}</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="mt-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="mb-1 title">{{ job.jobTitle.title }}</h1>
+                    <span>
+                      <div class="demo-section">
+                        <mat-icon [matBadge]="job.savedJobNumber > 0 ? job.savedJobNumber : null" matBadgeColor="warn">favorite</mat-icon>
+                      </div>
+                    </span>
+                  </div>
+                  <br />
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-1">{{ job.description }}</h4>
+                  </div>
+                  <br />
+                  <div class="d-flex flex-row justify-content-between mt-3">
+                    <div class="d-flex flex-column">
+                      <span class="validate">{{ 'published' | translate }} {{ job.dayAgo }} {{ 'daysAgo' | translate }}</span>
+                    </div>
+                    <div class="d-flex flex-column">
+                      <span class="days-ago">
+                        <div class="demo-section">
+                          {{ 'applicants' | translate }}:
+                          <strong class="countAplly">{{ job.applicationCount }}</strong> {{ 'candidates' | translate }}
+                        </div>
+                      </span>
+                      <br />
+                      <span class="days-ago">
+                        {{ 'applicationDeadline' | translate }}:
+                        <strong class="deadline">{{ job.deadline | date: "dd-MM-yyyy" }}</strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="error-message" *ngIf="errorMessage">{{ errorMessage | translate }}</p>
+    </div>
+
+    <div class="container table-responsive py-5" *ngIf="istableVisible">
+      <h1 class="text-center pt-4">{{ 'candidatesByJob' | translate }}</h1>
+      <br />
+      <div class="container table-responsive py-5" *ngIf="istableVisible">
+        <br />
+        <div *ngFor="let jobApply of jobListingsWithApplication">
+          <div *ngIf="jobApply.jobApplications && jobApply.jobApplications.length > 0">
+            <button [ngClass]="{'status-closed': jobApply.jobClose}" class="btn apply-btn text-jobAppli" type="button">
+              {{ 'position' | translate }}: {{ jobApply.jobTitle.title }}, {{ 'published' | translate }}: {{ jobApply.publicationDate | date: "dd-MM-yyyy" }}
+            </button>
+            <button [ngClass]="{'status-closed': jobApply.jobClose}" class="btn total-appli text-jobAppli" type="button">
+              {{ 'totalApplications' | translate }} : <strong>{{ jobApply.applicationCount }}</strong>  
+            </button>
+            <button [ngClass]="{'status-closed': jobApply.jobClose}" class="btn total-appli text-jobAppli" type="button">
+              {{ 'acceptedApplications' | translate }} : <strong>{{ jobApply.countApply }}</strong>  
+            </button>
+            <button *ngIf="jobApply.jobClose" class="btn closed text-jobAppli" type="button">
+              {{ 'closedOffer' | translate }}  
+            </button>
+            <table class="table table-bordered table-hover table-style">
+              <thead class="thead-dark">
+                <tr class="table-title">
+                  <th class="table-title" scope="col">N°</th>
+                  <th class="table-title" scope="col">{{ 'name' | translate }}</th>
+                  <th class="table-title" scope="col">{{ 'firstname' | translate }}</th>
+                  <th class="table-title" scope="col">{{ 'dateOfBirth' | translate }}</th>
+                  <th class="table-title" scope="col">{{ 'gender' | translate }}</th>
+                  <th class="table-title" scope="col">{{ 'title' | translate }}</th>
+                  <th class="table-title" scope="col">{{ 'experience' | translate }}</th>
+                  <th class="table-title" scope="col">{{ 'status' | translate }}</th>
+                  <th class="table-title" scope="col">{{ 'profile' | translate }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let application of jobApply.jobApplications; let i = index">
+                  <td [ngClass]="{'status-accepted': application.jobListing.jobClose}">{{ i + 1 }}</td>
+                  <td [ngClass]="{'status-accepted': application.jobListing.jobClose}">{{ application.user.name }}</td>
+                  <td [ngClass]="{'status-accepted': application.jobListing.jobClose}">{{ application.user.firstname }}</td>
+                  <td [ngClass]="{'status-accepted': application.jobListing.jobClose}">{{ application.user.dateBirth | date: "dd-MM-yyyy" }}</td>
+                  <td [ngClass]="{'status-accepted': application.jobListing.jobClose}">{{ application.user.sex }}</td>
+                  <td [ngClass]="{'status-accepted': application.jobListing.jobClose}">{{ application.user.jobTitle?.title }}</td>
+                  <td [ngClass]="{'status-accepted': application.jobListing.jobClose}">{{ application.user.experience.title }}</td>
+                  <td [ngClass]="{
+                        'status-no-check': application.status === null,
+                        'status-en-cours': application.status && !application.jobInterviewOK,
+                        'status-accepted': application.jobInterviewOK
+                      }">
+                    {{ application.jobInterviewOK ? "Retenue" : (application.status ? "En cours" : "Pas traité") }}
+                  </td>
+                  <td [ngClass]="{'status-accepted': application.jobListing.jobClose}">
+                    <mat-icon class="visibility-icon" [class.disabled]="!application.jobInterviewOK" (click)="onIconClick(application)">
+                      visibility
+                    </mat-icon>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <br /><br />
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

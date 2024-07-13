@@ -1,0 +1,210 @@
+<mat-toolbar *ngIf="isHandset$ | async" class="mat-elevation-z8">
+  <button
+    class="filter-text"
+    mat-icon-button
+    *ngIf="sidenav.mode === 'over'"
+    (click)="sidenav.toggle()"
+  >
+    {{ 'filterYourSearch' | translate }}
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="fetchJobListing()">
+        <span> {{ 'jobListings' | translate }} ({{ jobListingsCount }})</span>
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <mat-icon class="black-icon-label">calendar_today</mat-icon>
+      <div class="mat-menu-content">
+        <mat-form-field appearance="fill">
+          <mat-label>{{ 'publicationDate' | translate }}</mat-label>
+          <mat-select [(value)]="selectDate" (selectionChange)="filterByDate()">
+            <mat-option value="day">{{ 'today' | translate }}</mat-option>
+            <mat-option value="week">{{ 'oneWeek' | translate }}</mat-option>
+            <mat-option value="2weeks">{{ 'twoWeeks' | translate }}</mat-option>
+            <mat-option value="month">{{ 'oneMonth' | translate }}</mat-option>
+            <mat-option value="all">{{ 'all' | translate }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <mat-icon class="black-icon-label">work</mat-icon>
+      <div class="mat-menu-content">
+        <mat-form-field appearance="fill">
+          <mat-label class="black-icon-label">{{ 'jobFunction' | translate }} ({{ jobTitlesCount }})</mat-label>
+          <mat-select
+            [(value)]="selectedJobTitle"
+            (selectionChange)="filterByJobTitle()"
+          >
+            <mat-option
+              *ngFor="let jobTitle of jobTitles"
+              [value]="jobTitle.jobTitleId"
+            >
+              {{ "JOBTITLES." + jobTitle.title | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <mat-icon class="black-icon-label">map</mat-icon>
+      <div class="mat-menu-content">
+        <mat-form-field appearance="fill">
+          <mat-label class="black-icon-label">{{ 'location' | translate }} ({{ jobLocationsCount }})</mat-label>
+          <mat-select
+            [(value)]="selectedJobLocation"
+            (selectionChange)="filterByJobLocation()"
+          >
+            <mat-option
+              *ngFor="let location of jobLocations"
+              [value]="location.jobLocationId"
+            >
+              {{ "JOB_LOCATION." + location.location | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <mat-icon class="black-icon-label">location_city</mat-icon>
+      <div class="mat-menu-content">
+        <mat-form-field appearance="fill">
+          <mat-label class="black-icon-label">{{ 'company' | translate }} ({{ companyCount }})</mat-label>
+          <mat-select
+            [(value)]="selectedCompany"
+            (selectionChange)="filterByCompany()"
+          >
+            <mat-option *ngFor="let comp of company" [value]="comp.userId">
+              {{ comp.nameCompany | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <mat-icon class="black-icon-label">group_add</mat-icon>
+      <div class="mat-menu-content">
+        <mat-form-field appearance="fill">
+          <mat-label class="black-icon-label">{{ 'contract' | translate }} ({{ contractTypesCount }})</mat-label>
+          <mat-select
+            [(value)]="selectedContractType"
+            (selectionChange)="filterByContractType()"
+          >
+            <mat-option
+              *ngFor="let contract of contractTypes"
+              [value]="contract.contractTypeId"
+            >
+              {{ "CONTRACT_TYPE." + contract.title | translate }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <button mat-button class="menu-button help-button" routerLink="/help">
+      <mat-icon>help</mat-icon>
+      <span>Help</span>
+    </button>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-md-5 mx-auto">
+          <div class="input-group">
+            <input
+              class="form-control border-end-0 border rounded-pill"
+              type="search"
+              [formControl]="searchControl"
+              placeholder="{{ 'searchByKeyword' | translate }}"
+              id="example-search-input"
+            />
+            <span class="input-group-append">
+              <button
+                class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5"
+                type="button"
+              >
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <ng-container *ngIf="jobListings?.length; else noJobListings">
+        <div class="container mt-4" *ngFor="let job of jobListings" (click)="askJobListingDetail(job.jobListingId)">
+          <div class="card p-3 mt-2 mb-3">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="d-flex flex-row mt-3">
+                  <img src="../../../../assets/pictures/user/recruiter.jpg" width="100" />
+                  <div class="ms-2 d-flex flex-column">
+                    <div class="d-flex flex-row align-items-center">
+                      <h3>{{ job.user.nameCompany }}</h3>
+                    </div>
+                    <h3>{{ "CONTRACT_TYPE." + job.contractType.title | translate }}</h3>
+                    <h5>{{ "JOB_LOCATION." + job.jobLocation.location | translate }}</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="mt-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="mb-1 title"> {{"JOBTITLES." + job.jobTitle.title | translate }} </h1>
+                    <span *ngIf="!isRecruiter && !isAdmin && !isConsultant">
+                      <mat-icon class="favorite-icon" (click)="toggleSaveJob(job, $event)" [ngClass]="{ 'saved': job.isSaved }">favorite</mat-icon>
+                    </span>
+                  </div>
+                  <br />
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-1">{{ job.description }}</h4>
+                  </div>
+                  <br />
+                  <div class="d-flex flex-row justify-content-between mt-3">
+                    <div class="d-flex flex-column">
+                      <span class="days-ago" *ngIf="job?.dayAgo === 0">{{ 'today' | translate }}</span>
+                      <span class="days-ago" *ngIf="job && job.dayAgo !== null && job.dayAgo !== undefined && job.dayAgo > 0">{{ 'today' | translate }}: <strong>{{ job.dayAgo }}  {{"daysAgo"  | translate }}</strong></span>
+                    </div>
+                    <div class="d-flex flex-column">
+                      <span class="days-ago">{{ 'applicationDeadline' | translate }}: <strong class="deadline">{{ job.deadline | date : "dd-MM-yyyy" }}</strong></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noJobListings>
+        <div class="center-container">
+          <div class="d-flex align-items-center justify-content-center content">
+            <div class="empty-jobs-message">
+              <h1>{{ 'noResult' | translate }}</h1>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <!-- Display Error message -->
+      <p class="error-message" *ngIf="errorMessage">{{ errorMessage | translate }}</p>
+      <!-- End Display Error message -->
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

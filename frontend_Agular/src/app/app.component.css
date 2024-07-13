@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  padding-bottom: 70px;
+}
+
+router-outlet {
+  flex: 1 0 auto; /* Le contenu s'étend pour remplir l'espace disponible */
+}
+
+app-footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+}

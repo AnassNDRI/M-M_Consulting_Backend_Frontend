@@ -1,0 +1,63 @@
+<nav class="navbar parent" *ngIf="headerVisible">
+  <!--*ngIf="headerVisible" -->
+  <a routerLink="" class="navbar-brand" *ngIf="showLogo">
+    <img src="../../../assets/logo-folder/logo.png" alt="Logo" class="navbar-logo logo logo-display" />
+  </a>
+  
+  <div class="navbar-container container">
+    <input type="checkbox" id="menu-toggle" />
+    <label for="menu-toggle" class="hamburger-lines">
+      <span class="line line1"></span>
+      <span class="line line2"></span>
+      <span class="line line3"></span>
+      <span class="line line4"></span>
+    </label>
+    <!-- Liste de navigation -->
+    <ul class="menu-items">
+      <li>
+        <a routerLink="home">{{ "change-language.home" | translate }} </a>
+      </li>
+      <li>
+        <a routerLink="faqs">{{ "change-language.faqs" | translate }}</a>
+      </li>
+      <li><a routerLink="contact">Contact</a></li>
+      <li><a routerLink="joblisting-list" class="jobs">{{ 'jobListings' | translate }}</a></li>
+      <li>
+        <a (click)="navigateToUserDashboard()" *ngIf="username" class="role text-shadow">
+          {{ userRole }}
+        </a>
+      </li>
+      <div></div>
+      <li>
+        <a (click)="goToLogin()" *ngIf="!isAuthenticated">
+          <i class="material-icons icon-login">account_circle</i>
+        </a>
+      </li>
+      <li>
+        <a (click)="logout()" *ngIf="isAuthenticated">
+          <i class="material-icons icon-logout">logout</i>
+        </a>
+      </li>
+      <li>
+        <select class="language-select" [(ngModel)]="language" (change)="changeLanguage($event)">
+          <option value="fr">
+            <i class="fa-brands fa-free-code-camp"></i>
+            {{ "change-language.french" | translate }}
+          </option>
+          <option value="en">
+            {{ "change-language.english" | translate }}
+          </option>
+          <option value="de">
+            {{ "change-language.german" | translate }}
+          </option>
+          <option value="nl">
+            {{ "change-language.dutch" | translate }}
+          </option>
+          <option value="it">
+            {{ "change-language.italian" | translate }}
+          </option>
+        </select>
+      </li>
+    </ul>
+  </div>
+</nav>

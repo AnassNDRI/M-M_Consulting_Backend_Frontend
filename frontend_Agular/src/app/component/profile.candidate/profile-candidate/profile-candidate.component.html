@@ -1,0 +1,216 @@
+<mat-toolbar *ngIf="isHandset$ | async" class="mat-elevation-z8">
+  <button class="filter-text" mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+    {{ 'menuManagement' | translate }}
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <img class="avatar mat-elevation-z8" src="../../../../assets/pictures/user/user.png" />
+    <br /><br />
+    <h4 class="name profile-name">{{ recruiterFirstname }} {{ recruiterName }}</h4>
+    <h5 class="name profile-name">{{ recruiterRole }}</h5>
+    <br /><br />
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="loadMySavedJobListings(); showSavedJobList()">
+        <mat-icon>home</mat-icon>
+        <span>{{ 'mySavedOffers' | translate }} ({{ savedJoibsCount }})</span>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="findMyJobApplications(); showApplyTableList()">
+        <mat-icon class="black-icon-label">work</mat-icon>
+        <span>{{ 'myApplications' | translate }} ({{ jobApplicationsCount }})</span>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="showAppointment(); findMyAppointement()">
+        <mat-icon>event</mat-icon>
+        <span>{{ 'appointments' | translate }} ({{ appointmentCount }})</span>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="profile()">
+        <mat-icon>person</mat-icon>
+        <span>{{ 'myProfile' | translate }}</span>
+      </button>
+    </div>
+    <mat-divider></mat-divider>
+    <button mat-button class="menu-button help-button" routerLink="/dashboard/register-recruiter">
+      <mat-icon>help</mat-icon>
+      <span>{{ 'help' | translate }}</span>
+    </button>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div *ngIf="islistVisible">
+      <div class="container mt-4">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-4 profile-title">{{ 'candidateSpace' | translate }}</h1>
+          </div>
+        </div>
+        <div *ngIf="savedJobs?.length; else noJobsSaved">
+          <div class="container mt-4" *ngFor="let jobSaved of savedJobs" (click)="askJobListingDetail(jobSaved.jobListingId)">
+            <div class="card p-3 mt-2 mb-3">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="d-flex flex-row mt-3">
+                    <img src="../../../../assets/pictures/user/recruiter.jpg" width="100" />
+                    <div class="ms-2 d-flex flex-column">
+                      <div class="d-flex flex-row align-items-center">
+                        <h3>{{ jobSaved?.jobListing?.user?.nameCompany }}</h3>
+                      </div>
+                      <h3>{{ jobSaved?.jobListing?.contractType?.title }}</h3>
+                      <h5>{{ jobSaved?.jobListing?.jobLocation?.location }}</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="mt-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h1 class="mb-1 title">{{ jobSaved?.jobListing?.jobTitle?.title }}</h1>
+                      <span>
+                        <div class="demo-section">
+                          <mat-icon class="favorite-icon" (click)="deleteSaveJob(jobSaved.jobListing.jobListingId, $event, jobSaved)" [ngClass]="{ saved: jobSaved?.jobListing?.isSaved }">favorite</mat-icon>
+                        </div>
+                      </span>
+                    </div>
+                    <br />
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h4 class="mb-1">{{ jobSaved?.jobListing?.description }}</h4>
+                    </div>
+                    <br />
+                    <div class="d-flex flex-row justify-content-between mt-3">
+                      <div class="d-flex flex-column">
+                        <div class="d-flex flex-column">
+                          <span class="days-ago" *ngIf="jobSaved && jobSaved.jobListing?.dayAgo !== null && jobSaved.jobListing?.dayAgo !== undefined">
+                            {{ 'publishedDaysAgo' | translate }} 
+                            <strong>{{ jobSaved.jobListing.dayAgo === 0 ? ('today' | translate) : jobSaved.jobListing.dayAgo + ('days' | translate) }}</strong>
+                          </span>
+                        </div>
+                      </div>
+                      <div class="d-flex flex-column">
+                        <span class="days-ago">
+                          {{ 'applicationDeadline' | translate }}
+                          <strong class="deadline">{{ jobSaved?.jobListing?.deadline | date : "dd-MM-yyyy" }}</strong>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noJobsSaved>
+        <div class="center-container">
+          <div class="d-flex align-items-center justify-content-center content">
+            <div class="empty-jobs-message">
+              <h1>{{ 'noJobsSaved' | translate }}</h1>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <p class="error-message" *ngIf="errorMessage">{{ errorMessage | translate }}</p>
+    </div>
+    <div class="container table-responsive py-5" *ngIf="istableVisible">
+      <h1 class="text-center pt-4">{{ 'allApplications' | translate }}</h1>
+      <br />
+      <ng-container *ngIf="jobApplications?.length; else noApply">
+        <table class="table table-bordered table-hover table-style">
+          <thead class="thead-dark">
+            <tr class="table-title">
+              <th class="table-title" scope="col">#</th>
+              <th class="table-title" scope="col">{{ 'postulationDate' | translate }}</th>
+              <th class="table-title" scope="col">{{ 'company' | translate }}</th>
+              <th class="table-title" scope="col">{{ 'offer' | translate }}</th>
+              <th class="table-title" scope="col">{{ 'contract' | translate }}</th>
+              <th class="table-title" scope="col">{{ 'published' | translate }}</th>
+              <th class="table-title" scope="col">{{ 'status' | translate }}</th>
+              <th class="table-title" scope="col">{{ 'action' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let jobApply of jobApplications; let i = index">
+              <th class="title" scope="row">{{ i + 1 }}</th>
+              <td class="title">{{ jobApply.jobListing.publicationDate | date : "dd-MM-yyyy" }}</td>
+              <td class="title">{{ jobApply.jobListing.user.nameCompany }}</td>
+              <td class="title">{{ jobApply.jobListing.jobTitle.title }}</td>
+              <td class="title">{{ jobApply.jobListing.contractType.title }}</td>
+              <td class="title">{{ jobApply.applicationHours | date : "dd-MM-yyyy" }}</td>
+              <td class="title" [ngClass]="{
+                  'status-no-check': jobApply.status === null,
+                  'status-en-cours': jobApply.status && !jobApply.jobInterviewOK,
+                  'status-accepted': jobApply.jobInterviewOK
+                }">
+                {{ jobApply.jobInterviewOK ? ('validate' | translate) : (jobApply.status ? ('inProgress' | translate) : ('notTreated' | translate)) }}
+              </td>
+              <td class="title">
+                <mat-icon class="visibility-icon" (click)="askJobListingDetail(jobApply.jobListing.jobListingId)">
+                  visibility
+                </mat-icon>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
+      <ng-template #noApply>
+        <div class="center-container">
+          <div class="d-flex align-items-center justify-content-center content">
+            <div class="empty-jobs-message">
+              <h1>{{ 'noApplications' | translate }}</h1>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <div *ngIf="isAppointVisible">
+      <ng-container *ngIf="appointments?.length; else noAppointment">
+        <br /><br /><br />
+        <div class="center-container">
+          <div class="appointment-message" *ngFor="let appointment of appointments">
+            <div class="card p-3 mb-2">
+              <h1>{{ 'detailsAppointment' | translate }}</h1>
+              <p>
+                <strong>{{ 'application' | translate }} : </strong>{{ appointment.jobApplication.jobListing.jobTitle.title }}
+              </p>
+              <p>
+                <strong>{{ 'company' | translate }} :</strong> {{ appointment.jobApplication.jobListing.user.nameCompany }}
+              </p>
+              <p>
+                <strong>{{ 'place' | translate }} :</strong> Voie de la Réussite à 100%, <br />
+                4800 VERVIERS
+              </p>
+              <p>
+                <strong>{{ 'date' | translate }} :</strong> le, {{ appointment.appointmentDate | date : "dd-MM-YYYY" }}
+              </p>
+              <p>
+                <strong>{{ 'time' | translate }} :</strong> De {{ appointment.timeSlots.appHoursStart }} à {{ appointment.timeSlots.appHoursEnd }}
+              </p>
+              <p>
+                <strong>{{ 'recruiter' | translate }} :</strong> {{ appointment.consultant.name }} {{ appointment.consultant.firstname }}
+              </p>
+              <br />
+              <p>{{ 'modification' | translate }}</p>
+              <p><strong>{{ 'phone' | translate }}</strong> +32 080 02 02 02</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #noAppointment>
+        <div class="center-container">
+          <div class="d-flex align-items-center justify-content-center content">
+            <div class="empty-jobs-message">
+              <h1>{{ 'noAppointment' | translate }}</h1>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

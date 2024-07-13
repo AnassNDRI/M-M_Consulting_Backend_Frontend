@@ -1,0 +1,16 @@
+<div class="empty-jobs-message">
+  <h2 mat-dialog-title class="text-center">{{ data.title }}</h2>
+  <div mat-dialog-content class="justify-content-md-center text-center dialog-message">
+    <p [ngClass]="data.messageClass" [innerHTML]="data.message"></p>
+  </div>
+  <div mat-dialog-actions class="d-grid gap-2 d-md-flex justify-content-md-center">
+    <button
+      *ngFor="let button of data.buttons"
+      mat-button
+      [mat-dialog-close]="button.value"
+      [ngClass]="button.class"
+    >
+      {{ button.text }}
+    </button>
+  </div>
+</div>

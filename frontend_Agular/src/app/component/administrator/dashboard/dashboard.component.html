@@ -1,0 +1,1141 @@
+<mat-toolbar *ngIf="isHandset$ | async" class="mat-elevation-z8">
+  <button class="filter-text" mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+    {{ "menuManagement" | translate }}
+  </button>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <img class="avatar mat-elevation-z8" src="../../../../assets/pictures/user/user.png" />
+    <br />
+    <div class="name profile-name">
+      <h3 class="style-profile">{{ user?.firstname }} {{ user?.name }}</h3>
+      <div class="style-function">
+        {{ user?.role?.title }} <br />
+        <span>
+          <button class="viewer-profile" mat-button (click)="UserProfile(user?.userId!)">
+            <mat-icon>person</mat-icon>
+            <span class="form-label">{{ "viewProfile" | translate }}</span>
+          </button>
+        </span>
+      </div>
+    </div>
+    <br />
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="toggleUsersMenuVisibility()">
+        <mat-icon class="black-icon-label">group</mat-icon>
+        <h3 class="form-label-title">{{ "userManagement" | translate }}</h3>
+      </button>
+    </div>
+    <div *ngIf="visibilityStateManagerService.isVisibleManageUserListDiv">
+      <div class="input-group mb-3 w-75 menu-decalage">
+        <label class="form-label btn-label" (click)="toggleBtnAccountValidedVisibility()">
+          {{ "validAccounts" | translate }} ({{ activeUsersCount }})
+        </label>
+        <div *ngIf="visibilityStateManagerService.isbtnAccountValided" class="input-group">
+          <span class="input-group-text"><i class="fa-solid fa-users"></i></span>
+          <select class="form-select form-select-sm" [(ngModel)]="selectedRoleTitleForActiveUsers" (change)="filterActiveUsersByRoleId()">
+            <option class="option-selected" [value]="null">{{ "select" | translate }}</option>
+            <option *ngFor="let role of roles" [value]="role.roleId">{{ "ROLE." + role.title | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-group mb-3 w-75 menu-decalage">
+        <label class="form-label btn-label" (click)="toggleBtnAccountInvalidedVisibility()">
+          {{ "accountsToVerify" | translate }} ({{ inactiveUsersCount || '0' }})
+        </label>
+        <div *ngIf="visibilityStateManagerService.isbtnAccountInvalided" class="input-group">
+          <span class="input-group-text"><i class="fa-solid fa-users"></i></span>
+          <select class="form-select form-select-sm" [(ngModel)]="selectedRoleTitleForInactiveUsers" (change)="filterInactiveUsersByRoleId()">
+            <option class="option-selected" [value]="null">{{ "select" | translate }}</option>
+            <option *ngFor="let role of roles" [value]="role.roleId">{{ "ROLE." + role.title | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <div *ngIf="isAdmin" class="profile">
+        <label (click)="registerNewCollaborator()">
+          <i class="fa-solid fa-square-plus"></i> {{ "newCollaborator" | translate }}
+        </label>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="toggleJoblistMenuVisibility()">
+        <mat-icon>home</mat-icon>
+        <h3 class="form-label-title">{{ "jobManagement" | translate }}</h3>
+      </button>
+    </div>
+    <div class="justify-content-center" *ngIf="visibilityStateManagerService.isVisibleManageJobListDiv">
+      <mat-divider></mat-divider>
+      <div class="input-group mb-3 w-75 btn-all-job menu-decalage">
+        <button mat-button (click)="toggleBtnAllJobListingsVisibility()">
+          <span class="form-label">{{ "allJobOffers" | translate }} ({{ allJobListingsCount ?? 0 }})</span>
+        </button>
+      </div>
+      <div *ngIf="visibilityStateManagerService.isbtSortAllJobListing">
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectDate" class="form-label select-menu">{{ "sortByDate" | translate }} ({{ jobListingsCount ?? 0 }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectDate" (ngModelChange)="resetOtherSelections('selectDate'); filterByDate()" aria-label=".form-select-sm example">
+              <option class="option-selected" selected>{{ "selectAnOption" | translate }}</option>
+              <option value="day">{{ "today" | translate }}</option>
+              <option value="week">{{ "oneWeek" | translate }}</option>
+              <option value="2weeks">{{ "twoWeeks" | translate }}</option>
+              <option value="month">{{ "oneMonth" | translate }}</option>
+              <option value="all">{{ "all" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectJobTitle" class="form-label select-menu">{{ "sortByJobTitle" | translate }} ({{ jobTitlesCount ?? 0 }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedJobTitle" (ngModelChange)="resetOtherSelections('selectedJobTitle'); filterByJobTitle()">
+              <option class="option-selected" [value]="null">{{ "selectJobTitle" | translate }}</option>
+              <option *ngFor="let jobTitle of jobTitles" [value]="jobTitle.jobTitleId">{{ jobTitle.title | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectJobTitle" class="form-label select-menu">{{ "sortByRegion" | translate }} ({{ jobLocationsCount }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedJobLocation" (ngModelChange)="resetOtherSelections('selectedJobLocation'); filterByJobLocation()">
+              <option class="option-selected" [value]="null">{{ "selectRegion" | translate }}</option>
+              <option *ngFor="let location of jobLocations" [value]="location.jobLocationId">{{ location.location | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectJobTitle" class="form-label select-menu">{{ "sortByCompany" | translate }} ({{ companyCount }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-building"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedCompany" (ngModelChange)="resetOtherSelections('selectedCompany'); filterByCompany()">
+              <option class="option-selected" [value]="null">{{ "selectCompany" | translate }}</option>
+              <option *ngFor="let comp of company" [value]="comp.userId">{{ comp.nameCompany | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 menu-decalage">
+          <label for="selectJobTitle" class="form-label select-menu">{{ "sortByContract" | translate }} ({{ contractTypesCount }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-file-contract"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedContractType" (ngModelChange)="resetOtherSelections('selectedContractType'); filterByContractType()">
+              <option class="option-selected" [value]="null">{{ "selectCompany" | translate }}</option>
+              <option *ngFor="let contract of contractTypes" [value]="contract.contractTypeId">{{ contract.title | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="input-group mb-3 w-75 btn-all-job menu-decalage">
+        <button mat-button (click)="toggleBtnInvalidedJobListingVisibility()">
+          <span class="form-label">{{ "offersToValidate" | translate }} ({{ invalidedJobListingCount ?? 0 }})</span>
+        </button>
+      </div>
+      <div *ngIf="visibilityStateManagerService.isbtSortAllJobListingInvalidate">
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectInvalidateDate" class="form-label select-menu">{{ "sortByDate" | translate }} ({{ jobListingsCount ?? 0 }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectInvalidateDate" (ngModelChange)="resetOtherSelections('selectInvalidateDate'); filterByDateJObsInvalidate()" aria-label=".form-select-sm example">
+              <option class="option-selected" selected>{{ "selectAnOption" | translate }}</option>
+              <option value="day">{{ "today" | translate }}</option>
+              <option value="week">{{ "oneWeek" | translate }}</option>
+              <option value="2weeks">{{ "twoWeeks" | translate }}</option>
+              <option value="month">{{ "oneMonth" | translate }}</option>
+              <option value="all">{{ "all" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectedInvalidateJobTitle" class="form-label select-menu">{{ "sortByJobTitle" | translate }} ({{ jobTitlesCount ?? 0 }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedInvalidateJobTitle" (ngModelChange)="resetOtherSelections('selectedInvalidateJobTitle'); filterJobInvalidateByJobTitle()">
+              <option class="option-selected" [value]="null">{{ "selectJobTitle" | translate }}</option>
+              <option *ngFor="let jobTitle of jobTitles" [value]="jobTitle.jobTitleId">{{ jobTitle.title | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectedInvalidateJobLocation" class="form-label select-menu">{{ "sortByRegion" | translate }} ({{ jobLocationsCount }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedInvalidateJobLocation" (ngModelChange)="resetOtherSelections('selectedInvalidateJobLocation'); filterInvalideByJobLocation()">
+              <option class="option-selected" [value]="null">{{ "selectRegion" | translate }}</option>
+              <option *ngFor="let location of jobLocations" [value]="location.jobLocationId">{{ location.location | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectedInvalidateCompany" class="form-label select-menu">{{ "sortByCompany" | translate }} ({{ companyCount }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-building"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedInvalidateCompany" (ngModelChange)="resetOtherSelections('selectedInvalidateCompany'); filterInvalidateByCompany()">
+              <option class="option-selected" [value]="null">{{ "selectCompany" | translate }}</option>
+              <option *ngFor="let comp of company" [value]="comp.userId">{{ comp.nameCompany | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 menu-decalage">
+          <label for="selectedInvalidateContractType" class="form-label select-menu">{{ "sortByContract" | translate }} ({{ contractTypesCount }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-file-contract"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedInvalidateContractType" (ngModelChange)="resetOtherSelections('selectedInvalidateContractType'); filterByContractTypeInvalidate()">
+              <option class="option-selected" [value]="null">{{ "selectCompany" | translate }}</option>
+              <option *ngFor="let contract of contractTypes" [value]="contract.contractTypeId">{{ contract.title | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="input-group mb-3 w-75 btn-all-job menu-decalage">
+        <button mat-button (click)="toggleBtnValidedJobListingVisibility()">
+          <span class="form-label">{{ "offersValidated" | translate }} ({{ validedJobListingCount }})</span>
+        </button>
+      </div>
+      <div *ngIf="visibilityStateManagerService.isbtSortValidedJobListing">
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectValidateDate" class="form-label select-menu">{{ "sortByDate" | translate }} ({{ jobListingsCount ?? 0 }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectValidateDate" (ngModelChange)="resetOtherSelections('selectValidateDate'); filterByDateJObsValidate()" aria-label=".form-select-sm example">
+              <option class="option-selected" selected>{{ "selectAnOption" | translate }}</option>
+              <option value="day">{{ "today" | translate }}</option>
+              <option value="week">{{ "oneWeek" | translate }}</option>
+              <option value="2weeks">{{ "twoWeeks" | translate }}</option>
+              <option value="month">{{ "oneMonth" | translate }}</option>
+              <option value="all">{{ "all" | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectedValidateJobTitle" class="form-label select-menu">{{ "sortByJobTitle" | translate }} ({{ jobTitlesCount ?? 0 }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedValidateJobTitle" (ngModelChange)="resetOtherSelections('selectedValidateJobTitle'); filterJobValidateByJobTitle()">
+              <option class="option-selected" [value]="null">{{ "selectJobTitle" | translate }}</option>
+              <option *ngFor="let jobTitle of jobTitles" [value]="jobTitle.jobTitleId">{{ jobTitle.title | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectedValidateJobLocation" class="form-label select-menu">{{ "sortByRegion" | translate }} ({{ jobLocationsCount }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-location-dot"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedValidateJobLocation" (ngModelChange)="resetOtherSelections('selectedValidateJobLocation'); filterValideByJobLocation()">
+              <option class="option-selected" [value]="null">{{ "selectRegion" | translate }}</option>
+              <option *ngFor="let location of jobLocations" [value]="location.jobLocationId">{{ location.location | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectedValidateCompany" class="form-label select-menu">{{ "sortByCompany" | translate }} ({{ companyCount }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-building"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedValidateCompany" (ngModelChange)="resetOtherSelections('selectedValidateCompany'); filterValidateByCompany()">
+              <option class="option-selected" [value]="null">{{ "selectCompany" | translate }}</option>
+              <option *ngFor="let comp of company" [value]="comp.userId">{{ comp.nameCompany | translate }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group mb-3 w-75 menu-decalage">
+          <label for="selectedValidateContractType" class="form-label select-menu">{{ "sortByContract" | translate }} ({{ contractTypesCount }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fa-solid fa-file-contract"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectedValidateContractType" (ngModelChange)="resetOtherSelections('selectedValidateContractType'); filterByContractTypeValidate()">
+              <option class="option-selected" [value]="null">{{ "selectCompany" | translate }}</option>
+              <option *ngFor="let contract of contractTypes" [value]="contract.contractTypeId">{{ contract.title | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="input-group mb-3 w-75 menu-decalage">
+        <button mat-button (click)="toggleBtnMySavedJobVisibility()">
+          <span class="form-label profile"><i class="fa-solid fa-square-plus"></i> {{ "mySavedOffers" | translate }} ({{ myJobsavedCount || 0 }})</span>
+        </button>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="toggleJobApplyMenuVisibility()">
+        <mat-icon>work</mat-icon>
+        <h3 class="form-label-title">{{ "jobApplications" | translate }}</h3>
+      </button>
+    </div>
+    <div *ngIf="visibilityStateManagerService.isbtSortJobApply">
+      <div class="input-group mb-3 w-75 div-select">
+        <label for="selectJobTitle" class="form-label select-menu">{{ "sortByJobTitle" | translate }} ({{ jobTitlesCount ?? 0 }})</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-user-tie"></i></span>
+          <select class="form-select form-select-sm" [(ngModel)]="selectedJobTitle" (ngModelChange)="resetOtherSelections('selectedJobTitle'); filterByJobTitle()">
+            <option class="option-selected" [value]="null">{{ "selectJobTitle" | translate }}</option>
+            <option *ngFor="let jobTitle of jobTitles" [value]="jobTitle.jobTitleId">{{ jobTitle.title | translate }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="input-group mb-3 w-75 div-select">
+        <label for="selectJobTitle" class="form-label select-menu">{{ "sortByCompany" | translate }} ({{ companyCount }})</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa-solid fa-building"></i></span>
+          <select class="form-select form-select-sm" [(ngModel)]="selectedCompany" (ngModelChange)="resetOtherSelections('selectedCompany'); filterByCompany()">
+            <option class="option-selected" [value]="null">{{ "selectCompany" | translate }}</option>
+            <option *ngFor="let comp of company" [value]="comp.userId">{{ comp.nameCompany | translate }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="toggleBtnAppointmentMenuVisibility()">
+        <mat-icon>event</mat-icon>
+        <h3 class="form-label-title">{{ "appointmentManagement" | translate }}</h3>
+      </button>
+    </div>
+    <div *ngIf="visibilityStateManagerService.isBtnAppoint">
+      <div class="input-group mb-3 w-50 btn-all-job menu-decalage">
+        <button mat-button (click)="myPlanning();">
+          <span class="form-label">{{ "viewAgenda" | translate }}</span>
+        </button>
+      </div>
+      <div class="input-group mb-3 w-75 btn-all-job menu-decalage">
+        <button mat-button (click)="toggleAppointmentMenuVisibility()">
+          <span class="form-label">{{ "appointments" | translate }} ({{ myAppointmentGroupedCount ?? 0 }})</span>
+        </button>
+      </div>
+      <div *ngIf="visibilityStateManagerService.isbtSortAppoint">
+        <div class="input-group mb-3 w-75 div-select">
+          <label for="selectMyAppointmentGroupedDate" class="form-label select-menu">{{ "sortByDate" | translate }} ({{ myAppointmentGroupedCount ?? 0 }})</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+            <select class="form-select form-select-sm" [(ngModel)]="selectMyAppointmentGroupedDate" (ngModelChange)="resetOtherSelections('selectMyAppointmentGroupedDate'); loadMyInterviewAppointmentsFilterByDate()" aria-label=".form-select-sm example">
+              <option class="option-selected" selected>{{ "selectAnOption" | translate }}</option>
+              <option value="day">{{ "today" | translate }}</option>
+              <option value="week">{{ "oneWeek" | translate }}</option>
+              <option value="month">{{ "oneMonth" | translate }}</option>
+              <option value="all">{{ "all" | translate }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button (click)="navigateToHistorique()">
+        <mat-icon>work</mat-icon>
+        <h3 class="form-label-title">{{ "historyManagement" | translate }}</h3>
+      </button>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="toolbar">
+      <button mat-button class="menu-button help-button">
+        <mat-icon>help</mat-icon>
+        <span>{{ "help" | translate }}</span>
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="container mt-4">
+      <div class="jumbotron">
+        <div class="row w-100">
+          <div class="col-md-3" (click)="toggleUsersInactiveBadgeVisibility()">
+            <div class="card border-info mx-sm-1 p-3 btn div-badge text-shadow" [ngClass]="{ 'div-new-data': inactiveUsersCount !== null && inactiveUsersCount !== undefined && inactiveUsersCount > 0 }">
+              <div class="card border-info shadow text-info p-3 my-card div-badge" [ngClass]="{ 'div-new-data': inactiveUsersCount !== null && inactiveUsersCount !== undefined && inactiveUsersCount > 0 }">
+                <span class="fa-solid fa-users new-users-job" [ngClass]="{ 'div-new-data': invalidedJobListingCount !== null && invalidedJobListingCount !== undefined && invalidedJobListingCount > 0 }"></span>
+              </div>
+              <div class="text-info text-center mt-2"></div>
+              <div class="text-info text-center mt-3">
+                <h4 class="new-users-job" [ngClass]="{ 'div-new-data': inactiveUsersCount !== null && inactiveUsersCount !== undefined && inactiveUsersCount > 0 }">{{ "newAccounts" | translate }} <br />{{ inactiveUsersCount ?? 0 }}</h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3" (click)="toggleUsersValiadeBadgeVisibility()">
+            <div class="card border-info mx-sm-1 p-3 btn div-badge text-shadow new-users-job">
+              <div class="card border-info shadow text-info p-3 my-card div-badge">
+                <span class="fa-solid fa-users new-users users" aria-hidden="true"></span>
+              </div>
+              <div class="text-info text-center mt-2"></div>
+              <div class="text-info text-center mt-3">
+                <h4 class="new-users users">{{ "users" | translate }} <br />{{ activeUsersCount }}</h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3" (click)="toggleJobListingsInvaliadeBadgeVisibility()">
+            <div class="card border-info mx-sm-1 p-3 btn div-badge text-shadow" [ngClass]="{ 'div-new-data': invalidedJobListingCount !== null && invalidedJobListingCount !== undefined && invalidedJobListingCount > 0 }">
+              <div class="card border-info shadow text-info p-3 my-card div-badge" [ngClass]="{ 'div-new-data': invalidedJobListingCount !== null && invalidedJobListingCount !== undefined && invalidedJobListingCount > 0 }">
+                <span class="fa-solid fa-briefcase new-users-job" [ngClass]="{ 'div-new-data': invalidedJobListingCount !== null && invalidedJobListingCount !== undefined && invalidedJobListingCount > 0 }"></span>
+              </div>
+              <div class="text-info text-center mt-2"></div>
+              <div class="text-info text-center mt-3">
+                <h4 class="new-users-job" [ngClass]="{ 'div-new-data': invalidedJobListingCount !== null && invalidedJobListingCount !== undefined && invalidedJobListingCount > 0 }">{{ "newOffers" | translate }} <br />{{ invalidedJobListingCount ?? 0 }}</h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-3" (click)="toggleJobListingsValiadeBadgeVisibility()">
+            <div class="card border-info mx-sm-1 p-3 btn div-badge text-shadow new-users">
+              <div class="card border-info shadow text-info p-3 my-card div-badge">
+                <span class="fa-solid fa-briefcase job-validate" aria-hidden="true"></span>
+              </div>
+              <div class="text-info text-center mt-2"></div>
+              <div class="text-info text-center mt-3">
+                <h4 class="new-users job-validate">{{ "validatedOffers" | translate }} <br />{{ validedJobListingCount }}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="visibilityStateManagerService.displayPlanning" class="container contenair-bloc">
+        <br /><br />
+        <div class="container">
+          <div class="card-appli" [ngSwitch]="view">
+            <div class="row text-center">
+              <div class="col-md-4">
+                <div class="btn-group">
+                  <div class="btn btn-color" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" [excludeDays]="[0, 6]" (viewDateChange)="closeOpenMonthViewDay()">{{ "previous" | translate }}</div>
+                  <div class="btn btn-outline-secondary btn-color" mwlCalendarToday [(viewDate)]="viewDate">{{ "today" | translate }}</div>
+                  <div class="btn btn-color" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" [excludeDays]="[0, 6]" (viewDateChange)="closeOpenMonthViewDay()">{{ "next" | translate }}</div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <h3 class="style-date">{{ viewDate | calendarDate : view + "ViewTitle" : "fr" }}</h3>
+              </div>
+              <div class="col-md-4">
+                <div class="btn-group">
+                  <div class="btn btn-color" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">{{ "month" | translate }}</div>
+                  <div class="btn btn-color" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">{{ "week" | translate }}</div>
+                  <div class="btn btn-color" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">{{ "day" | translate }}</div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events" [refresh]="refresh" locale="fr" [excludeDays]="[0, 6]" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="handleEvent('Clicked', $event.event)"></mwl-calendar-month-view>
+            <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events" [refresh]="refresh" locale="fr" [excludeDays]="[0, 6]" [dayStartHour]="8" [dayEndHour]="18" (eventClicked)="handleEvent('Clicked', $event.event)"></mwl-calendar-week-view>
+            <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [dayStartHour]="8" [dayEndHour]="18" locale="fr" [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"></mwl-calendar-day-view>
+          </div>
+        </div>
+
+        <div class="container" *ngIf="isCreate || isUpdate" #formSection>
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <form [formGroup]="registrationForm" (ngSubmit)="handleCandidateRegistration()">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row mb-3">
+                      <div class="col-sm-2">
+                        <h3 class="mb-0 text-secondary function-role"><strong>{{ "candidate" | translate }} :</strong></h3>
+                      </div>
+                      <div class="col-sm-4 text-secondary">
+                        <div *ngIf="isCreate" class="form-control" style="height: auto; display: inline-block">{{ theJobApplication?.user?.name }} {{ theJobApplication?.user?.firstname }}</div>
+                        <div *ngIf="isUpdate" class="form-control" style="height: auto; display: inline-block">{{ myAppointment?.jobApplication?.user?.firstname }} {{ myAppointment?.jobApplication?.user?.name }}</div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-sm-2">
+                        <h3 class="mb-0 text-secondary function-role"><strong>{{ "jobOffer" | translate }} :</strong></h3>
+                      </div>
+                      <div class="col-sm-6 text-secondary">
+                        <div *ngIf="isCreate" class="form-control" style="height: auto; display: inline-block">{{ theJobApplication?.jobListing?.jobTitle?.title }}</div>
+                        <div *ngIf="isUpdate" class="form-control" style="height: auto; display: inline-block">{{ myAppointment?.jobApplication?.jobListing?.jobTitle?.title }}</div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-sm-2">
+                        <h3 class="mb-0 text-secondary function-role"><strong>{{ "company" | translate }} :</strong></h3>
+                      </div>
+                      <div class="col-sm-3 text-secondary">
+                        <div *ngIf="isCreate" class="form-control" style="height: auto; display: inline-block">{{ theJobApplication?.jobListing?.user?.nameCompany }}</div>
+                        <div *ngIf="isUpdate" class="form-control" style="height: auto; display: inline-block">{{ myAppointment?.jobApplication?.jobListing?.user?.nameCompany }}</div>
+                      </div>
+                    </div>
+
+                    <div class="row mb-3">
+                      <div class="col-sm-2">
+                        <h3 class="mb-0 text-secondary function-role"><strong>{{ "date" | translate }} :</strong></h3>
+                      </div>
+                      <div class="col-sm-3 text-secondary">
+                        <input type="date" class="form-control" formControlName="appointmentDate" [class.is-invalid]="registrationForm.get('appointmentDate')?.invalid && (registrationForm.get('appointmentDate')?.dirty || registrationForm.get('appointmentDate')?.touched)" />
+                        <div *ngIf="registrationForm.get('appointmentDate')?.invalid && (registrationForm.get('appointmentDate')?.dirty || registrationForm.get('appointmentDate')?.touched)" class="invalid-feedback">
+                          {{ "this-field-is-required" | translate }}
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <h3 class="mb-0 text-secondary function-role"><strong>{{ "timeSlot" | translate }} :</strong></h3>
+                      </div>
+                      <div class="col-sm-3 text-secondary">
+                        <select class="form-control" id="timeSlotId" formControlName="timeSlotId" [class.is-invalid]="registrationForm.get('timeSlotId')?.invalid && (registrationForm.get('timeSlotId')?.dirty || registrationForm.get('timeSlotId')?.touched)">
+                          <option value="" disabled>{{ "selectJobTitle" | translate }}</option>
+                          <option *ngFor="let slot of timeslots" [value]="slot.timeSlotId">{{ slot.title | translate }}</option>
+                        </select>
+                        <div *ngIf="registrationForm.get('timeSlotId')?.invalid && (registrationForm.get('timeSlotId')?.dirty || registrationForm.get('timeSlotId')?.touched)" class="invalid-feedback">
+                          {{ "this-field-is-required" | translate }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <br />
+                <div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="card">
+                        <div class="d-grid gap-2 col-12 mx-auto">
+                          <div class="me-md-2"></div>
+                          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button *ngIf="isCreate" class="btn save-button me-md-2" type="submit">
+                              <i class="fa-solid fa-floppy-disk"></i>
+                              {{ "save" | translate }}
+                            </button>
+                            <button *ngIf="isUpdate" class="btn btn-to-update me-md-2" type="submit">
+                              <i class="fa-solid fa-file-pen"></i>
+                              {{ "edit" | translate }}
+                            </button>
+                            <button (click)="closeAppointmentForm()"
+                            class="btn btn-back me-md-2 btn-small" type="button">
+                              <i class="fa-solid fa-rectangle-xmark"></i>
+                              {{ "exit" | translate }}
+                            </button>
+                          </div>
+                          <div class="me-md-2"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <br />
+      </div>
+
+      <div *ngIf="visibilityStateManagerService.managerUsersBloc" class="container contenair-bloc">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="text-center pt-4">{{ "userAccountsManagement" | translate }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mx-auto">
+            <div class="input-group">
+              <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchUsersControl" placeholder="{{ 'searchPlaceholder' | translate }}" id="example-search-input" />
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="container div-style" *ngFor="let user of allUSers">
+          <div class="container mt-4">
+            <div class="card">
+              <div class="card-content grid-table " [class.inactive]="!user.actif || user.actif === null">
+                <div class="display-row-users">{{ user.createdAt | date : "dd-MM-yyyy" }}</div>
+                <div class="display-row-users">{{ user.name }}</div>
+                <div class="display-row-users">{{ user.firstname }}</div>
+                <div class="display-row-users">{{ user.dateBirth | date : "dd-MM-yyyy" }}</div>
+                <div class="display-row-users">{{ user.sex === 'F' ? 'Femme' : 'Homme'}}</div>
+                <div class="display-row-users">{{ user.email }}</div>
+                <div class="display-row-users">{{ user.phoneNumber }}</div>
+                <div> {{ "ROLE." + user.role.title | translate }}</div>
+                <div class="eye-display display-row-users">
+                  <mat-icon class="visibility-icon" (click)="UserProfile(user.userId)">
+                    visibility
+                  </mat-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="visibilityStateManagerService.displayDivBadageUsersValidate" class="container contenair-bloc">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="text-center pt-4">{{ "validAccountsList" | translate }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mx-auto">
+            <div class="input-group">
+              <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchUsersValidateControl" placeholder="{{ 'searchPlaceholder' | translate }}" id="example-search-input" />
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="container div-style" *ngFor="let user of activeUsers">
+          <div class="container mt-4">
+            <div class="card">
+              <div class="card-content grid-table" [class.inactive]="!user.actif || user.actif === null">
+                <div class="display-row-users">{{ user.createdAt | date : "dd-MM-yyyy" }}</div>
+                <div class="display-row-users">{{ user.name }}</div>
+                <div class="display-row-users">{{ user.firstname }}</div>
+                <div class="display-row-users">{{ user.dateBirth | date : "dd-MM-yyyy" }}</div>
+                <div class="display-row-users">{{ user.sex === 'F' ? 'Femme' : 'Homme' }}</div>
+                <div class="display-row-users">{{ user.email }}</div>
+                <div class="display-row-users">{{ user.phoneNumber }}</div>
+                <div class="display-row-users">{{ "ROLE." + user.role.title  | translate }}</div>
+                <div class="eye-display display-row-users">
+                  <mat-icon class="visibility-icon" (click)="UserProfile(user.userId)">
+                    visibility
+                  </mat-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="visibilityStateManagerService.displayDivBadageUsersInvalidate" class="container contenair-bloc">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="text-center pt-4">{{ "newAccountsList" | translate }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mx-auto">
+            <div class="input-group">
+              <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchUsersInvalidateControl" placeholder="{{ 'searchPlaceholder' | translate }}" id="example-search-input" />
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="container div-style" *ngFor="let user of inactiveUsers">
+          <div class="container mt-4">
+            <div class="card">
+              <div class="card-content grid-table" [class.inactive]="!user.actif || user.actif === null">
+                <div class="display-row-users">{{ user.createdAt | date : "dd-MM-yyyy" }}</div>
+                <div class="display-row-users">{{ user.name }}</div>
+                <div class="display-row-users">{{ user.firstname }}</div>
+                <div class="display-row-users">{{ user.dateBirth | date : "dd-MM-yyyy" }}</div>
+                <div class="display-row-users">{{ user.sex === 'F' ? 'Femme' : 'Homme' }}</div>
+                <div class="display-row-users">{{ user.email }}</div>
+                <div class="display-row-users">{{ user.phoneNumber }}</div>
+                <div class="display-row-users"> {{ "ROLE." + user.role.title  | translate }}</div>
+                <div class="eye-display display-row-users">
+                  <mat-icon class="visibility-icon" (click)="UserProfile(user.userId)">
+                    visibility
+                  </mat-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="visibilityStateManagerService.managerJoblistingsBloc" class="container contenair-bloc">
+        <div>
+          <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+              <h1 class="text-center pt-4">{{ "jobOffersManagement" | translate }}</h1>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-5 mx-auto">
+              <div class="input-group">
+                <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchJoblistingsControl" placeholder="{{ 'searchPlaceholder' | translate }}" id="example-search-input" />
+                <span class="input-group-append">
+                  <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="jobListings?.length; else noJobListings">
+            <div class="container mt-4" *ngFor="let job of jobListings" (click)="askJobListingDetail(job.jobListingId)">
+              <div class="card p-3 mt-2 mb-3" [class.inactive]="!job.validate || job.validate === null">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="d-flex flex-row mt-3">
+                      <img src="../../../../assets/pictures/user/recruiter.jpg" width="100" />
+                      <div class="ms-2 d-flex flex-column">
+                        <div class="d-flex flex-row align-items-center">
+                          <h3>{{ job.user.nameCompany }}</h3>
+                        </div>
+                        <h3>{{ job.contractType.title }}</h3>
+                        <h5>{{ job.jobLocation.location }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="mt-2">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="mb-1 title"> {{ "JOBTITLES." + job.jobTitle.title  | translate }}</h1>
+                        <span class="validate">{{ job.checkJobListingByConsultant ? 'Suivie par : ' + job.checkJobListingByConsultant : 'Non traitée' }}</span>
+                      </div>
+                      <br />
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-1">{{ job.description }}</h4>
+                      </div>
+                      <br />
+                      <div class="d-flex flex-row justify-content-between mt-3">
+                        <div class="d-flex flex-column">
+                          <span class="days-ago">{{ "publishedAgo" | translate }}: {{ job.dayAgo }} {{ "days" | translate }}</span>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <span class="days-ago">{{ "applicationDeadline" | translate }}: <strong class="deadline">{{ job.deadline | date : "dd-MM-yyyy" }}</strong></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #noJobListings>
+            <div class="center-container">
+              <div class="d-flex align-items-center justify-content-center content">
+                <div class="empty-jobs-message">
+                  <h1>{{ "noResults" | translate }}</h1>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <div *ngIf="visibilityStateManagerService.displayDivBadageJobsValidate" class="container contenair-bloc">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="text-center pt-4">{{ "validatedOffersList" | translate }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mx-auto">
+            <div class="input-group">
+              <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchJoblistingsValidateControl" placeholder="{{ 'searchPlaceholder' | translate }}" id="example-search-input" />
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <ng-container>
+          <div *ngIf="jobListingsValide?.length; else noJobsValided">
+            <div class="container mt-4" *ngFor="let job of jobListingsValide" (click)="askJobListingDetail(job.jobListingId)">
+              <div class="card p-3 mt-2 mb-3" [class.inactive]="!job.validate || job.validate === null">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="d-flex flex-row mt-3">
+                      <img src="../../../../assets/pictures/user/recruiter.jpg" width="100" />
+                      <div class="ms-2 d-flex flex-column">
+                        <div class="d-flex flex-row align-items-center">
+                          <h3>{{ job.user.nameCompany }}</h3>
+                        </div>
+                        <h3>{{ job.contractType.title }}</h3>
+                        <h5>{{ job.jobLocation.location }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="mt-2">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="mb-1 title"> {{ "JOBTITLES." + job.jobTitle.title  | translate }}</h1>
+                        <span>
+                          <mat-icon *ngIf="!isRecruiter" class="favorite-icon" (click)="toggleSaveJob(job, $event)" [ngClass]="{ saved: job.isSaved }">favorite</mat-icon>
+                        </span>
+                      </div>
+                      <br />
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-1">{{ job.description }}</h4>
+                      </div>
+                      <br />
+                      <div class="d-flex flex-row justify-content-between mt-3">
+                        <div class="d-flex flex-column">
+                          <span class="days-ago">{{ "publishedAgo" | translate }}: {{ job.dayAgo }} {{ "days" | translate }}</span>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <span class="days-ago">{{ "applicationDeadline" | translate }}: <strong class="deadline">{{ job.deadline | date : "dd-MM-yyyy" }}</strong></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <ng-template #noJobsValided>
+            <div class="center-container">
+              <div class="d-flex align-items-center justify-content-center content">
+                <div class="empty-jobs-message">
+                  <h1> {{ "noResults" | translate }}</h1>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </div>
+
+      <div *ngIf="visibilityStateManagerService.displayDivBadageJobsInvalidate" class="container contenair-bloc">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="text-center pt-4">{{ "offersToVerifyAndValidate" | translate }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mx-auto">
+            <div class="input-group">
+              <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchJoblistingsInvalidateControl" placeholder="{{ 'searchPlaceholder' | translate }}" id="example-search-input" />
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="jobListingsInvalide?.length; else noJobsInvalided">
+          <div class="container mt-4" *ngFor="let job of jobListingsInvalide" (click)="askJobListingDetail(job.jobListingId)">
+            <div class="card p-3 mt-2 mb-3" [class.inactive]="!job.validate || job.validate === null">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="d-flex flex-row mt-3">
+                    <img src="../../../../assets/pictures/user/recruiter.jpg" width="100" />
+                    <div class="ms-2 d-flex flex-column">
+                      <div class="d-flex flex-row align-items-center">
+                        <h3>{{ job.user.nameCompany }}</h3>
+                      </div>
+                      <h3>{{ job.contractType.title }}</h3>
+                      <h5>{{ job.jobLocation.location }}</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-8">
+                  <div class="mt-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h1 class="mb-1 title"> {{ "JOBTITLES." + job.jobTitle.title  | translate }}</h1>
+                      <span>
+                        <mat-icon *ngIf="!isRecruiter" class="favorite-icon" (click)="toggleSaveJob(job, $event)" [ngClass]="{ saved: job.isSaved }">favorite</mat-icon>
+                      </span>
+                    </div>
+                    <br />
+                    <div class="d-flex justify-content-between align-items-center">
+                      <h4 class="mb-1">{{ job.description }}</h4>
+                    </div>
+                    <br />
+                    <div class="d-flex flex-row justify-content-between mt-3">
+                      <div class="d-flex flex-column">
+                        <span class="days-ago">{{ "publishedAgo" | translate }}: {{ job.dayAgo }} {{ "days" | translate }}</span>
+                      </div>
+                      <div class="d-flex flex-column">
+                        <span class="days-ago">{{ "applicationDeadline" | translate }}: <strong class="deadline">{{ job.deadline | date : "dd-MM-yyyy" }}</strong></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #noJobsInvalided>
+          <div class="center-container">
+            <div class="d-flex align-items-center justify-content-center content">
+              <div class="empty-jobs-message">
+                <h1>{{ "noResults" | translate }}</h1>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <div *ngIf="visibilityStateManagerService.isMySavedJobListing">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="text-center pt-4">{{ "myValidatedAndTrackedOffers" | translate }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mx-auto">
+            <div class="input-group">
+              <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchJoblistingsControl" placeholder="{{ 'searchPlaceholder' | translate }}" id="example-search-input" />
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="container mt-4">
+          <div *ngIf="myJobsaved?.length; else noJobsSaved">
+            <div class="container mt-4" *ngFor="let jobSaved of myJobsaved" (click)="askJobListingDetail(jobSaved.jobListingId)">
+              <div class="card p-3 mt-2 mb-3">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="d-flex flex-row mt-3">
+                      <img src="../../../../assets/pictures/user/recruiter.jpg" width="100" />
+                      <div class="ms-2 d-flex flex-column">
+                        <div class="d-flex flex-row align-items-center">
+                          <h3>{{ jobSaved?.jobListing?.user?.nameCompany }}</h3>
+                        </div>
+                        <h3>{{ jobSaved?.jobListing?.contractType?.title }}</h3>
+                        <h5>{{ jobSaved?.jobListing?.jobLocation?.location }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="mt-2">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="mb-1 title">{{ jobSaved?.jobListing?.jobTitle?.title }}</h1>
+                        <span>
+                          <div class="demo-section">
+                            <mat-icon class="favorite-icon" (click)="deleteSaveJob(jobSaved.jobListing.jobListingId, $event, jobSaved)" [ngClass]="{ saved: jobSaved?.jobListing?.isSaved }">favorite</mat-icon>
+                          </div>
+                        </span>
+                      </div>
+                      <br />
+                      <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-1">{{ jobSaved?.jobListing?.description }}</h4>
+                      </div>
+                      <br />
+                      <div class="d-flex flex-row justify-content-between mt-3">
+                        <div class="d-flex flex-column">
+                          <span class="days-ago">{{ "publishedAgo" | translate }}: {{ jobSaved?.jobListing?.dayAgo }} {{ "days" | translate }}</span>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <span class="days-ago">
+                            {{ "applicationDeadline" | translate }}: <strong class="deadline">{{ jobSaved?.jobListing?.deadline | date : "dd-MM-yyyy" }}</strong>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noJobsSaved>
+          <div class="center-container">
+            <div class="d-flex align-items-center justify-content-center content">
+              <div class="empty-jobs-message">
+                <h1>{{ "noSavedJobs" | translate }}</h1>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="container table-responsive py-5" *ngIf="visibilityStateManagerService.isApplicationBloc">
+        <h1 class="text-center pt-4">{{ "allMyTrackedOffers" | translate }}</h1>
+        <br />
+        <button class="btn total-apply text-jobAppli" type="button">
+          {{ "totalOffers" | translate }} : {{myJobsavedCount}}
+         </button> 
+         <button class="btn total-apply text-jobAppli" type="button">
+          {{ "totalApplications" | translate }} : {{totalApplicationsCount }}
+         </button>
+        <table class="table table-bordered table-hover table-style">
+          <thead class="thead-dark">
+            <tr class="table-title">
+              <th class="table-title" scope="col">#</th>
+              <th class="table-title" scope="col">{{ "publishedOn" | translate }}</th>
+              <th class="table-title" scope="col">{{ "company" | translate }}</th>
+              <th class="table-title" scope="col">{{ "jobTitle.title" | translate }}</th>
+              <th class="table-title" scope="col">{{ "recruiter" | translate }}</th>
+              <th class="table-title" scope="col">{{ "email" | translate }}</th>
+              <th class="table-title" scope="col">{{ "phone" | translate }}</th>
+              <th class="table-title" scope="col">{{ "total" | translate }}</th>
+              <th class="table-title" scope="col">{{ "profile" | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let jobSaved of myJobsaved; let i = index">
+              <th scope="row">{{ i + 1 }}</th>
+              <td class="display-col-text">{{ jobSaved.jobListing.publicationDate | date : "dd-MM-yyyy" }}</td>
+              <td class="display-col-text">{{ jobSaved.jobListing.user.nameCompany }}</td>
+              <td class="display-col-text">{{ jobSaved.jobListing.jobTitle.title }}</td>
+              <td class="display-col-text">{{ jobSaved.jobListing.user.firstname }} {{ jobSaved.jobListing.user.name }}</td>
+              <td class="display-col-text">{{ jobSaved.jobListing.user.email }}</td>
+              <td class="display-col-text">{{ jobSaved.jobListing.user.phoneNumber }}</td>
+              <td class="total-sub  text-jobAppli display-col-text">{{ jobSaved.jobListing.applicationCount}}</td>
+              <td class="display-col-text">
+                <mat-icon class="visibility-icon" (click)="UserProfile(jobSaved.jobListing.user.userId)">visibility</mat-icon>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <h1 class="text-center pt-4">{{ "candidatesByJobOffer" | translate }}</h1>
+        <br />
+        <div *ngFor="let jobApply of myJobsaved">
+          <ng-container *ngIf="jobApply.jobListing.jobApplications.length > 0">
+            <div class="card-appli">
+              <button class="btn apply-btn text-jobAppli" type="button" (click)="askJobListingDetail(jobApply.jobListing.jobListingId)">
+                <h2 class="d-flex justify-content-between align-items-center">
+                  {{ "company" | translate }}: {{ jobApply.jobListing.user.nameCompany }} - {{ "jobTitle" | translate }}: {{ jobApply.jobListing.jobTitle.title }}
+                  <button *ngIf="jobApply.jobListing.countApply === jobApply.jobListing.numberOfCandidates" class="btn btn-outline-danger total-appli" style="margin-left: auto;" type="button" (click)="closeThisJobListing(jobApply.jobListing.jobListingId,  $event)">
+                    <strong>{{ "close" | translate }}</strong>
+                  </button>
+                </h2>
+                <p>
+                  {{ "publishedOn" | translate }}: {{ jobApply.jobListing.publicationDate | date : "dd-MM-yyyy" }}
+                  <br />
+                  {{ "recruitment" | translate }}: <strong>{{ jobApply.jobListing.numberOfCandidates }}</strong> {{ "candidates" | translate }}
+                  <br />
+                  {{ "numberOfApplications" | translate }}: <strong>{{ jobApply.jobListing.jobApplications.length }}</strong>
+                  <br />
+                  {{ "acceptedApplications" | translate }}: <strong>{{ jobApply.jobListing.countApply }}</strong>
+                  <br />
+                  <span style="color: #f6f0f0; text-align: center; display: block; margin: 0;">
+                    <span *ngIf="jobApply.jobListing.countApply === jobApply.jobListing.numberOfCandidates" class="job-closed-message">{{ "numberOfCandidatesReached" | translate }}</span>
+                  </span>
+                </p>
+              </button>
+              <table class="table table-bordered table-hover table-style">
+                <thead class="thead-dark">
+                  <tr class="table-title">
+                    <th class="table-title" scope="col">{{ "number" | translate }}</th>
+                    <th class="table-title" scope="col">{{ "name" | translate }}</th>
+                    <th class="table-title" scope="col">{{ "firstname" | translate }}</th>
+                    <th class="table-title" scope="col">{{ "dateOfBirth" | translate }}</th>
+                    <th class="table-title" scope="col">{{ "gender" | translate }}</th>
+                    <th class="table-title" scope="col">{{ "experience" | translate }}</th>
+                    <th class="table-title" scope="col">{{ "phone" | translate }}</th>
+                    <th class="table-title" scope="col">{{ "status" | translate }}</th>
+                    <th class="table-title" scope="col">{{ "profile" | translate }}</th>
+                    <th class="table-title justify-content-center" colspan="2" scope="col">{{ "decision" | translate }}</th>
+                    <th class="table-title" scope="col">{{ "interview" | translate }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let application of jobApply.jobListing.jobApplications; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ application.user.name }}</td>
+                    <td>{{ application.user.firstname }}</td>
+                    <td>{{ application.user.dateBirth | date: 'dd-MM-yyyy' }}</td>
+                    <td>{{ application.user.sex === 'F' ? 'Femme' : 'Homme' }}</td>
+                    <td>{{ application?.user?.experience?.title }}</td>
+                    <td>{{ application.user.phoneNumber }}</td>
+                    <td [ngClass]="{ 'status-no-check': application.status === null, 'status-en-cours': application.status && !application.jobInterviewOK, 'status-accepted': application.jobInterviewOK }">{{ application.jobInterviewOK ? 'Retenu' : application.status ? 'En cours' : 'Pas traité' }}</td>
+                    <td [ngClass]="{'status-accepted': application.jobInterviewOK}" class="display-col-text">
+                      <mat-icon class="visibility-icon" (click)="UserProfile(application.user.userId)">visibility</mat-icon>
+                      <mat-icon *ngIf="application.status && application.appointment && application.user.addNote" class="visibility-icon" (click)="addNoteInterview(application.user)">speaker_notes</mat-icon>
+                    </td>
+                    <td *ngIf="application.status === null" class="refus display-col-text" (click)="invalidateJobApplication(application.jobApplicationId)">{{ "decline" | translate }}</td>
+                    <td class="accepted display-col-text" *ngIf="application.status && !application.jobInterviewOK && !application.appointment" [class.disabled]="!application.jobInterviewOK">{{ "decline" | translate }}</td>
+                    <td *ngIf="application.status && !application.jobInterviewOK && application.appointment">
+                      <div class="small-text text-jobAppli">{{ "interviewScheduled" | translate }}</div>
+                    </td>
+                    <td *ngIf="application.status === null" class="accepted display-col-text" (click)="validateJobApplication(application.jobApplicationId)">{{ "invite" | translate }}</td>
+                    <td class="accepted display-col-text" *ngIf="application.status && !application.jobInterviewOK && !application.appointment" [class.disabled]="!application.jobInterviewOK">{{ "invite" | translate }}</td>
+                    <td *ngIf="application.status && !application.jobInterviewOK && application.appointment">
+                      <div class="small-text text-jobAppli">{{ "on" | translate }} : {{application.appointment.appointmentDate | date: 'dd-MM-yyyy' }} <br> {{ "between" | translate }}: {{application.appointment.timeSlots.title }}</div>
+                    </td>
+                    <td *ngIf="hasAppointment(application)" class="interview display-col-text" [class.disabled]=" application.status == null && !application.jobInterviewOK" (click)="registerNewAppointnment(application.jobApplicationId)">{{ "scheduleAppointment" | translate }}</td>
+                    <td *ngIf="application.status && !application.jobInterviewOK && application.appointment" [ngClass]="{ 'status-accepted': application.status == null && application.jobInterviewOK && application.user.addNote }">
+                      <button type="button" class="btn  btn-small btn-no" [class.disabled]="(!isAppointmentTodayOrPast(application.appointment.appointmentDate)) || application.user.addNote || application.jobInterviewOK" (click)="finallyInvalidateJobApplicationAfterInterview(application.jobApplicationId)"> {{ "reject" | translate }} </button>
+                      <button type="button" class="btn  btn-small btn-ok" [class.disabled]="!isAppointmentTodayOrPast(application.appointment.appointmentDate) ||  application.jobInterviewOK " (click)="finallyValidateJobApplicationAfterInterview(application.jobApplicationId)"> {{ "accepted" | translate }} </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+          <br> <br> <br>
+        </div>
+      </div>
+
+      <div *ngIf="visibilityStateManagerService.displayAllAppointment" class="container contenair-bloc">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="text-center pt-4">{{ "allInterviewAppointments" | translate }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mx-auto">
+            <div class="input-group">
+              <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchInfoInAppointementInterviewControl" placeholder="{{ 'searchPlaceholder' | translate }}" id="example-search-input" />
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="container div-style" *ngFor="let appointment of AllAppointmentGrouped">
+          <div class="container mt-4">
+            <div class="card">
+              <div class="card-content grid-table text-appointment">
+                <div class="display-row"><strong>{{ "jobTitle" | translate }} : </strong> {{ appointment.jobApplication.jobListing.jobTitle.title }}</div>
+                <div class="display-row"> <strong>{{ "company" | translate }} :</strong> {{ appointment.jobApplication.jobListing.user.nameCompany}}</div>
+                <div class="display-row"> <strong>{{ "date" | translate }} :</strong>  {{ appointment.appointmentDate | date: "dd-MM-yyyy"}}</div>
+                <div class="display-row"> <strong>{{ "from" | translate }} : </strong> {{ appointment.timeSlots.appHoursStart }} {{ "to" | translate }} {{ appointment.timeSlots.appHoursEnd }}</div>
+                <div class="display-row">  <strong>{{ "candidate" | translate }} : </strong> {{ appointment.jobApplication.user.firstname}} {{ appointment.jobApplication.user.name}}</div>
+                <div class="display-row"> <strong>{{ "consultant" | translate }} : </strong> {{ appointment.jobApplication.checkJobAppliByConsultant }}</div>
+              </div>
+            </div> 
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="visibilityStateManagerService.displayAppointment" class="container contenair-bloc">
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="text-center pt-4">{{ "interviewAppointmentsList" | translate }}</h1>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-5 mx-auto">
+            <div class="input-group">
+              <input class="form-control border-end-0 border rounded-pill" type="search" [formControl]="searchInfoInMyAppointementInterviewControl" placeholder="{{ 'searchPlaceholder' | translate }}" id="example-search-input" />
+              <span class="input-group-append">
+                <button class="btn btn-outline-secondary bg-white border-bottom-0 border rounded-pill ms-n5" type="button">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="container div-style" *ngFor="let appointment of myAppointmentGrouped">
+          <div class="container mt-4">
+            <div class="card">
+              <div class="card-content grid-table text-appointment">
+                <div class="display-row"><strong>{{ "date" | translate }} :</strong>  {{ appointment.appointmentDate | date: "dd-MM-yyyy"}}</div>
+                <div class="display-row"> <strong>{{ "from" | translate }} : </strong>  {{ appointment.timeSlots.appHoursStart }} <strong>{{ "to" | translate }} </strong> {{ appointment.timeSlots.appHoursEnd }}</div>
+                <div class="display-row"> <strong>{{  "jobTitle.title" | translate }} :  </strong> {{ appointment.jobApplication.jobListing.jobTitle.title }}</div>
+                <div class="display-row"> <strong>{{ "company" | translate }} : </strong>  {{ appointment.jobApplication.jobListing.user.nameCompany}}</div>
+                <div class="display-row"> <strong>{{ "candidate" | translate }} :</strong>  {{ appointment.jobApplication.user.firstname}} {{ appointment.jobApplication.user.name}}</div>
+                <div class="display-row"> <strong>{{ "phone" | translate }} :</strong>  {{ appointment.jobApplication.user.phoneNumber }}</div>
+                <div class="eye-display ">
+                  <mat-icon class="visibility-icon " (click)="deleteThisAppointment(appointment.appointmentId)">delete</mat-icon>
+                </div>
+                <div class="eye-display ">
+                  <mat-icon class="visibility-icon " (click)="updateThisAppointment(appointment.appointmentId)">edit</mat-icon>
+                </div>
+                <div class="eye-display ">
+                  <mat-icon class="visibility-icon" (click)="askJobListingDetail(appointment.jobApplication.jobListing.jobListingId)">works</mat-icon>
+                </div>
+                <div class="eye-display ">
+                  <mat-icon class="visibility-icon" (click)="UserProfile(appointment.jobApplication.user.userId)">visibility</mat-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

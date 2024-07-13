@@ -1,0 +1,60 @@
+<div class="container mt-4 display">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="mat-dialog-content defilement">
+        <div class="mat-dialog-content">
+          <form [formGroup]="registrationForm" (ngSubmit)="updateCandidateNoteInterview()">
+            <div class="form-container">
+              <mat-card>
+                <mat-card-header>
+                  <h1 class="text-center w-100">{{ 'change-candidate-note' | translate }}</h1>
+                </mat-card-header>
+
+                <mat-card-content>
+                  <div class="form-group">
+                    <label for="candidate"  class="label-text">{{ 'Candidate' | translate }}</label>
+                    <input id="candidate" formControlName="candidate" readonly class="form-control" />
+
+                    <label for="interviewDate" class="label-text">{{ 'interviewDate' | translate }}</label>
+                    <input id="interviewDate" formControlName="interviewDate" readonly class="form-control" />
+
+                    <label for="position" class="label-text">{{'change-function' | translate }}</label>
+                    <input id="position" formControlName="position" readonly class="form-control" />
+
+                    <label for="technicalSkills" class="label-text">{{'technicalSkillsLabel' | translate }}</label>
+                    <textarea id="technicalSkills" formControlName="technicalSkills" class="form-control"></textarea>
+
+                    <label for="professionalExperience" class="label-text">{{'professionalExperienceLabel' | translate }}</label>
+                    <textarea id="professionalExperience" formControlName="professionalExperience" class="form-control"></textarea>
+
+                    <label for="personalQualities" class="label-text">{{'personalQualitiesLabel' | translate }}</label>
+                    <textarea id="personalQualities" formControlName="personalQualities" class="form-control"></textarea>
+
+                    <label for="recommendation" class="label-text">{{'recommendationLabel' | translate }}</label>
+                    <textarea id="recommendation" formControlName="recommendation" class="form-control"></textarea>
+
+                    <label for="signature" class="label-text">{{'signatureLabel' | translate }}</label>
+                    <textarea id="signature" formControlName="signature" readonly class="form-control"></textarea>
+                  </div>
+                </mat-card-content>
+
+                <div mat-dialog-actions class="action">
+                  <div class="display">
+                    <button mat-raised-button type="submit" class="save-button">
+                      <span class="material-icons">save</span>
+                      {{ "change-save" | translate }}
+                    </button>
+                    <button mat-raised-button [mat-dialog-close]="false" class="btn-save">
+                      <span class="material-icons">cancel</span>
+                      {{ "change-close" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </mat-card>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

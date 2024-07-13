@@ -1,0 +1,465 @@
+<!-- START  DIV AFFICHAGE DES DETAILS-->
+<section class="light">
+  <div class="container py-2">
+    <div class="h1 text-center text-dark" id="pageHeaderTitle">
+      <h1>Détails de l'Offre d'Emploi</h1>
+    </div>
+    <article class="postcard light yellow">
+      <div
+        class="postcard__text t-dark"
+        [class.inactive]="jobListing?.jobClose"
+      >
+        <div *ngIf="!jobListing?.validate" class="d-flex flex-column validate">
+          <span>Offre non encore validée</span>
+        </div>
+
+        <div
+          *ngIf="jobListing?.jobClose"
+          class="d-flex justify-content-between align-items-center flex-column disable"
+        >
+          <span>Offre clôturée et desactivée</span>
+          <span style="color: black"
+            >Date de suppression :
+            {{ jobListing?.deadlineExpires | date : "dd-MM-yyyy" }}
+          </span>
+        </div>
+
+        <br />
+        <div>
+          <h2>
+            Nom de l'Entreprise: <br />
+            <strong class="compagny">{{
+              jobListing?.user?.nameCompany
+            }}</strong>
+          </h2>
+        </div>
+        <div>
+          <strong>RECRUTEUR :</strong> <br />
+          <strong>Nom et Prénom :</strong> {{ jobListing?.user?.firstname }}
+          {{ jobListing?.user?.name }}<br />
+          <strong>E-mail : </strong> {{ jobListing?.user?.email }} <br />
+          <strong>Téléphone : </strong> {{ jobListing?.user?.phoneNumber }}
+        </div>
+        <br />
+        <div>
+          <h2>Description de l'entreprise :</h2>
+          {{ jobListing?.user?.descriptionCompany }}
+        </div>
+        <br />
+        <h1>
+          Poste à Pourvoir :
+          <strong class="compagny"> {{ jobListing?.jobTitle?.title }} </strong>
+        </h1>
+        <br />
+        <h3>
+          <li
+            *ngIf="isAdmin || isConsultant || isOwner"
+            class="tag__item candidate-accepted"
+          >
+            <span>
+              <i class="fa-solid fa-users"> </i> Nombre de Candidats à recruter
+              : {{ jobListing?.numberOfCandidates }}
+            </span>
+          </li>
+        </h3>
+        <h3>
+          <li class="tag__item candidate-accepted">
+            <span>
+              <i class="fa-solid fa-calendar"> </i> Experience recherchée :
+              {{ jobListing?.experience?.title }}
+            </span>
+          </li>
+        </h3>
+
+        <h4>
+          <li class="tag__item">
+            <i class="fa-solid fa-calendar-days mr-2"> </i> Publiée :
+            {{ jobListing?.publicationDate | date : "dd-MM-yyyy" }}
+          </li>
+        </h4>
+
+        <h4>
+          <li class="tag__item">
+            <i class="fa-solid fa-hourglass-start mr-2"> </i> Fin Postulation:
+            {{ jobListing?.deadline | date : "dd-MM-yyyy" }}
+          </li>
+        </h4>
+        <br />
+        <div>
+          <h2>Description de l'emploi :</h2>
+          {{ jobListing?.description }}
+        </div>
+        <br />
+        <div>
+          <!-- Responsabilités -->
+          <h2>Responsabilités principales :</h2>
+          <ul *ngIf="jobListing?.responsibilities">
+            <li *ngFor="let responsibility of jobListing?.responsibilities">
+              <i class="fa-solid fa-caret-right"></i> {{ responsibility }}
+            </li>
+          </ul>
+        </div>
+        <div>
+          <!-- Qualifications Requises -->
+          <h2>Qualifications requises :</h2>
+          <ul *ngIf="jobListing?.requiredQualifications">
+            <li
+              *ngFor="let qualification of jobListing?.requiredQualifications"
+            >
+              <i class="fa-solid fa-caret-right"></i> {{ qualification }}
+            </li>
+          </ul>
+        </div>
+        <div>
+          <!-- Avantages -->
+          <h2>Avantages :</h2>
+          <ul *ngIf="jobListing?.benefits">
+            <li *ngFor="let benefit of jobListing?.benefits">
+              <i class="fa-solid fa-caret-right"></i> {{ benefit }}
+            </li>
+          </ul>
+        </div>
+
+        <ul class="postcard__tagbox">
+          <li class="tag__item">
+            <i class="fa-solid fa-location-dot mr-2"></i> Localite:
+            <strong> {{ jobListing?.jobLocation?.location }} </strong>
+          </li>
+          <li class="tag__item">
+            <i class="fa-solid fa-calendar-days mr-2"></i> Debuter le:
+            <strong> {{ jobListing?.startDate | date : "dd-MM-yyyy" }}</strong>
+          </li>
+          <li class="tag__item">
+            <i class="fa-solid fa-clock-rotate-left mr-2"></i> Temps de Travail:
+            <strong> {{ jobListing?.workingHours }} /Semaines </strong>
+          </li>
+          <li class="tag__item play yellow">
+            <i class="fas fa-clock mr-2"></i> Heure de Debut:
+            <strong>{{ jobListing?.workingHoursStart }} </strong>
+          </li>
+          <li class="tag__item">
+            <i class="fas fa-clock mr-2"></i> Heure de Fin:
+            <strong> {{ jobListing?.workingHoursEnd }} </strong>
+          </li>
+          <li class="tag__item play yellow">
+            <i class="fa-solid fa-euro-sign mr-2"></i> Salire:
+            <strong> {{ jobListing?.salary }} l'année </strong>
+          </li>
+        </ul>
+        <ul class="postcard__tagbox" *ngIf="isAdmin || isConsultant || isOwner">
+          <li class="tag__item">
+            <i class="fas fa-clock mr-2"></i> Date d'expiration:
+            <strong>
+              {{ jobListing?.deadlineExpires | date : "dd-MM-yyyy" }}</strong
+            >
+          </li>
+          <li class="tag__item play yellow">
+            <i class="fas fa-play mr-2"></i> jobClose:
+            <strong> {{ jobListing?.jobClose ? "Oui" : "Non" }} </strong>
+          </li>
+          <li *ngIf="jobListing?.noteJoblisting" class="tag__item play yellow">
+            <i class="fa-regular fa-clipboard mr-2"></i> <strong></strong> Note:
+            <strong>{{ jobListing?.noteJoblisting }}</strong>
+          </li>
+
+          <li *ngIf="isAdmin || isConsultant || isOwner" class="tag__item">
+            <i class="fas fa-tag mr-2"></i> Consultant en charge :
+            <strong>{{ jobListing?.checkJobListingByConsultant }}</strong>
+          </li>
+        </ul>
+      </div>
+    </article>
+    <!-- END  DIV AFFICHAGE DES DETAILS-->
+    <!-- START  DIV DES BUTON DE CONTROLE -->
+    <div class="btn-div" *ngIf="isDivVisible">
+      <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+        <button
+          *ngIf="
+            !isAuthenticated ||
+            (isAuthenticated && isCandidate && !hasAlreadyApplied)
+          "
+          class="btn btn-success me-md-2"
+          type="button"
+          (click)="applyForJob()"
+        >
+          <i class="fa-solid fa-check"></i>
+          Postuler
+        </button>
+        <button
+        *ngIf="isAdmin && isValided"
+        class="btn btn-assign me-md-2"
+        type="button"
+        (click)="isAssignFormVisible = true"
+        (click)="isDivVisible = false">
+        <i class="fa-solid fa-check"></i>
+        Assigner à un collaborateur
+         </button>
+        <button
+          *ngIf="(isAdmin || isConsultant) && !isValided"
+          class="btn btn-success me-md-2"
+          type="button"
+          (click)="validateJobPublished()"
+        >
+          <i class="fa-solid fa-check"></i>
+          Valider
+        </button>
+        <button
+          *ngIf="isAdmin || isConsultant || isOwner"
+          class="btn btn-danger me-md-2"
+          type="button"
+          (click)="deleteMyJobListingOrDeleteByConsultant()"
+        >
+          <i class="fa-solid fa-trash-can"></i>
+          Supprimer
+        </button>
+        <button
+          *ngIf="(isAdmin || isConsultant ) && !isValided"
+          type="button"
+          class="btn btn-warning me-md-2"
+          (click)="invalidateJobListingToDeleteByConsultant()"
+        >
+          <i class="fa-solid fa-trash-can"></i>
+          Invalider
+        </button>
+        <button
+          *ngIf="(isAdmin || isConsultant) && !jobListing?.validate"
+          type="button"
+          class="btn btn-to-update me-md-2"
+          (click)="isFormVisible = true"
+          (click)="isDivVisible = false"
+        >
+          <i class="fa-solid fa-edit"></i>
+          A Modifier
+        </button>
+        <!-- Start buton a modifier Recuteur -->
+        <button
+          *ngIf="isOwner &&  (!jobListing?.validate || jobListing?.jobClose)"
+          (click)="updateJobListingBeforePublished()"
+          type="button"
+          class="btn btn-to-update me-md-2"
+        >
+          <i class="fa-solid fa-edit"></i>
+          A Modifier
+        </button>
+        <!-- End buton a modifier Recuteur -->
+        <!-- Start button modifier Recruteur -->
+        <button
+          *ngIf="isOwner && jobListing?.jobClose"
+          (click)="activeThisJobListing()"
+          type="button"
+          class="btn btn-success me-md-2"
+        >
+          <i class="fa fa-redo"></i>
+          Réactivation
+        </button>
+        <!-- End button modifier Recruteur -->
+
+        <!-- Start buton modifier Recuteur -->
+        <button
+          *ngIf="isOwner && jobListing?.validate && !jobListing?.jobClose"
+          (click)="updateDeadline()"
+          type="button"
+          class="btn btn-warning me-md-2"
+        >
+          <i class="fa-solid fa-edit"></i>
+          Modifier Deadline
+        </button>
+        <!-- End buton  modifier Recuteur -->
+        <button
+          class="btn btn btn-secondary me-md-2"
+          type="button"
+          (click)="goBack()"
+        >
+          <i class="fa-solid fa-circle-xmark"></i>
+          Quitter
+        </button>
+      </div>
+    </div>
+    <!-- END  DIV DES BUTON DE CONTROLE -->
+
+    <div></div>
+  </div>
+</section>
+<!-- START  DIV INVALIDATION D'UNE OFFRE-->
+<div class="mat-dialog-content" *ngIf="isFormVisible">
+  <form
+    [formGroup]="noteJoblistingForm"
+    (ngSubmit)="updateRequestToRecruiter()"
+  >
+    <div class="form-container">
+      <div>
+        <mat-card>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <h1 class="display-title">
+              Veuillez Ajouter une Note Explicative pour le Recruteur
+            </h1>
+          </div>
+
+          <mat-card-content>
+            <!-- description start-->
+            <div class="description">
+              <mat-form-field
+                appearance="outline"
+                class="example-full-width noteJoblisting"
+                [ngClass]="{
+                  'is-invalid':
+                    noteJoblisting?.invalid &&
+                    (noteJoblisting?.dirty || noteJoblisting?.touched)
+                }"
+              >
+                <mat-label for="noteJoblisting">{{
+                  "change-noteJoblisting" | translate
+                }}</mat-label>
+                <textarea
+                  matInput
+                  placeholder="{{ 'change-noteJoblisting' | translate }}"
+                  formControlName="noteJoblisting"
+                  id="noteJoblisting"
+                ></textarea>
+                <mat-icon matSuffix>description</mat-icon>
+                <mat-error
+                  *ngIf="
+                    noteJoblisting?.invalid &&
+                    (noteJoblisting?.dirty || noteJoblisting?.touched)
+                  "
+                  class="error-message"
+                >
+                  <strong *ngIf="noteJoblisting?.errors?.['required']">{{
+                    "this-field-is-required" | translate
+                  }}</strong>
+                </mat-error>
+                <mat-error
+                  class="error-message"
+                  *ngIf="noteJoblistingForm.get('noteJoblisting')?.errors?.['minlength']"
+                >
+                  {{
+                    "noteJoblisting-must-be-at-least-20-characters-long"
+                      | translate
+                  }}
+                </mat-error>
+                <mat-error
+                  class="error-message"
+                  *ngIf="noteJoblistingForm.get('noteJoblisting')?.errors?.['maxlength']"
+                >
+                  {{
+                    "noteJoblisting-must-be-less-than-2000-characters-long"
+                      | translate
+                  }}
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <!-- description start-->
+          </mat-card-content>
+          <div mat-dialog-actions class="action">
+            <button mat-raised-button type="submit" class="btn-to-update">
+              <span class="material-icons"> send </span>
+              Envoyer
+            </button>
+            <button
+              mat-raised-button
+              (click)="isFormVisible = false"
+              (click)="isDivVisible = true"
+              class="btn-save"
+            >
+              <span class="material-icons">cancel</span>
+              Close
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- END  DIV INVALIDATION D'UNE OFFRE-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- START DIV Assign tasks -->
+<div class="mat-dialog-content" *ngIf="isAssignFormVisible">
+  <form [formGroup]="assingnJoblistingForm" (ngSubmit)="assignJobListingToConsultant()">
+    <div class="form-container">
+      <div>
+        <mat-card>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <h1 class="display-title">
+              Veuillez Selectionner le Nom du Consultant
+            </h1>
+          </div>
+
+          <mat-card-content>
+            <div class="description"> 
+              <!-- location start -->
+              <mat-form-field
+                appearance="outline"
+                class="data-display"
+                [ngClass]="{
+                  'is-invalid': assingnJoblistingForm.controls['userId'].invalid &&
+                    (assingnJoblistingForm.controls['userId'].dirty || assingnJoblistingForm.controls['userId'].touched),
+                }"
+              >
+                <mat-label for="userId">{{ "change-location" | translate }}</mat-label>
+                <mat-select
+                  class="data-display"
+                  type="number"
+                  formControlName="userId"
+                  placeholder="{{ 'change-location' | translate }}"
+                  id="userId"
+                >
+                  <mat-option
+                    *ngFor="let collaborator of collaborators"
+                    [value]="collaborator.userId"
+                    class="data-display"
+                  >
+                    {{ collaborator.consultant }}
+                  </mat-option>
+                </mat-select>
+                <mat-icon matSuffix>work</mat-icon>
+                <mat-error
+                  *ngIf="assingnJoblistingForm.controls['userId'].invalid &&
+                    (assingnJoblistingForm.controls['userId'].dirty || assingnJoblistingForm.controls['userId'].touched)"
+                  class="error-message"
+                >
+                  <strong *ngIf="assingnJoblistingForm.controls['userId'].errors?.['required']">{{
+                    "this-field-is-required" | translate
+                  }}</strong>
+                </mat-error>
+              </mat-form-field>
+              <!-- location end -->
+            </div>
+          </mat-card-content>
+          <div mat-dialog-actions class="action">
+            <button mat-raised-button type="submit" class="btn-to-update">
+              <span class="material-icons">send</span>
+              Envoyer
+            </button>
+            <button
+              mat-raised-button
+              (click)="isAssignFormVisible = false; isDivVisible = true"
+              class="btn-save"
+            >
+              <span class="material-icons">cancel</span>
+              Close
+            </button>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- END DIV Assign tasks -->

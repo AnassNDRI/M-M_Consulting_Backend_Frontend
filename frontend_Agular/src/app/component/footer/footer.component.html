@@ -1,0 +1,95 @@
+<footer
+  *ngIf="footerVisible"
+  class="text-center text-lg-start text-white footer fixed-footer"
+  style="background-color: #9e9e9f"
+>
+  <!-- Grid container -->
+  <div class="container">
+    <!-- Section: Links -->
+    <section class="line">
+      <!--Grid row-->
+      <div class="row">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+          <p class="text-shadow">
+            {{"fullStackDeveloperDescription" | translate }}
+          </p>
+        </div>
+        
+        <!-- Grid column -->
+        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+          <div class="row" style="padding: 20px">
+            <div class="col">
+              <span class="text text-shadow">
+                <img
+                src="../../../assets/pictures/moi1.jpg"
+                width="120"
+                height="150"
+                class="img-fluid disign"
+              />
+               <p class="paragraph"></p> 
+                <p class="paragraph"> {{ "change-language.developed-by" | translate }} <br> Anass N'DRI <br> {{ "change-language.Full-Stack-Angular-Developer" | translate }}</p>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+          <h6 class="text-uppercase font-weight-bold text-shadow"
+          >
+            <i class="bi bi-pin-map-fill contact-icons"></i>
+            {{ "change-language.address" | translate }}
+          </h6>
+          <p class="text-shadow">
+            Rue de la reussite 100 <br />
+            4800 Verviers<br />
+            BELGIQUE
+          </p>
+          <br />
+
+          <h6 class="text-uppercase font-weight-bold text-shadow">
+            {{ "change-language.contact" | translate }}
+          </h6>
+          <p class="text-shadow">
+            <i class="bi bi-envelope-at-fill contact-icons "></i>
+            info&#64;mm-consulting.be
+          </p>
+          <p class="text-shadow">
+            <i class="bi bi-telephone-fill contact-icons"></i> +32 01 234 567 88
+          </p>
+          <p class="text-shadow"><i class="bi bi-phone contact-icons"></i> +32 01 234 567 89</p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!--Grid row-->
+    </section>
+    <hr />
+
+    <!-- Section: Copyright -->
+    <!-- Copyright -->
+    <div class="text-center p-3 social-icons">
+      <div>
+        <a href="" class="text-white me-4">
+          <i class="bi bi-facebook"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="bi bi-twitter"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="bi bi-google"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="bi bi-instagram"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="bi bi-linkedin"></i>
+        </a>
+        <a href="" class="text-white me-4">
+          <i class="bi bi-github"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- Grid container -->
+</footer>

@@ -1,0 +1,321 @@
+/* This pen */
+body {
+  font-family: "Baloo 2", cursive;
+  font-size: 16px;
+  color: #ffffff;
+  text-rendering: optimizeLegibility;
+  font-weight: initial;
+}
+
+.dark {
+  background: #110f16;
+}
+
+
+.show-test{
+  padding-bottom: 10px;
+  background: linear-gradient(to right, #8b8d8f, #c8cacb);
+  color: rgb(247, 231, 200);
+  font-size: 1.5rem;
+  text-shadow: 
+    3px 3px 5px rgba(0, 0, 0, 0.9),
+    5px 5px 10px rgba(0, 0, 0, 0.7),
+    8px 8px 15px rgba(0, 0, 0, 0.5); /* Plusieurs ombres pour un effet plus intense */
+}
+
+.text-size {
+  padding-left: 60px;
+  margin-bottom: 0;
+  font-family: 'Times New Roman', serif; 
+  font-style: italic;
+}
+
+
+
+.text-shadow {
+  background: linear-gradient(to right, #8b8d8f, #c8cacb);
+  color: white;
+  font-size: 1.75rem;
+  text-shadow: 
+    3px 3px 5px rgba(0, 0, 0, 0.9),
+    5px 5px 10px rgba(0, 0, 0, 0.7),
+    8px 8px 15px rgba(0, 0, 0, 0.5); /* Plusieurs ombres pour un effet plus intense */
+}
+
+
+
+.btn-sm {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.btn-sm:hover {
+  background-color: rgb(
+    45,
+    60,
+    45
+  ); 
+  color: #fff; 
+  transform: scale(
+    1.1
+  ); 
+  border-color: white; 
+}
+
+
+
+
+.btn-back {
+  color: #1e1e1e;
+  font-size: 16px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: linear-gradient(270deg, #b0b0b0, #d0d0d0, #a0a0a0, #c0c0c0, #808080);
+
+  background-size: 600% 600%;
+  animation: GradientBackground 5s ease infinite;
+
+  transition: all 0.2s ease;
+}
+
+@keyframes GradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.btn-back:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+
+.text-style {
+  background-color: rgba(195, 182, 182, 0.7);
+}
+
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.light {
+  background: #f3f5f7;
+}
+
+a,
+a:hover {
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+#pageHeaderTitle {
+  margin: 2rem 0;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+/* Cards */
+.postcard {
+  flex-wrap: wrap;
+  display: flex;
+  box-shadow: 0 4px 21px -12px rgba(0, 0, 0, 0.66);
+  border-radius: 10px;
+  margin: 0 0 2rem 0;
+  overflow: hidden;
+  position: relative;
+  color: #ffffff;
+
+  &.dark {
+    background-color: #18151f;
+  }
+  &.light {
+    background-color: #e1e5ea;
+  }
+
+  .t-dark {
+    color: #18151f;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  h1,
+  .h1 {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .small {
+    font-size: 80%;
+  }
+
+  .postcard__title {
+    font-size: 1.75rem;
+  }
+
+  .postcard__img {
+    max-height: 100%;
+    width: 100%;
+    object-fit: cover;
+    position: relative;
+  }
+
+  .postcard__img_link {
+    display: contents;
+  }
+
+  .postcard__bar {
+    width: 50px;
+    height: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    background-color: #424242;
+    transition: width 0.2s ease;
+  }
+
+  .postcard__text {
+    padding: 1.5rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    color: rgb(108, 108, 107);
+  }
+
+  .postcard__preview-txt {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: justify;
+    height: 100%;
+  }
+
+  .postcard__tagbox {
+    display: flex;
+    flex-flow: row wrap;
+    font-size: 14px;
+
+    padding: 0;
+    justify-content: center;
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(-70deg, #d5d1d1, transparent 50%);
+    opacity: 1;
+    border-radius: 10px;
+  }
+
+  &:hover .postcard__bar {
+    width: 100px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  .postcard {
+    flex-wrap: inherit;
+
+    .postcard__title {
+      font-size: 2rem;
+    }
+
+    .postcard__tagbox {
+      justify-content: start;
+    }
+
+    .postcard__img {
+      max-width: 300px;
+      max-height: 100%;
+      transition: transform 0.3s ease;
+    }
+
+    .postcard__text {
+      padding: 3rem;
+      width: 100%;
+    }
+
+    .media.postcard__text:before {
+      content: "";
+      position: absolute;
+      display: block;
+      background: #18151f;
+      top: -20%;
+      height: 130%;
+      width: 55px;
+    }
+
+    &:hover .postcard__img {
+      transform: scale(1.1);
+    }
+
+    &:nth-child(2n + 1) {
+      flex-direction: row;
+    }
+
+    &:nth-child(2n + 0) {
+      flex-direction: row-reverse;
+    }
+
+    &:nth-child(2n + 1) .postcard__text::before {
+      left: -12px !important;
+      transform: rotate(4deg);
+    }
+
+    &:nth-child(2n + 0) .postcard__text::before {
+      right: -12px !important;
+      transform: rotate(-4deg);
+    }
+  }
+}
+@media screen and (min-width: 1024px) {
+  .postcard__text {
+    padding: 2rem 3.5rem;
+  }
+
+  .postcard__text:before {
+    content: "";
+    position: absolute;
+    display: block;
+
+    top: -20%;
+    height: 130%;
+    width: 55px;
+  }
+
+  .postcard.dark {
+    .postcard__text:before {
+      background: #18151f;
+    }
+  }
+  .postcard.light {
+    .postcard__text:before {
+      background: #e1e5ea;
+    }
+  }
+}
